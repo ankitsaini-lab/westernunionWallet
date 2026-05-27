@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:transwallet/products/Dashboard%20screen/dashboardscreen_view.dart';
 import 'package:transwallet/products/History%20screen/historyscreen_View.dart';
+import 'package:transwallet/products/History%20screen/transactiondetails_View.dart';
 import 'package:transwallet/products/Manage%20Card/managecard_View.dart';
 import 'package:transwallet/products/Notification%20screen/notification_View.dart';
 import 'package:transwallet/products/Order%20Card%20screen/Order%20Details%20Screen/orderDetailsscreen_View.dart';
@@ -105,6 +106,10 @@ class MyApp extends StatelessWidget {
   GetPage(
     name: '/history',
     page: () => const HistoryscreenView(),
+  ),
+  GetPage(
+    name: '/transactiondetails',
+    page: () => const TransactiondetailsView(),
   ),
   GetPage(
     name: '/profile',

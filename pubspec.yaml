@@ -39,6 +39,7 @@ dependencies:
   flutter_svg:
   confetti: ^0.8.0
   local_auth: ^3.0.1
+  video_player: ^2.11.1
 
 dev_dependencies:
   flutter_test:

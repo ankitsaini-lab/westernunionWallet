@@ -5,20 +5,18 @@ import 'package:get/get.dart';
 import 'package:transwallet/products/login_singupscreen/create%20Account/createaccount_Controller.dart';
 import 'package:transwallet/widgets/constsize.dart';
 import 'package:transwallet/widgets/custombutton.dart';
+
 class CreateaccountView extends GetView<CreateaccountController> {
   const CreateaccountView({super.key});
 
   @override
-
-
-  
   Widget build(BuildContext context) {
     Get.lazyPut(() => CreateaccountController());
 
     const primaryRed = Color(0xFFD64550);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),  
+      backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -26,7 +24,6 @@ class CreateaccountView extends GetView<CreateaccountController> {
               children: [
                 const SizedBox(height: 40),
 
-              
                 TweenAnimationBuilder(
                   duration: const Duration(milliseconds: 800),
                   tween: Tween<double>(begin: 30.0, end: 0.0),
@@ -45,10 +42,9 @@ class CreateaccountView extends GetView<CreateaccountController> {
 
                 const SizedBox(height: 30),
 
-                
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 24),
-                  padding: const EdgeInsets.all(28),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(32),
@@ -57,7 +53,7 @@ class CreateaccountView extends GetView<CreateaccountController> {
                         color: primaryRed.withOpacity(0.05),
                         blurRadius: 40,
                         offset: const Offset(0, 15),
-                      )
+                      ),
                     ],
                   ),
                   child: Column(
@@ -80,7 +76,6 @@ class CreateaccountView extends GetView<CreateaccountController> {
 
                       const SizedBox(height: 25),
 
-                      
                       Row(
                         children: [
                           Expanded(child: controller.buildStep("Details", 1)),
@@ -91,15 +86,16 @@ class CreateaccountView extends GetView<CreateaccountController> {
 
                       const SizedBox(height: 20),
 
-                     
-                      Obx(() => AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 500),
-                            switchInCurve: Curves.easeIn,
-                            switchOutCurve: Curves.easeOut,
-                            child: controller.step.value == 1
-                                ? controller.buildStepOene(context)
-                                : controller.buildStepTwo(),
-                          )),
+                      Obx(
+                        () => AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          switchInCurve: Curves.easeIn,
+                          switchOutCurve: Curves.easeOut,
+                          child: controller.step.value == 1
+                              ? controller.buildStepOene(context)
+                              : controller.buildStepTwo(),
+                        ),
+                      ),
                     ],
                   ),
                 ),

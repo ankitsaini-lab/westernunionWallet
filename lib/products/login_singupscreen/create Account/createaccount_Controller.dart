@@ -44,6 +44,10 @@ class CreateaccountController extends GetxController {
   final stateError = ''.obs;
   final cityError = ''.obs;
 
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$').hasMatch(email);
+  }
+
   void toggleCode(bool value) {
     hasCode.value = value;
   }
@@ -57,88 +61,81 @@ class CreateaccountController extends GetxController {
     TextInputType? keyboardtype,
     bool enabled = true,
   }) {
-
+    const primaryRed = Color(0xFFD64550);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
-        Text(
-          label,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              letterSpacing: 0.2,
+              color: Color(0xFF4B5563),
+            ),
           ),
         ),
-
-        const SizedBox(height: 8),
-
+        const SizedBox(height: 6),
         Obx(
           () => TextField(
             keyboardType: keyboardtype,
             enabled: enabled,
-
-            onChanged: (value) {
-
-              onChanged(value);
-
-              if (value.isNotEmpty) {
-                errorText.value = "";
-              }
-            },
-
+            onChanged: onChanged,
             inputFormatters: inpputofrmater,
-
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF111111),
+            ),
             decoration: InputDecoration(
-
               hintText: hint,
-
               hintStyle: const TextStyle(
                 fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF9CA3AF),
               ),
-
-              errorText:
-                  errorText.value.isEmpty
-                      ? null
-                      : errorText.value,
-
+              errorText: errorText.value.isEmpty ? null : errorText.value,
               filled: true,
-
-              fillColor: const Color(0xFFF5F5F5),
-
-              contentPadding:
-                  const EdgeInsets.symmetric(
+              fillColor: const Color(0xFFF5F6F8),
+              contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 14,
+                vertical: 16,
               ),
-
               border: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(10),
-                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(20),
+                borderSide: const BorderSide(
+                  color: Color(0xFFE5E7EB),
+                  width: 1.5,
+                ),
               ),
-
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: const BorderSide(
+                  color: Color(0xFFE5E7EB),
+                  width: 1.5,
+                ),
+              ),
               focusedBorder: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 borderSide: const BorderSide(
-                  color: Color(0xFFE53935),
-                  width: 1.2,
+                  color: primaryRed,
+                  width: 2.0,
                 ),
               ),
-
               errorBorder: OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(20),
                 borderSide: const BorderSide(
                   color: Colors.red,
+                  width: 1.5,
                 ),
               ),
-
-              focusedErrorBorder:
-                  OutlineInputBorder(
-                borderRadius:
-                    BorderRadius.circular(16),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
                 borderSide: const BorderSide(
                   color: Colors.red,
+                  width: 2.0,
                 ),
               ),
             ),
@@ -149,10 +146,13 @@ class CreateaccountController extends GetxController {
   }
 
   BoxDecoration boxDecoration() {
-
     return BoxDecoration(
-      color: Colors.grey.shade100,
-      borderRadius: BorderRadius.circular(8),
+      color: const Color(0xFFF5F6F8),
+      borderRadius: BorderRadius.circular(20),
+      border: Border.all(
+        color: const Color(0xFFE5E7EB),
+        width: 1.5,
+      ),
     );
   }
 
@@ -173,9 +173,10 @@ class CreateaccountController extends GetxController {
             ? "Last Name is required"
             : "";
 
-    emailError.value =
-        email.value.isEmpty
-            ? "Email is required"
+    emailError.value = email.value.isEmpty
+        ? "Email is required"
+        : !_isValidEmail(email.value)
+            ? "Enter a valid email address"
             : "";
 
     genderError.value =
@@ -183,10 +184,29 @@ class CreateaccountController extends GetxController {
             ? "Gender is required"
             : "";
 
-    dobError.value =
-        dob.value.isEmpty
-            ? "Date of birth is required"
-            : "";
+    if (dob.value.isEmpty) {
+      dobError.value = "Date of birth is required";
+    } else {
+      try {
+        final parts = dob.value.split('/');
+        if (parts.length == 3) {
+          final day = int.parse(parts[0]);
+          final month = int.parse(parts[1]);
+          final year = int.parse(parts[2]);
+          final birthDate = DateTime(year, month, day);
+          final adultDate = DateTime(birthDate.year + 18, birthDate.month, birthDate.day);
+          if (adultDate.isAfter(DateTime.now())) {
+            dobError.value = "You must be at least 18 years old";
+          } else {
+            dobError.value = "";
+          }
+        } else {
+          dobError.value = "Invalid date format";
+        }
+      } catch (e) {
+        dobError.value = "Invalid date format";
+      }
+    }
 
     if (hasCode.value) {
 
@@ -289,148 +309,136 @@ class CreateaccountController extends GetxController {
           CrossAxisAlignment.start,
 
       children: [
-
-        Row(
-          children: [
-
-            Expanded(
-              child: buildTextField(
+buildTextField(
                 label: "First Name",
                 hint: "Enter First Name",
                 errorText: firstNameError,
-                onChanged: (v) =>
-                    firstName.value = v,
+                onChanged: (v) { firstName.value = v; if (v.isNotEmpty) firstNameError.value = ''; },
               ),
-            ),
-
-            const SizedBox(width: 10),
-
-            Expanded(
-              child: buildTextField(
+                   const SizedBox(height: 10),
+               buildTextField(
                 label: "Middle Name",
                 hint: "Enter Middle Name",
                 errorText: middleNameError,
-                onChanged: (v) =>
-                    midName.value = v,
+                onChanged: (v) { midName.value = v; if (v.isNotEmpty) middleNameError.value = ''; },
               ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 10),
-
-        Row(
-          children: [
-
-            Expanded(
-              child: buildTextField(
+                   const SizedBox(height: 10),
+               buildTextField(
                 label: "Last Name",
                 hint: "Enter Last Name",
                 errorText: lastNameError,
-                onChanged: (v) =>
-                    lastName.value = v,
+                onChanged: (v) { lastName.value = v; if (v.isNotEmpty) lastNameError.value = ''; },
               ),
+        height10,
+
+    Column(
+      crossAxisAlignment:
+          CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 4),
+          child: Text(
+            "Gender",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              letterSpacing: 0.2,
+              color: Color(0xFF4B5563),
             ),
-
-            width10,
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-
-                  const Text("Gender"),
-
-                  const SizedBox(height: 8),
-
-                  Obx(
-                    () => Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                      children: [
-
-                        Container(
-                          padding:
-                              const EdgeInsets.symmetric(
-                            horizontal: 12,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Obx(
+          () => Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: ["Male", "Female", "Other"].map((g) {
+                  final bool isSelected = gender.value == g;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        gender.value = g;
+                        genderError.value = "";
+                      },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeOutCubic,
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color(0xFF111111)
+                              : const Color(0xFFF5F6F8),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected
+                                ? const Color(0xFF111111)
+                                : const Color(0xFFE5E7EB),
+                            width: 1.5,
                           ),
-
-                          decoration: boxDecoration(),
-
-                          child: DropdownButton<String>(
-                            value: gender.value.isEmpty
-                                ? null
-                                : gender.value,
-
-                            hint: const Text(
-                              "Select..",
-                              style:
-                                  TextStyle(fontSize: 14),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.12),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 4),
+                                  )
+                                ]
+                              : [],
+                        ),
+                        child: Center(
+                          child: Text(
+                            g,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF4B5563),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
                             ),
-
-                            isExpanded: true,
-                            underline: const SizedBox(),
-
-                            items: [
-                              "Male",
-                              "Female",
-                              "Other"
-                            ]
-                                .map(
-                                  (e) =>
-                                      DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e),
-                                  ),
-                                )
-                                .toList(),
-
-                            onChanged: (value) {
-
-                              gender.value =
-                                  value ?? '';
-
-                              if (value != null) {
-                                genderError.value = "";
-                              }
-                            },
                           ),
                         ),
-
-                        if (genderError.value.isNotEmpty)
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(
-                              left: 12,
-                              top: 6,
-                            ),
-                            child: Text(
-                              genderError.value,
-                              style: const TextStyle(
-                                color: Colors.red,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                      ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              if (genderError.value.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    top: 6,
+                  ),
+                  child: Text(
+                    genderError.value,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
+                ),
+            ],
+          ),
         ),
-
-        const SizedBox(height: 10),
+      ],
+    ),
+ 
+       height10,
 
         buildTextField(
           label: "Email",
           hint: "Enter your email",
           errorText: emailError,
-          onChanged: (v) =>
-              email.value = v,
-
+          onChanged: (v) {
+            email.value = v;
+            if (v.isNotEmpty && !_isValidEmail(v)) {
+              emailError.value = "Enter a valid email address";
+            } else {
+              emailError.value = "";
+            }
+          },
           inpputofrmater: [
             FilteringTextInputFormatter.allow(
               RegExp(r"[a-zA-Z0-9@._\-+]"),
@@ -438,72 +446,72 @@ class CreateaccountController extends GetxController {
           ],
         ),
 
-        const SizedBox(height: 10),
-
-        const Text("Date of Birth"),
-
+        const Padding(
+          padding: EdgeInsets.only(left: 4),
+          child: Text(
+            "Date of Birth",
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              letterSpacing: 0.2,
+              color: Color(0xFF4B5563),
+            ),
+          ),
+        ),
         const SizedBox(height: 8),
-
         Obx(
           () => Column(
             crossAxisAlignment:
                 CrossAxisAlignment.start,
             children: [
-
               GestureDetector(
                 onTap: () async {
-
+                  final today = DateTime.now();
+                  final maxAdultDate = DateTime(today.year - 18, today.month, today.day);
                   DateTime? picked =
                       await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: maxAdultDate,
                     firstDate: DateTime(1700),
-                    lastDate: DateTime.now(),
+                    lastDate: maxAdultDate,
                   );
 
                   if (picked != null) {
-
                     dob.value =
                         "${picked.day}/${picked.month}/${picked.year}";
-
                     dobError.value = "";
                   }
                 },
-
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
                   decoration: boxDecoration(),
-
                   child: Row(
                     mainAxisAlignment:
                         MainAxisAlignment
                             .spaceBetween,
-
                     children: [
-
                       Text(
                         dob.value.isEmpty
-                            ? "dd/mm/yyyy"
+                            ? "Select Date of Birth"
                             : dob.value,
-
-                        style: const TextStyle(
-                          color: Colors.black54,
+                        style: TextStyle(
+                          color: dob.value.isEmpty ? const Color(0xFF9CA3AF) : const Color(0xFF111111),
+                          fontWeight: dob.value.isEmpty ? FontWeight.w400 : FontWeight.w700,
+                          fontSize: 15,
                         ),
                       ),
-
                       const Icon(
-                        Icons.calendar_today,
-                        size: 18,
+                        Icons.calendar_month_rounded,
+                        size: 20,
+                        color: Color(0xFF6B7280),
                       ),
                     ],
                   ),
                 ),
               ),
-
               if (dobError.value.isNotEmpty)
                 Padding(
-                  padding:
-                      const EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 12,
                     top: 6,
                   ),
@@ -549,8 +557,7 @@ class CreateaccountController extends GetxController {
                   hint: "KIT-000123",
                   enabled: hasCode.value,
                   errorText: kitError,
-                  onChanged: (v) =>
-                      kitNumber.value = v,
+          onChanged: (v) { kitNumber.value = v; if (v.isNotEmpty) kitError.value = ''; },
                 )
               : Container(),
         ),
@@ -572,17 +579,22 @@ class CreateaccountController extends GetxController {
                     LengthLimitingTextInputFormatter(
                         4),
                   ],
-                  onChanged: (v) =>
-                      cardNumber.value = v,
+          onChanged: (v) { cardNumber.value = v; if (v.isNotEmpty) cardError.value = ''; },
                 )
               : Container(),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
 
         CustomButton(
-          text: "Next",
+          text: "Next Step",
           btncolor: const Color(0xFF111111),
+          borderRadius: 20,
+          suffixIcon: const Icon(
+            Icons.arrow_forward_rounded,
+            color: Colors.white,
+            size: 18,
+          ),
           onPressed: nextStep,
         ),
       ],
@@ -610,8 +622,7 @@ class CreateaccountController extends GetxController {
           label: "Address Line 1",
           hint: "Enter address",
           errorText: address1Error,
-          onChanged: (v) =>
-              address1.value = v,
+          onChanged: (v) { address1.value = v; if (v.isNotEmpty) address1Error.value = ''; },
         ),
 
         const SizedBox(height: 10),
@@ -620,8 +631,7 @@ class CreateaccountController extends GetxController {
           label: "Address Line 2",
           hint: "Enter address",
           errorText: address2Error,
-          onChanged: (v) =>
-              address2.value = v,
+          onChanged: (v) { address2.value = v; if (v.isNotEmpty) address2Error.value = ''; },
         ),
 
         const SizedBox(height: 10),
@@ -643,8 +653,7 @@ class CreateaccountController extends GetxController {
                       .digitsOnly,
                 ],
 
-                onChanged: (v) =>
-                    pincode.value = v,
+                onChanged: (v) { pincode.value = v; if (v.isNotEmpty) pincodeError.value = ''; },
               ),
             ),
 
@@ -655,34 +664,33 @@ class CreateaccountController extends GetxController {
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
-
-                  const Text("Country"),
-
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      "Country",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        letterSpacing: 0.2,
+                        color: Color(0xFF4B5563),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 6),
-
                   Obx(
                     () => Column(
                       crossAxisAlignment:
                           CrossAxisAlignment.start,
                       children: [
-
                         CustomDropdown(
                           options: const [
-                            "India",
-                            "USA",
-                            "Canada",
-                            "Australia",
-                            "Germany"
+                            "India"
                           ],
-
                           onChanged: (val) {
-
                             country.value = val;
-
                             countryError.value = "";
                           },
                         ),
-
                         if (countryError.value.isNotEmpty)
                           Padding(
                             padding:
@@ -711,36 +719,38 @@ class CreateaccountController extends GetxController {
 
         Row(
           children: [
-
             Expanded(
               child: Column(
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
-
-                  const Text("State"),
-
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      "State",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        letterSpacing: 0.2,
+                        color: Color(0xFF4B5563),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 6),
-
                   Obx(
                     () => Column(
                       crossAxisAlignment:
                           CrossAxisAlignment.start,
                       children: [
-
                         CustomDropdown(
                           options: const [
                             "Rajasthan",
                           ],
-
                           onChanged: (val) {
-
                             state.value = val;
-
                             stateError.value = "";
                           },
                         ),
-
                         if (stateError.value.isNotEmpty)
                           Padding(
                             padding:
@@ -770,30 +780,33 @@ class CreateaccountController extends GetxController {
                 crossAxisAlignment:
                     CrossAxisAlignment.start,
                 children: [
-
-                  const Text("City"),
-
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4),
+                    child: Text(
+                      "City",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        letterSpacing: 0.2,
+                        color: Color(0xFF4B5563),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 6),
-
                   Obx(
                     () => Column(
                       crossAxisAlignment:
                           CrossAxisAlignment.start,
                       children: [
-
                         CustomDropdown(
                           options: const [
                             "Jaipur",
                           ],
-
                           onChanged: (val) {
-
                             city.value = val;
-
                             cityError.value = "";
                           },
                         ),
-
                         if (cityError.value.isNotEmpty)
                           Padding(
                             padding:
@@ -818,14 +831,18 @@ class CreateaccountController extends GetxController {
           ],
         ),
 
-        const SizedBox(height: 24),
+        const SizedBox(height: 30),
 
         CustomButton(
           text: "Proceed to Min KYC",
-          btncolor: Colors.black,
-
+          btncolor: const Color(0xFF111111),
+          borderRadius: 20,
+          suffixIcon: const Icon(
+            Icons.arrow_forward_rounded,
+            color: Colors.white,
+            size: 18,
+          ),
           onPressed: () {
-
             address1Error.value =
                 address1.value.isEmpty
                     ? "Address Line 1 is required"
@@ -870,36 +887,32 @@ class CreateaccountController extends GetxController {
           },
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
 
-        Row(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
-
-          crossAxisAlignment:
-              CrossAxisAlignment.center,
-
-          children: [
-
-            const Icon(
-              Icons.arrow_back,
-              size: 16,
-              color: Colors.black,
-            ),
-
-            const SizedBox(width: 4),
-
-            GestureDetector(
-              onTap: previousStep,
-
-              child: const Text(
+        GestureDetector(
+          onTap: previousStep,
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.center,
+            crossAxisAlignment:
+                CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.arrow_back_rounded,
+                size: 16,
+                color: Color(0xFF4B5563),
+              ),
+              const SizedBox(width: 6),
+              Text(
                 "Go to previous Step",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: const Color(0xFF4B5563),
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

@@ -127,30 +127,15 @@ class WalletscreenController extends GetxController {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    actionButton("Add Money", onTap: (){   Get.bottomSheet(
-                    Stack(
-    children: [
-      
-      BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Container(
-          color: Colors.black.withOpacity(0.2), // dim effect
-        ),
-      ),
-
-      /// 📦 YOUR SHEET
-      Align(
-        alignment: Alignment.bottomCenter,
-        child: AddmoneyView()
-      ),
-    ],
-  ),
- 
-  isScrollControlled: true,
-  isDismissible: false,
-  enableDrag: false,
-  backgroundColor: Colors.transparent,
-);}),
+                    actionButton("Add Money", onTap: () {
+                      Get.bottomSheet(
+                        const AddmoneyView(showGeneralWalletOption: true),
+                        isScrollControlled: true,
+                        isDismissible: false,
+                        enableDrag: false,
+                        backgroundColor: Colors.transparent,
+                      );
+                    }),
                     const SizedBox(width: 12),
                     actionButton("Transactions", onTap: () {
                       Get.toNamed("/walletdetails", arguments: {"data": wallet});

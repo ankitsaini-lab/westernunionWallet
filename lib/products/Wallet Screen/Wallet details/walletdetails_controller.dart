@@ -24,28 +24,57 @@ class WalletdetailsController extends GetxController {
 
   
 
+  var searchQuery = "".obs;
+  var selectedFilter = "all".obs; // all, income, expense, failed
+  var isSearchActive = false.obs;
+  var isFilterActive = false.obs;
+
+  List<Map<String, dynamic>> get filteredTransactions {
+    return transactions.where((tx) {
+      final name = tx["name"]?.toString()?.toLowerCase() ?? "";
+      final matchesSearch = name.contains(searchQuery.value.toLowerCase());
+      
+      if (!matchesSearch) return false;
+
+      final amount = (tx["amount"] as num).toDouble();
+      final status = tx["status"]?.toString() ?? "";
+
+      switch (selectedFilter.value) {
+        case "income":
+          return amount > 0;
+        case "expense":
+          return amount < 0 && status != "failed";
+        case "failed":
+          return status == "failed";
+        case "all":
+        default:
+          return true;
+      }
+    }).toList();
+  }
+
   RxList<Map<String, dynamic>> transactions = <Map<String, dynamic>>[
     {
       "name": "Blinkit",
-      "date": "19 November",
+      "date": "19 November • 02:30 PM",
       "amount": -240,
       "status": "success",
     },
     {
       "name": "Zomato India",
-      "date": "9 November",
+      "date": "9 November • 08:15 PM",
       "amount": -635,
       "status": "success",
     },
     {
       "name": "Zomato India",
-      "date": "9 November",
+      "date": "9 November • 08:15 PM",
       "amount": -635,
       "status": "failed",
     },
     {
       "name": "Jane Doe",
-      "date": "15 November",
+      "date": "15 November • 11:45 AM",
       "amount": 2500,
       "status": "credit",
     },

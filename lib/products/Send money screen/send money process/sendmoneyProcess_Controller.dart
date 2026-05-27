@@ -1,96 +1,86 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transwallet/widgets/custombutton.dart';
 
 class SendmoneyprocessController extends GetxController {
   var balance = 1600.0.obs;
-var enteredAmount = ''.obs;
-var isLoading = false.obs;
+  var enteredAmount = ''.obs;
+  var isLoading = false.obs;
 
- 
-double get amount {
-  String cleaned = enteredAmount.value.replaceAll(',', '');
-  return double.tryParse(cleaned.isEmpty ? "0" : cleaned) ?? 0;
-}
+  double get amount {
+    String cleaned = enteredAmount.value.replaceAll(',', '');
+    return double.tryParse(cleaned.isEmpty ? "0" : cleaned) ?? 0.0;
+  }
 
-void setAmount(String value) {
-  log("check value >> $value"); 
-  String current = enteredAmount.value;
+  void setAmount(String value) {
+    log("check value >> $value");
+    String current = enteredAmount.value;
 
- 
-  if (value == "back") {
-    if (current.isNotEmpty) {
-      enteredAmount.value = current.substring(0, current.length - 1);
+    if (value == "back") {
+      if (current.isNotEmpty) {
+        enteredAmount.value = current.substring(0, current.length - 1);
+      }
+      return;
     }
-    return;
+
+    if (value == "," && current.contains(",")) return;
+    if (current == "0" && value == "0") return;
+
+    if (current == "0" && value != ",") {
+      enteredAmount.value = value;
+      return;
+    }
+
+    enteredAmount.value += value;
   }
 
-   
-  if (value == "," && current.contains(",")) return;
-
-  
-  if (current == "0" && value == "0") return;
-
- 
-  if (current == "0" && value != ",") {
-    enteredAmount.value = value;
-    return;
+  void setPreset(int value) {
+    enteredAmount.value = value.toString();
   }
 
- 
-  enteredAmount.value += value;
-}
- void setPreset(int value) {
-  enteredAmount.value = value.toString();
-}
+  Future<void> addMoney() async {
+    if (amount <= 0) return;
 
-   
- Future<void> addMoney() async {
-  if (amount <= 0) return;
+    double addedAmount = amount;
 
-  double addedAmount = amount;
+    Get.to(() => const PaymentProcessingScreen());
 
-  
-  Get.to(() => PaymentProcessingScreen());
+    isLoading.value = true;
 
-  isLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
 
-  await Future.delayed(const Duration(seconds: 2));
+    balance.value += addedAmount;
+    enteredAmount.value = '';
 
-  balance.value += addedAmount;
-  enteredAmount.value = '';
+    isLoading.value = false;
 
-  isLoading.value = false;
+    Get.off(() => PaymentSuccessScreen(
+          amount: addedAmount,
+        ));
+  }
 
- 
-  Get.off(() => PaymentSuccessScreen(
-        amount: addedAmount,
-      ));
-}
-
-  
-Widget keyButton(String value) {
-  return GestureDetector(
-    onTap: () => setAmount(value),
-    child: Container(
-      alignment: Alignment.center,
-      child: value == "back"
-          ? const Icon(Icons.backspace_outlined)
-          : Text(
-              value,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
+  Widget keyButton(String value) {
+    return GestureDetector(
+      onTap: () => setAmount(value),
+      child: Container(
+        alignment: Alignment.center,
+        child: value == "back"
+            ? const Icon(Icons.backspace_outlined)
+            : Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-    ),
-  );
-}
+      ),
+    );
+  }
+
   Widget presetButton(String label, int value) {
     return GestureDetector(
-      onTap: () =>  setPreset(value),
+      onTap: () => setPreset(value),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
@@ -101,25 +91,34 @@ Widget keyButton(String value) {
       ),
     );
   }
-
 }
+
 class PaymentProcessingScreen extends StatelessWidget {
   const PaymentProcessingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
+      backgroundColor: Color(0xFF111111),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text(
-              "Payment processing...",
-              style: TextStyle(fontSize: 18),
+          children: [
+            CircularProgressIndicator(
+              color: Color(0xFFE53935),
+              strokeWidth: 3,
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 24),
+            Text(
+              "Processing Payment...",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+                letterSpacing: -0.5,
+              ),
+            ),
+            SizedBox(height: 12),
             Text(
               "Please don’t press back or close the app",
               style: TextStyle(fontSize: 12, color: Colors.grey),
@@ -131,6 +130,7 @@ class PaymentProcessingScreen extends StatelessWidget {
     );
   }
 }
+
 class PaymentSuccessScreen extends StatefulWidget {
   final double amount;
 
@@ -140,124 +140,208 @@ class PaymentSuccessScreen extends StatefulWidget {
   State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _animController;
+  late Animation<double> _scaleAnimation;
+
   @override
   void initState() {
     super.initState();
 
-    Future.delayed(const Duration(seconds: 2), () {
-      Get.off(  () => PaymentafterSuccessScreen());
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _scaleAnimation = CurvedAnimation(
+      parent: _animController,
+      curve: Curves.elasticOut,
+    );
+
+    _animController.forward();
+
+    Future.delayed(const Duration(milliseconds: 2200), () {
+      Get.off(() => PaymentafterSuccessScreen(amount: widget.amount));
     });
   }
 
   @override
+  void dispose() {
+    _animController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(25),
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
+      backgroundColor: const Color(0xFF111111),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Revolut-inspired glowing circular success checkmark
+            ScaleTransition(
+              scale: _scaleAnimation,
+              child: Container(
+                height: 110,
+                width: 110,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF2E7D32),
+                      Color(0xFF43A047),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  child: const Icon(Icons.check,
-                      color: Colors.white, size: 60),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF2E7D32).withOpacity(0.45),
+                      blurRadius: 30,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
                 ),
-
-                const SizedBox(height: 25),
-
-                const Text(
-                  "Payment Successful!",
-                  style: TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.bold),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 54,
                 ),
-
-                const SizedBox(height: 10),
-
-                Text(
-                  "₹${widget.amount.toStringAsFixed(2)} added to wallet",
-                  style:
-                      const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 36),
+            const Text(
+              "Payment Successful!",
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "₹${widget.amount.toStringAsFixed(2)} added to wallet",
+              style: const TextStyle(
+                fontSize: 15,
+                color: Color(0xFF9E9E9E),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-//////////////
- 
 
 class PaymentafterSuccessScreen extends StatelessWidget {
+  final double amount;
+
+  const PaymentafterSuccessScreen({super.key, required this.amount});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
             children: [
-              SizedBox(height: 40),
+              const Spacer(),
 
-              // Success Icon
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.green,
-                child: Icon(Icons.check, color: Colors.white, size: 40),
-              ),
-
-              SizedBox(height: 20),
-
-              Text(
-                "Send Money Successful!",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-
-              SizedBox(height: 10),
-
-              Text(
-                "₹500",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-
-              SizedBox(height: 30),
-
-              
+              // Brand squircle checkmark avatar
               Container(
-                padding: EdgeInsets.all(16),
+                height: 80,
+                width: 80,
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFE53935),
+                      Color(0xFFB71C1C),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFE53935).withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  size: 38,
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                "Wallet Load Successful!",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xFF111111),
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "₹${amount.toStringAsFixed(2)}",
+                style: const TextStyle(
+                  fontSize: 36,
+                  color: Color(0xFF111111),
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: -1.0,
+                ),
+              ),
+              const SizedBox(height: 40),
+
+              // Revolut-inspired elegant summary card
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F9F9),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: const Color(0xFFECECEC)),
                 ),
                 child: Column(
                   children: [
-                    rowItem("Current Balance", "₹2100"),
-                    SizedBox(height: 10),
-                    rowItem("Date & Time", "30th Nov 2024\n03:53 PM"),
-                    SizedBox(height: 10),
-
+                    rowItem("Credited To", "General Wallet"),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Divider(color: Color(0xFFECECEC), height: 1),
+                    ),
+                    rowItem("Date & Time", "30 Nov 2024  •  03:53 PM"),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Divider(color: Color(0xFFECECEC), height: 1),
+                    ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => PaymentDetailsScreen(),
-                          ),
-                        );
+                        Get.to(() => PaymentDetailsScreen(amount: amount));
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Payment Details"),
-                          Icon(Icons.arrow_forward_ios, size: 16)
+                          Text(
+                            "View Details",
+                            style: TextStyle(
+                              color: Color(0xFF111111),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 14,
+                            color: Color(0xFF111111),
+                          ),
                         ],
                       ),
                     ),
@@ -265,12 +349,15 @@ class PaymentafterSuccessScreen extends StatelessWidget {
                 ),
               ),
 
-              Spacer(),
+              const Spacer(flex: 2),
 
-              CustomButton(text: "Back to Home", btncolor: Colors.black, onPressed: () {
-                Get.offAllNamed("/dashboard");
-              },),
-             
+              CustomButton(
+                text: "Go to Dashboard",
+                btncolor: const Color(0xFF111111),
+                onPressed: () {
+                  Get.offAllNamed("/dashboard");
+                },
+              ),
             ],
           ),
         ),
@@ -282,100 +369,292 @@ class PaymentafterSuccessScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: TextStyle(color: Colors.grey[600])),
-        Text(value, textAlign: TextAlign.right),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Color(0xFF6B7280),
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        Text(
+          value,
+          textAlign: TextAlign.right,
+          style: const TextStyle(
+            color: Color(0xFF111111),
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
       ],
     );
   }
 }
-///////////////////////////////////
+
 class PaymentDetailsScreen extends StatelessWidget {
+  final double amount;
+
+  const PaymentDetailsScreen({super.key, required this.amount});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-         leading: IconButton(
-    icon: const Icon(Icons.arrow_back, color: Colors.black),
-    onPressed: () => Get.back(),
-  ),
-        title: Text("Payment Details"),
-        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.black),
+          onPressed: () => Get.back(),
+        ),
+        title: const Text(
+          "Payment Details",
+          style: TextStyle(
+            color: Color(0xFF111111),
+            fontSize: 18,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.5,
+          ),
+        ),
+        backgroundColor: Colors.white,
         elevation: 0,
-        foregroundColor: Colors.black,
+        centerTitle: false,
       ),
-      backgroundColor: Colors.grey[100],
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            children: [
+              // High-fidelity ticket cutout receipt stub
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF9F9F9),
+                  borderRadius: BorderRadius.circular(28),
+                  border: Border.all(color: const Color(0xFFECECEC)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.02),
+                      blurRadius: 15,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Top Receipt Section
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28, left: 24, right: 24, bottom: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 64,
+                            width: 64,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xFF2E7D32),
+                                  Color(0xFF43A047),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                            child: const Icon(Icons.check_rounded, color: Colors.white, size: 30),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            "Wallet Deposit",
+                            style: TextStyle(
+                              color: Color(0xFF111111),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "+ ₹${amount.toStringAsFixed(2)}",
+                            style: const TextStyle(
+                              color: Color(0xFF2E7D32),
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-            CircleAvatar(
-              radius: 35,
-              backgroundColor: Colors.green,
-              child: Icon(Icons.check, color: Colors.white, size: 30),
-            ),
+                    // Dotted stub tear cutout representation
+                    Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Row(
+                              children: List.generate(
+                                20,
+                                (index) => Expanded(
+                                  child: Container(
+                                    height: 1.5,
+                                    color: index % 2 == 0 ? Colors.transparent : const Color(0xFFECECEC),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
 
-            SizedBox(height: 20),
-
-            Text(
-              "Payment Successful!",
-              style: TextStyle(fontSize: 18),
-            ),
-
-            SizedBox(height: 10),
-
-            Text(
-              "₹500",
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
-
-            SizedBox(height: 30),
-
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                    // Bottom Details section of card
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        children: [
+                          detailRow("Reference ID", "aec68852-f711-4b7d-9e8e-c44bu"),
+                          detailRow("Credited To", "General Wallet"),
+                          detailRow("Payment Using", "UPI (janedoe@upi)"),
+                          detailRow("Date & Time", "30 Nov 2024 • 03:53 PM"),
+                          const Divider(color: Color(0xFFECECEC), height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Total Deposited",
+                                style: TextStyle(
+                                  color: Color(0xFF6B7280),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "₹${amount.toStringAsFixed(2)}",
+                                style: const TextStyle(
+                                  color: Color(0xFF111111),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  detailRow("Reference ID",
-                      "aec68852-f711-4b7d-9e8ergdye4vg44bu"),
-                  divider(),
-                  detailRow("Credited To", "General Wallet"),
-                  divider(),
-                  detailRow("Payment Using", "UPI\njanedoe@upi"),
-                  divider(),
-                  detailRow("Date & Time", "30th Nov 2024\n03:53 PM"),
-                ],
+              const SizedBox(height: 32),
+
+              GestureDetector(
+                onTap: () {
+                  Get.snackbar(
+                    "Success",
+                    "Receipt details shared successfully!",
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: const Color(0xFF111111),
+                    colorText: Colors.white,
+                    borderRadius: 16,
+                    margin: const EdgeInsets.all(16),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF111111),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Share Receipt",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
-            )
-          ],
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () => Get.offAllNamed("/dashboard"),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xFFECECEC)),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    "Go to Dashboard",
+                    style: TextStyle(
+                      color: Color(0xFF111111),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget detailRow(String title, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(title, style: TextStyle(color: Colors.grey)),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.right,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Color(0xFF6B7280),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-      ],
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: const TextStyle(
+                color: Color(0xFF111111),
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
-
-  Widget divider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Divider(height: 1),
-      );
 }
