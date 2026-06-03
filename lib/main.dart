@@ -24,6 +24,7 @@ import 'package:transwallet/products/login_singupscreen/login_singupscreen_View.
 import 'package:transwallet/products/minKYCScreen/minkycScreen_View.dart';
 import 'package:transwallet/products/splashscreen/splashscreen_view.dart';
 import 'package:transwallet/products/update_KYC/update_KYC_View.dart';
+import 'package:transwallet/products/Contact%20Support%20screen/contact_Support_screen_View.dart';
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -142,6 +143,10 @@ class MyApp extends StatelessWidget {
   GetPage(
     name: '/sendmoneyprocess',
     page: () => const SendmoneyprocessView(),
+  ),
+  GetPage(
+    name: '/contactsupport',
+    page: () => const ContactSupportScreenView(),
   ),
 ],
       

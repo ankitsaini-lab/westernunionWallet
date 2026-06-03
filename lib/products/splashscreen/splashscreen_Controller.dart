@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 class SplashscreenController extends GetxController {
     void splash() async {
-    String? token;
 
     try {
       // do {

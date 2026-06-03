@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transwallet/products/Wallet%20Screen/walletscreen_Controller.dart';
@@ -60,16 +59,67 @@ class WalletscreenView extends GetView<WalletscreenController> {
   }
 
   Widget _buildHeader() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 8, bottom: 8),
-      child: Text(
-        "Digital Wallet",
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w800,
-          fontSize: 24,
-          letterSpacing: -0.5,
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Digital Wallet",
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.w800,
+              fontSize: 24,
+              letterSpacing: -0.5,
+            ),
+          ),
+          Obx(() {
+            final isRevealed = controller.isBalanceRevealed.value;
+            return GestureDetector(
+              onTap: () {
+                if (isRevealed) {
+                  controller.hideBalance();
+                } else {
+                  Get.bottomSheet(
+                    _MpinVerifySheet(
+                      onSuccess: () => controller.revealBalance(),
+                      title: "Enter MPIN to View Balance",
+                      subtitle: "For your security, enter your 4-digit mobile PIN",
+                    ),
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                  );
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: primaryRed.withOpacity(0.08),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: primaryRed.withOpacity(0.12)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      isRevealed ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                      color: primaryRed,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      isRevealed ? "Hide Balances" : "Show Balances",
+                      style: const TextStyle(
+                        color: primaryRed,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -189,13 +239,48 @@ class WalletscreenView extends GetView<WalletscreenController> {
                               ],
                             ),
                           ),
-                          Text(
-                            "₹${wallet["balance"]}",
-                            style: const TextStyle(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900,
-                            ),
+                          GestureDetector(
+                            onTap: () {
+                              if (controller.isBalanceRevealed.value) {
+                                controller.hideBalance();
+                              } else {
+                                Get.bottomSheet(
+                                  _MpinVerifySheet(
+                                    onSuccess: () => controller.revealBalance(),
+                                    title: "Enter MPIN to View Balance",
+                                    subtitle: "For your security, enter your 4-digit mobile PIN",
+                                  ),
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                );
+                              }
+                            },
+                            child: Obx(() {
+                              final isRevealed = controller.isBalanceRevealed.value;
+                              return AnimatedCrossFade(
+                                firstChild: const Text(
+                                  "₹ ••••",
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
+                                secondChild: Text(
+                                  "₹${wallet["balance"]}",
+                                  style: const TextStyle(
+                                    color: textColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                crossFadeState: isRevealed
+                                    ? CrossFadeState.showSecond
+                                    : CrossFadeState.showFirst,
+                                duration: const Duration(milliseconds: 250),
+                              );
+                            }),
                           ),
                           const SizedBox(width: 12),
                           Icon(
@@ -321,43 +406,18 @@ class _PrimaryGeneralWalletCard extends StatefulWidget {
 }
 
 class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
-  bool _isRevealed = false;
-  Timer? _autoHideTimer;
+  final _controller = Get.find<WalletscreenController>();
 
   void _toggleBalance() {
-    if (_isRevealed) {
-      _autoHide();
+    if (_controller.isBalanceRevealed.value) {
+      _controller.hideBalance();
     } else {
       _showMpinSheet();
     }
   }
 
   void _reveal() {
-    setState(() {
-      _isRevealed = true;
-    });
-
-    _autoHideTimer?.cancel();
-    _autoHideTimer = Timer(const Duration(seconds: 8), () {
-      if (mounted) {
-        setState(() {
-          _isRevealed = false;
-        });
-      }
-    });
-  }
-
-  void _autoHide() {
-    _autoHideTimer?.cancel();
-    setState(() {
-      _isRevealed = false;
-    });
-  }
-
-  @override
-  void dispose() {
-    _autoHideTimer?.cancel();
-    super.dispose();
+    _controller.revealBalance();
   }
 
   void _showMpinSheet() {
@@ -524,57 +584,60 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: _toggleBalance,
-                      behavior: HitTestBehavior.opaque,
-                      child: AnimatedCrossFade(
-                        firstChild: const Text(
-                          "₹ ••••••",
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2,
+                Obx(() {
+                  final isRevealed = _controller.isBalanceRevealed.value;
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: _toggleBalance,
+                        behavior: HitTestBehavior.opaque,
+                        child: AnimatedCrossFade(
+                          firstChild: const Text(
+                            "₹ ••••••",
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 2,
+                            ),
                           ),
-                        ),
-                        secondChild: Text(
-                          "₹${widget.wallet["balance"]}",
-                          style: const TextStyle(
-                            color: textColor,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: -0.8,
+                          secondChild: Text(
+                            "₹${widget.wallet["balance"]}",
+                            style: const TextStyle(
+                              color: textColor,
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -0.8,
+                            ),
                           ),
-                        ),
-                        crossFadeState: _isRevealed
-                            ? CrossFadeState.showSecond
-                            : CrossFadeState.showFirst,
-                        duration: const Duration(milliseconds: 250),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: _toggleBalance,
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryRed.withOpacity(0.06),
-                        ),
-                        child: Icon(
-                          _isRevealed
-                              ? Icons.visibility_rounded
-                              : Icons.visibility_off_rounded,
-                          color: primaryRed,
-                          size: 20,
+                          crossFadeState: isRevealed
+                              ? CrossFadeState.showSecond
+                              : CrossFadeState.showFirst,
+                          duration: const Duration(milliseconds: 250),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      GestureDetector(
+                        onTap: _toggleBalance,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: primaryRed.withOpacity(0.06),
+                          ),
+                          child: Icon(
+                            isRevealed
+                                ? Icons.visibility_rounded
+                                : Icons.visibility_off_rounded,
+                            color: primaryRed,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
                 const SizedBox(height: 15),
                 const Divider(color: borderColor, height: 1, thickness: 1),
                 const SizedBox(height: 15),

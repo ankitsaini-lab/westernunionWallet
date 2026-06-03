@@ -1,12 +1,35 @@
-import 'dart:developer';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.dart';
 
+import 'dart:async';
+
 class WalletscreenController extends GetxController {
   // Track which card is expanded to show buttons
   var expandedIndex = (-1).obs;
+
+  // Global balance visibility state
+  var isBalanceRevealed = false.obs;
+  Timer? _autoHideTimer;
+
+  void revealBalance() {
+    isBalanceRevealed.value = true;
+    _autoHideTimer?.cancel();
+    _autoHideTimer = Timer(const Duration(seconds: 8), () {
+      isBalanceRevealed.value = false;
+    });
+  }
+
+  void hideBalance() {
+    _autoHideTimer?.cancel();
+    isBalanceRevealed.value = false;
+  }
+
+  @override
+  void onClose() {
+    _autoHideTimer?.cancel();
+    super.onClose();
+  }
 
   var wallets = [
     {

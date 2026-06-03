@@ -396,6 +396,7 @@ class LoginSingupscreenController extends GetxController {
     if (!canResend.value) return;
 
     clearOtp();
+
     startTimer();
   }
 

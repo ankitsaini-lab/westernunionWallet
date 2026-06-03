@@ -58,9 +58,11 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                 children: [
                   // decorative circles
                   Positioned(
-                    top: -20, right: -20,
+                    top: -20,
+                    right: -20,
                     child: Container(
-                      height: 100, width: 100,
+                      height: 100,
+                      width: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.07),
@@ -68,9 +70,11 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                     ),
                   ),
                   Positioned(
-                    bottom: -30, left: -30,
+                    bottom: -30,
+                    left: -30,
                     child: Container(
-                      height: 90, width: 90,
+                      height: 90,
+                      width: 90,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.06),
@@ -134,11 +138,26 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
             // ── Info tiles ────────────────────────────────────────────────
             Row(
               children: [
-                Expanded(child: _InfoTile(icon: Icons.security_rounded, label: '256-bit\nEncrypted')),
+                Expanded(
+                  child: _InfoTile(
+                    icon: Icons.security_rounded,
+                    label: '256-bit\nEncrypted',
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _InfoTile(icon: Icons.timer_rounded, label: '2 Min\nProcess')),
+                Expanded(
+                  child: _InfoTile(
+                    icon: Icons.timer_rounded,
+                    label: '2 Min\nProcess',
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _InfoTile(icon: Icons.lock_rounded, label: '100%\nSecure')),
+                Expanded(
+                  child: _InfoTile(
+                    icon: Icons.lock_rounded,
+                    label: '100%\nSecure',
+                  ),
+                ),
               ],
             ),
 
@@ -156,40 +175,59 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
             const SizedBox(height: 8),
 
             // ── PAN input ─────────────────────────────────────────────────
-            Obx(() => TextField(
-              onChanged: controller.onPanChanged,
-              style: const TextStyle(letterSpacing: 3, fontWeight: FontWeight.w600),
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10),
-                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-                UpperCaseTextFormatter(),
-              ],
-              decoration: InputDecoration(
-                hintText: 'ABCDE1234F',
-                hintStyle: const TextStyle(letterSpacing: 2, color: Colors.grey),
-                prefixIcon: const Icon(Icons.credit_card_rounded, color: _primaryRed),
-                filled: true,
-                fillColor: const Color(0xFFF5F5F5),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                errorText: controller.panError.value.isEmpty ? null : controller.panError.value,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
+            Obx(
+              () => TextField(
+                onChanged: controller.onPanChanged,
+                style: const TextStyle(
+                  letterSpacing: 3,
+                  fontWeight: FontWeight.w600,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: _primaryRed, width: 1.2),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Colors.red, width: 1.2),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Colors.red, width: 1.2),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(10),
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                  UpperCaseTextFormatter(),
+                ],
+                decoration: InputDecoration(
+                  hintText: 'ABCDE1234F',
+                  hintStyle: const TextStyle(
+                    letterSpacing: 2,
+                    color: Colors.grey,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.credit_card_rounded,
+                    color: _primaryRed,
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFF5F5F5),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  errorText: controller.panError.value.isEmpty
+                      ? null
+                      : controller.panError.value,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(
+                      color: _primaryRed,
+                      width: 1.2,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.2),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.2),
+                  ),
                 ),
               ),
-            )),
+            ),
 
             const SizedBox(height: 10),
             Row(
@@ -205,7 +243,6 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
 
             const SizedBox(height: 32),
 
-            
             CustomButton(
               text: 'Continue',
               btncolor: const Color(0xFF111111),
@@ -215,7 +252,8 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                   return;
                 }
                 if (!controller.isButtonEnabled.value) {
-                  controller.panError.value = 'Invalid PAN format (e.g. ABCDE1234F)';
+                  controller.panError.value =
+                      'Invalid PAN format (e.g. ABCDE1234F)';
                   return;
                 }
                 controller.showOtpBottomSheet(context);
@@ -234,14 +272,20 @@ class _StepPill extends StatelessWidget {
   final String label;
   final bool active;
   final bool done;
-  const _StepPill({required this.label, this.active = false, this.done = false});
+  const _StepPill({
+    required this.label,
+    this.active = false,
+    this.done = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: (active || done) ? Colors.white.withOpacity(0.22) : Colors.white.withOpacity(0.08),
+        color: (active || done)
+            ? Colors.white.withOpacity(0.22)
+            : Colors.white.withOpacity(0.08),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: Colors.white.withOpacity(active ? 0.6 : 0.2),
@@ -252,7 +296,11 @@ class _StepPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (done)
-            const Icon(Icons.check_circle_rounded, color: Colors.white, size: 12),
+            const Icon(
+              Icons.check_circle_rounded,
+              color: Colors.white,
+              size: 12,
+            ),
           if (done) const SizedBox(width: 4),
           Text(
             label,

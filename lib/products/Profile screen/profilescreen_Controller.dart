@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ProfilescreenController extends GetxController {
-   var selectedIndex = 3.obs;
+  var selectedIndex = 3.obs;
 
   void changeTab(int index) {
     selectedIndex.value = index;
@@ -52,140 +50,145 @@ Widget menuItem(
   );
 }
 void showLuxuryLogoutDialog(BuildContext context) {
+  const Color primaryRed = Color(0xFFE53935);
+  const Color textColor = Color(0xFF111111);
+  const Color secondaryText = Color(0xFF4B5563);
+  const Color borderColor = Color(0xFFECECEC);
+
   Get.dialog(
     Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(28),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withOpacity(0.25),
-                  Colors.white.withOpacity(0.1),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Container(
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 30,
+              offset: const Offset(0, 15),
+            ),
+          ],
+          border: Border.all(color: borderColor, width: 1),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Warning Shield Icon Capsule
+            Container(
+              height: 74,
+              width: 74,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFE53935), Color(0xFFC62828)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryRed.withOpacity(0.25),
+                    blurRadius: 15,
+                    offset: const Offset(0, 6),
+                  ),
                 ],
               ),
-              border: Border.all(color: Colors.white.withOpacity(0.3)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 30,
-                  offset: const Offset(0, 15),
-                ),
-              ],
+              child: const Icon(
+                Icons.logout_rounded,
+                color: Colors.white,
+                size: 32,
+              ),
             ),
+            const SizedBox(height: 24),
 
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            // Dialog Title
+            const Text(
+              "Secure Sign Out",
+              style: TextStyle(
+                color: textColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Dialog Subtitle
+            const Text(
+              "Are you sure you want to sign out of your Transcorp account? You will need your credentials to sign back in.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: secondaryText,
+                fontSize: 13,
+                height: 1.4,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Action Buttons
+            Row(
               children: [
-                /// Icon
-                Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.redAccent.withOpacity(0.8),
-                        Colors.deepOrange.withOpacity(0.6),
-                      ],
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.power_settings_new_rounded,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                /// Title
-                const Text(
-                  "Sign Out",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-
-                const SizedBox(height: 10),
-
-                /// Subtitle
-                const Text(
-                "Are you sure you want to sign out?\nYou can sign back in anytime.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54),
-                ),
-
-                const SizedBox(height: 28),
-
-                /// Buttons
-                Row(
-                  children: [
-                    /// Stay
-                    Expanded(
-                      child: InkWell(
+                // Stay/Cancel Button
+                Expanded(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => Get.back(),
+                    child: Container(
+                      height: 48,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF3F4F6),
                         borderRadius: BorderRadius.circular(16),
-                        onTap: () => Get.back(),
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.4),
-                            ),
-                          ),
-                          child: const Text("Stay"),
+                      ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
                       ),
                     ),
+                  ),
+                ),
+                const SizedBox(width: 14),
 
-                    const SizedBox(width: 14),
-
-                    /// Logout
-                    Expanded(
-                      child: InkWell(
+                // Confirm Sign Out Button
+                Expanded(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () {
+                      Get.back();
+                      performLogout();
+                    },
+                    child: Container(
+                      height: 48,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: textColor, // Deep premium black
                         borderRadius: BorderRadius.circular(16),
-                        onTap: () {
-                          Get.back();
-                          performLogout();
-                        },
-                        child: Container(
-                          height: 50,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF0E0E11),
-                                Color(0xFF2A2A2E),
-                              ],
-                            ),
-                          ),
-                          child: const Text(
-                            "Logout",
-                            style: TextStyle(color: Colors.white),
-                          ),
+                      ),
+                      child: const Text(
+                        "Sign Out",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
                         ),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     ),
-
-    barrierColor: Colors.black.withOpacity(0.35),
+    barrierColor: Colors.black.withOpacity(0.4),
     barrierDismissible: false,
   );
 }

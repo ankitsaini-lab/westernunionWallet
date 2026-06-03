@@ -161,7 +161,10 @@ class PaymentReceiptView extends StatelessWidget {
 
                 Text(
                   "₹${amount.toStringAsFixed(0)}",
-                  style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
 
                 const SizedBox(height: 30),
@@ -303,149 +306,149 @@ class _MpinVerifySheetForPaymentState extends State<MpinVerifySheetForPayment> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-          Container(
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: const Color(0xFFECECEC),
-              borderRadius: BorderRadius.circular(2),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: const Color(0xFFECECEC),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: primaryRed.withOpacity(0.08),
-              shape: BoxShape.circle,
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: primaryRed.withOpacity(0.08),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.shield_outlined,
+                color: primaryRed,
+                size: 28,
+              ),
             ),
-            child: const Icon(
-              Icons.shield_outlined,
-              color: primaryRed,
-              size: 28,
+            const SizedBox(height: 16),
+            Text(
+              widget.title,
+              style: const TextStyle(
+                color: textColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.3,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            widget.title,
-            style: const TextStyle(
-              color: textColor,
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.3,
+            const SizedBox(height: 4),
+            Text(
+              widget.subtitle,
+              style: const TextStyle(color: secondaryText, fontSize: 13),
+              textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            widget.subtitle,
-            style: const TextStyle(color: secondaryText, fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 28),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(4, (index) {
-              final bool isFilled = index < _mpin.length;
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _isVerifying
-                      ? primaryRed.withOpacity(0.3)
-                      : (isFilled ? primaryRed : const Color(0xFFECECEC)),
-                  border: Border.all(
-                    color: _hasError ? Colors.red : Colors.transparent,
-                    width: 2,
+            const SizedBox(height: 28),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(4, (index) {
+                final bool isFilled = index < _mpin.length;
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _isVerifying
+                        ? primaryRed.withOpacity(0.3)
+                        : (isFilled ? primaryRed : const Color(0xFFECECEC)),
+                    border: Border.all(
+                      color: _hasError ? Colors.red : Colors.transparent,
+                      width: 2,
+                    ),
                   ),
+                );
+              }),
+            ),
+            const SizedBox(height: 24),
+            if (_isVerifying) ...[
+              const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(primaryRed),
                 ),
-              );
-            }),
-          ),
-          const SizedBox(height: 24),
-          if (_isVerifying) ...[
-            const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(primaryRed),
               ),
-            ),
-            const SizedBox(height: 16),
-          ] else if (_hasError) ...[
-            const Text(
-              "Invalid MPIN. Try again.",
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 16),
+            ] else if (_hasError) ...[
+              const Text(
+                "Invalid MPIN. Try again.",
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-          ] else ...[
-            const SizedBox(height: 36),
-          ],
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildKeypadNum("1"),
-                  _buildKeypadNum("2"),
-                  _buildKeypadNum("3"),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildKeypadNum("4"),
-                  _buildKeypadNum("5"),
-                  _buildKeypadNum("6"),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildKeypadNum("7"),
-                  _buildKeypadNum("8"),
-                  _buildKeypadNum("9"),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  const SizedBox(width: 64), // Placeholder for alignment
-                  _buildKeypadNum("0"),
-                  _buildKeypadAction(
-                    icon: Icons.backspace_outlined,
-                    onTap: _deletePress,
-                  ),
-                ],
-              ),
+              const SizedBox(height: 16),
+            ] else ...[
+              const SizedBox(height: 36),
             ],
-          ),
-          const SizedBox(height: 20),
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text(
-              "Cancel",
-              style: TextStyle(
-                color: secondaryText,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildKeypadNum("1"),
+                    _buildKeypadNum("2"),
+                    _buildKeypadNum("3"),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildKeypadNum("4"),
+                    _buildKeypadNum("5"),
+                    _buildKeypadNum("6"),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildKeypadNum("7"),
+                    _buildKeypadNum("8"),
+                    _buildKeypadNum("9"),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const SizedBox(width: 110),
+                    _buildKeypadNum("0"),
+                    _buildKeypadAction(
+                      icon: Icons.backspace_outlined,
+                      onTap: _deletePress,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            TextButton(
+              onPressed: () => Get.back(),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                  color: secondaryText,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildKeypadNum(String number) {
     return GestureDetector(

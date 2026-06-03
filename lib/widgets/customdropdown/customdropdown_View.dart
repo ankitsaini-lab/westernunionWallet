@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:transwallet/widgets/customdropdown/customdropdown_Controller.dart';
- 
  
 class CustomDropdown extends StatefulWidget {
   final List<String> options;

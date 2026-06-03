@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:transwallet/products/Send%20money%20screen/sendMoney_Controller.dart';
 import 'package:transwallet/widgets/custombutton.dart';
+import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_Controller.dart';
 
 class SendmoneyprocessController extends GetxController {
   var balance = 1600.0.obs;
@@ -42,6 +44,19 @@ class SendmoneyprocessController extends GetxController {
   Future<void> addMoney() async {
     if (amount <= 0) return;
 
+    Get.bottomSheet(
+      MpinVerifySheetForPayment(
+        onSuccess: () => _executeSendMoney(),
+        title: "Verify MPIN to Transfer",
+        subtitle:
+            "Enter MPIN to authorize ₹${amount.toStringAsFixed(0)} transfer",
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
+  Future<void> _executeSendMoney() async {
     double addedAmount = amount;
 
     Get.to(() => const PaymentProcessingScreen());
@@ -55,9 +70,7 @@ class SendmoneyprocessController extends GetxController {
 
     isLoading.value = false;
 
-    Get.off(() => PaymentSuccessScreen(
-          amount: addedAmount,
-        ));
+    Get.off(() => PaymentSuccessScreen(amount: addedAmount));
   }
 
   Widget keyButton(String value) {
@@ -104,10 +117,7 @@ class PaymentProcessingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(
-              color: Color(0xFFE53935),
-              strokeWidth: 3,
-            ),
+            CircularProgressIndicator(color: Color(0xFFE53935), strokeWidth: 3),
             SizedBox(height: 24),
             Text(
               "Processing Payment...",
@@ -140,7 +150,8 @@ class PaymentSuccessScreen extends StatefulWidget {
   State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> with SingleTickerProviderStateMixin {
+class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animController;
   late Animation<double> _scaleAnimation;
 
@@ -188,10 +199,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> with Single
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF2E7D32),
-                      Color(0xFF43A047),
-                    ],
+                    colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -236,13 +244,142 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> with Single
   }
 }
 
-class PaymentafterSuccessScreen extends StatelessWidget {
+class PaymentafterSuccessScreen extends StatefulWidget {
   final double amount;
 
   const PaymentafterSuccessScreen({super.key, required this.amount});
 
   @override
+  State<PaymentafterSuccessScreen> createState() =>
+      _PaymentafterSuccessScreenState();
+}
+
+class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animCtrl;
+  late Animation<double> _scaleAnim;
+  late Animation<double> _confettiAnim;
+  late Animation<double> _textFadeAnim;
+  late Animation<Offset> _textSlideAnim;
+  late Animation<double> _cardFadeAnim;
+  late Animation<Offset> _cardSlideAnim;
+  late Animation<double> _btnFadeAnim;
+
+  late String formattedDateTime;
+  late String referenceId;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Dynamic Time & Date
+    final now = DateTime.now();
+    final months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    final day = now.day;
+    final month = months[now.month - 1];
+    final year = now.year;
+    final hour = now.hour > 12
+        ? now.hour - 12
+        : (now.hour == 0 ? 12 : now.hour);
+    final minute = now.minute.toString().padLeft(2, '0');
+    final period = now.hour >= 12 ? "PM" : "AM";
+    formattedDateTime = "$day $month $year • $hour:$minute $period";
+
+    // Random reference ID generator
+    final rand = DateTime.now().millisecondsSinceEpoch.toString();
+    referenceId = "TXN${rand.substring(rand.length - 8)}";
+
+    _animCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1600),
+    );
+
+    _scaleAnim = CurvedAnimation(
+      parent: _animCtrl,
+      curve: const Interval(0.0, 0.45, curve: Curves.elasticOut),
+    );
+
+    _confettiAnim = CurvedAnimation(
+      parent: _animCtrl,
+      curve: const Interval(0.2, 0.7, curve: Curves.easeOutQuad),
+    );
+
+    _textFadeAnim = CurvedAnimation(
+      parent: _animCtrl,
+      curve: const Interval(0.35, 0.65, curve: Curves.easeIn),
+    );
+
+    _textSlideAnim =
+        Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animCtrl,
+            curve: const Interval(0.35, 0.65, curve: Curves.easeOutBack),
+          ),
+        );
+
+    _cardFadeAnim = CurvedAnimation(
+      parent: _animCtrl,
+      curve: const Interval(0.55, 0.85, curve: Curves.easeIn),
+    );
+
+    _cardSlideAnim =
+        Tween<Offset>(begin: const Offset(0, 0.2), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animCtrl,
+            curve: const Interval(0.55, 0.85, curve: Curves.easeOutBack),
+          ),
+        );
+
+    _btnFadeAnim = CurvedAnimation(
+      parent: _animCtrl,
+      curve: const Interval(0.75, 1.0, curve: Curves.easeIn),
+    );
+
+    _animCtrl.forward();
+  }
+
+  @override
+  void dispose() {
+    _animCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final sendMoneyController = Get.isRegistered<SendmoneyController>()
+        ? Get.find<SendmoneyController>()
+        : null;
+    String recipient = "Beneficiary";
+    String paymentMode = "General Wallet";
+
+    if (sendMoneyController != null) {
+      if (sendMoneyController.istransferTypeP2P.value) {
+        String name = sendMoneyController.selectedContactName.value;
+        String phone = sendMoneyController.phoneController.text;
+        recipient = name.isNotEmpty ? "$name ($phone)" : phone;
+        paymentMode = "P2P Mobile Transfer";
+      } else {
+        String name = sendMoneyController.name.value;
+        String acc = sendMoneyController.accountNumber.value;
+        String lastFour = acc.length > 4 ? acc.substring(acc.length - 4) : acc;
+        recipient = "$name (A/C ...$lastFour)";
+        paymentMode = "Bank Transfer";
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -252,111 +389,164 @@ class PaymentafterSuccessScreen extends StatelessWidget {
             children: [
               const Spacer(),
 
-              // Brand squircle checkmark avatar
-              Container(
-                height: 80,
-                width: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFFE53935),
-                      Color(0xFFB71C1C),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFE53935).withOpacity(0.2),
-                      blurRadius: 15,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 38,
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                "Wallet Load Successful!",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Color(0xFF111111),
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -0.5,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "₹${amount.toStringAsFixed(2)}",
-                style: const TextStyle(
-                  fontSize: 36,
-                  color: Color(0xFF111111),
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: -1.0,
-                ),
-              ),
-              const SizedBox(height: 40),
+              // Animated Success Checkmark Ring Pulsing Squircle
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  const PulsingBackgroundCircles(),
 
-              // Revolut-inspired elegant summary card
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF9F9F9),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: const Color(0xFFECECEC)),
-                ),
-                child: Column(
-                  children: [
-                    rowItem("Credited To", "General Wallet"),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(color: Color(0xFFECECEC), height: 1),
-                    ),
-                    rowItem("Date & Time", "30 Nov 2024  •  03:53 PM"),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(color: Color(0xFFECECEC), height: 1),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(() => PaymentDetailsScreen(amount: amount));
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "View Details",
-                            style: TextStyle(
-                              color: Color(0xFF111111),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 14,
-                            color: Color(0xFF111111),
+                  ConfettiEffect(progress: _confettiAnim),
+
+                  ScaleTransition(
+                    scale: _scaleAnim,
+                    child: Container(
+                      height: 84,
+                      width: 84,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(26),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF2E7D32).withOpacity(0.3),
+                            blurRadius: 18,
+                            offset: const Offset(0, 8),
                           ),
                         ],
                       ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        color: Colors.white,
+                        size: 42,
+                      ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 28),
+
+              // Animated Success Title & Amount
+              FadeTransition(
+                opacity: _textFadeAnim,
+                child: SlideTransition(
+                  position: _textSlideAnim,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Transfer Successful!",
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Color(0xFF111111),
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "₹${widget.amount.toStringAsFixed(2)}",
+                        style: const TextStyle(
+                          fontSize: 38,
+                          color: Color(0xFF111111),
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: -1.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 36),
+
+              // Animated Elegant Summary Card
+              FadeTransition(
+                opacity: _cardFadeAnim,
+                child: SlideTransition(
+                  position: _cardSlideAnim,
+                  child: Container(
+                    padding: const EdgeInsets.all(22),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [const Color(0xFFF9FBF9), Colors.white],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(color: const Color(0xFFECECEC)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.02),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        rowItem("Recipient", recipient),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Divider(color: Color(0xFFECECEC), height: 1),
+                        ),
+                        rowItem("Payment Type", paymentMode),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Divider(color: Color(0xFFECECEC), height: 1),
+                        ),
+                        rowItem("Date & Time", formattedDateTime),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          child: Divider(color: Color(0xFFECECEC), height: 1),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () => PaymentDetailsScreen(amount: widget.amount),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            color: Colors.transparent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "View Details",
+                                  style: TextStyle(
+                                    color: Color(0xFFE53935),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 14,
+                                  color: Color(0xFFE53935),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
 
               const Spacer(flex: 2),
 
-              CustomButton(
-                text: "Go to Dashboard",
-                btncolor: const Color(0xFF111111),
-                onPressed: () {
-                  Get.offAllNamed("/dashboard");
-                },
+              // Animated Go to Dashboard Button
+              FadeTransition(
+                opacity: _btnFadeAnim,
+                child: CustomButton(
+                  text: "Go to Dashboard",
+                  btncolor: const Color(0xFF111111),
+                  onPressed: () {
+                    Get.offAllNamed("/dashboard");
+                  },
+                ),
               ),
             ],
           ),
@@ -368,6 +558,7 @@ class PaymentafterSuccessScreen extends StatelessWidget {
   Widget rowItem(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -377,13 +568,16 @@ class PaymentafterSuccessScreen extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        Text(
-          value,
-          textAlign: TextAlign.right,
-          style: const TextStyle(
-            color: Color(0xFF111111),
-            fontSize: 13,
-            fontWeight: FontWeight.w800,
+        const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: Color(0xFF111111),
+              fontSize: 13,
+              fontWeight: FontWeight.w800,
+            ),
           ),
         ),
       ],
@@ -442,7 +636,12 @@ class PaymentDetailsScreen extends StatelessWidget {
                   children: [
                     // Top Receipt Section
                     Padding(
-                      padding: const EdgeInsets.only(top: 28, left: 24, right: 24, bottom: 20),
+                      padding: const EdgeInsets.only(
+                        top: 28,
+                        left: 24,
+                        right: 24,
+                        bottom: 20,
+                      ),
                       child: Column(
                         children: [
                           Container(
@@ -451,15 +650,16 @@ class PaymentDetailsScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF2E7D32),
-                                  Color(0xFF43A047),
-                                ],
+                                colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                             ),
-                            child: const Icon(Icons.check_rounded, color: Colors.white, size: 30),
+                            child: const Icon(
+                              Icons.check_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ),
                           ),
                           const SizedBox(height: 16),
                           const Text(
@@ -507,7 +707,9 @@ class PaymentDetailsScreen extends StatelessWidget {
                                 (index) => Expanded(
                                   child: Container(
                                     height: 1.5,
-                                    color: index % 2 == 0 ? Colors.transparent : const Color(0xFFECECEC),
+                                    color: index % 2 == 0
+                                        ? Colors.transparent
+                                        : const Color(0xFFECECEC),
                                   ),
                                 ),
                               ),
@@ -533,7 +735,10 @@ class PaymentDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(24),
                       child: Column(
                         children: [
-                          detailRow("Reference ID", "aec68852-f711-4b7d-9e8e-c44bu"),
+                          detailRow(
+                            "Reference ID",
+                            "aec68852-f711-4b7d-9e8e-c44bu",
+                          ),
                           detailRow("Credited To", "General Wallet"),
                           detailRow("Payment Using", "UPI (janedoe@upi)"),
                           detailRow("Date & Time", "30 Nov 2024 • 03:53 PM"),
@@ -654,6 +859,167 @@ class PaymentDetailsScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PulsingBackgroundCircles extends StatefulWidget {
+  const PulsingBackgroundCircles({super.key});
+
+  @override
+  State<PulsingBackgroundCircles> createState() =>
+      _PulsingBackgroundCirclesState();
+}
+
+class _PulsingBackgroundCirclesState extends State<PulsingBackgroundCircles>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            // Pulse Ring 1
+            Transform.scale(
+              scale: 1.0 + (_controller.value * 0.9),
+              child: Opacity(
+                opacity: (1.0 - _controller.value).clamp(0.0, 1.0),
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFF2E7D32).withOpacity(0.4),
+                      width: 2.5,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Pulse Ring 2
+            Transform.scale(
+              scale: 1.0 + (((_controller.value + 0.5) % 1.0) * 0.9),
+              child: Opacity(
+                opacity: (1.0 - ((_controller.value + 0.5) % 1.0)).clamp(
+                  0.0,
+                  1.0,
+                ),
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFF2E7D32).withOpacity(0.2),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class ConfettiEffect extends StatelessWidget {
+  final Animation<double> progress;
+  const ConfettiEffect({super.key, required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: progress,
+      builder: (context, child) {
+        final val = progress.value;
+        if (val == 0.0) return const SizedBox();
+
+        // Staggered confetti shapes flying in multiple directions
+        return Stack(
+          children: [
+            _buildConfetti(val, const Offset(-45, -45), Colors.amber, 11, true),
+            _buildConfetti(
+              val,
+              const Offset(50, -40),
+              Colors.blueAccent,
+              9,
+              false,
+            ),
+            _buildConfetti(
+              val,
+              const Offset(-55, 30),
+              Colors.redAccent,
+              10,
+              false,
+            ),
+            _buildConfetti(
+              val,
+              const Offset(45, 50),
+              Colors.purpleAccent,
+              13,
+              true,
+            ),
+            _buildConfetti(val, const Offset(-65, -10), Colors.green, 9, true),
+            _buildConfetti(
+              val,
+              const Offset(60, 15),
+              Colors.pinkAccent,
+              10,
+              false,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildConfetti(
+    double val,
+    Offset target,
+    Color color,
+    double size,
+    bool isCircle,
+  ) {
+    final currentOffset = Offset(target.dx * val, target.dy * val);
+    return Transform.translate(
+      offset: currentOffset,
+      child: Opacity(
+        opacity: (1.0 - val).clamp(0.0, 1.0),
+        child: Transform.rotate(
+          angle: val * 5.0,
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: color,
+              shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+              borderRadius: isCircle ? null : BorderRadius.circular(2),
+            ),
+          ),
+        ),
       ),
     );
   }
