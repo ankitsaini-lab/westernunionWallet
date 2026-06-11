@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,8 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
     Get.lazyPut(() => ReviewOrderDetailsController());
 
     const Color secondaryText = Color(0xFF6B7280);
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final bool isWideScreen = screenWidth > 768;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
@@ -21,7 +22,11 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
         elevation: 0,
         centerTitle: false,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded, color: Colors.black, size: 22),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 22,
+          ),
           onPressed: () => Get.back(),
         ),
         title: const Text(
@@ -31,168 +36,110 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
             fontWeight: FontWeight.w900,
             fontSize: 20,
             letterSpacing: -0.5,
+            ////value testing git
           ),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: _buildStepperProgress(),
             ),
-
             Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    
-                    Center(
-                      child: _buildLiveCardPreview(),
-                    ),
-
-                    const SizedBox(height: 28),
-
-                    const Text(
-                      "SHIPPING INFORMATION",
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: secondaryText,
-                        letterSpacing: 1.0,
+              child: isWideScreen
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
                       ),
-                    ),
-                    const SizedBox(height: 14),
-
-                    
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: const Color(0xFFECECEC), width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.015),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          
-                          Obx(() => _buildInputField(
-                                label: "Name on Card",
-                                controller: controller.nameController,
-                                errorText: controller.nameError,
-                                keyboardType: TextInputType.name,
-                                prefixIcon: Icons.badge_rounded,
-                              )),
-                          const SizedBox(height: 16),
-
-                          
-                          Obx(() => _buildInputField(
-                                label: "Address Line 1",
-                                controller: controller.address1Controller,
-                                errorText: controller.address1Error,
-                                keyboardType: TextInputType.streetAddress,
-                                prefixIcon: Icons.home_rounded,
-                              )),
-                          const SizedBox(height: 16),
-
-                          
-                          _buildInputField(
-                            label: "Address Line 2 (Optional)",
-                            controller: controller.address2Controller,
-                            keyboardType: TextInputType.streetAddress,
-                            prefixIcon: Icons.location_city_rounded,
+                          Expanded(
+                            flex: 2,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 12),
+                                  _buildLiveCardPreview(),
+                                  const SizedBox(height: 20),
+                                  _buildExtraCardDetails(),
+                                ],
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(width: 32),
 
-                          
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Obx(() => _buildInputField(
-                                      label: "Pincode",
-                                      controller: controller.pincodeController,
-                                      errorText: controller.pincodeError,
-                                      keyboardType: TextInputType.number,
-                                      prefixIcon: Icons.pin_drop_rounded,
-                                      inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly,
-                                        LengthLimitingTextInputFormatter(6),
-                                      ],
-                                    )),
+                          Expanded(
+                            flex: 3,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "SHIPPING INFORMATION",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: secondaryText,
+                                      letterSpacing: 1.0,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 14),
+                                  _buildShippingForm(),
+                                  const SizedBox(height: 24),
+                                  _buildProceedButton(),
+                                  const SizedBox(height: 24),
+                                ],
                               ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: Obx(() => _buildInputField(
-                                      label: "City",
-                                      controller: controller.cityController,
-                                      errorText: controller.cityError,
-                                      keyboardType: TextInputType.text,
-                                      prefixIcon: Icons.map_rounded,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Obx(() => _buildInputField(
-                                      label: "State",
-                                      controller: controller.stateController,
-                                      errorText: controller.stateError,
-                                      keyboardType: TextInputType.text,
-                                      prefixIcon: Icons.explore_rounded,
-                                    )),
-                              ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: _buildInputField(
-                                  label: "Country",
-                                  controller: TextEditingController(text: "India"),
-                                  enabled: false,
-                                  prefixIcon: Icons.flag_rounded,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
+                    )
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(child: _buildLiveCardPreview()),
+                                const SizedBox(height: 28),
+                                const Text(
+                                  "SHIPPING INFORMATION",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: secondaryText,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 14),
+                                _buildShippingForm(),
+                                const SizedBox(height: 32),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 16,
+                          ),
+                          child: _buildProceedButton(),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 32),
-                  ],
-                ),
-              ),
-            ),
-
-            
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Obx(() {
-                final isEnabled = controller.isFormValid;
-                return CustomButton(
-                  text: "Proceed to pay ₹${controller.amount.value}",
-                  btncolor: isEnabled ? Colors.black : Colors.grey.shade400,
-                  onPressed: () {
-                    if (isEnabled) {
-                      Get.toNamed('/paymentmethod');
-                    }
-                  },
-                );
-              }),
             ),
           ],
         ),
@@ -204,7 +151,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFE5E7EB).withOpacity(0.4),
+        color: const Color(0xFFE5E7EB).withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
       ),
@@ -266,21 +213,25 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
       final glowColor = controller.cardGlowColor.value;
       final cardLabel = controller.cardLabel.value;
       final namePrinted = controller.name.value;
+      final textColor = controller.cardTextColor.value;
+      final subColor = controller.cardSubColor.value;
 
       return Container(
-        height: 170,
-        width: 280,
+        height: 196,
+        width: 320,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           gradient: LinearGradient(
-            colors: gradient.isNotEmpty ? gradient : [const Color(0xFF111111), const Color(0xFF2C2C2C)],
+            colors: gradient.isNotEmpty
+                ? gradient
+                : [const Color(0xFF111111), const Color(0xFF2C2C2C)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           boxShadow: [
             BoxShadow(
-              color: glowColor.withOpacity(0.25),
-              blurRadius: 20,
+              color: glowColor.withValues(alpha: 0.35),
+              blurRadius: 24,
               offset: const Offset(0, 10),
             ),
           ],
@@ -288,23 +239,33 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            
             Positioned(
-              top: -50,
-              left: -50,
+              top: -40,
+              right: -40,
               child: Container(
-                width: 130,
-                height: 130,
+                height: 150,
+                width: 150,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.04),
+                  color: Colors.white.withValues(alpha: 0.04),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -30,
+              left: -20,
+              child: Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black.withValues(alpha: 0.06),
                 ),
               ),
             ),
 
-            
             Padding(
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,40 +273,59 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "TRANSCORP",
+                      Text(
+                        "TRANSWALLET",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
+                          color: textColor,
+                          fontSize: 14,
                           fontWeight: FontWeight.w900,
-                          letterSpacing: 1.0,
+                          letterSpacing: 2.0,
                         ),
                       ),
                       Container(
-                        height: 20,
-                        width: 28,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
                         ),
-                        alignment: Alignment.center,
-                        child: const Icon(Icons.credit_card_rounded, color: Colors.white70, size: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          cardLabel.toUpperCase(),
+                          style: TextStyle(
+                            color: subColor,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
                     ],
                   ),
 
-                  
-                  Container(
-                    height: 20,
-                    width: 26,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFE5A93C), Color(0xFFF7D070)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 28,
+                        width: 38,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                      const SizedBox(width: 12),
+                      Icon(
+                        Icons.contactless_rounded,
+                        color: textColor.withValues(alpha: 0.7),
+                        size: 20,
+                      ),
+                    ],
                   ),
 
                   Row(
@@ -357,37 +337,41 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              namePrinted.isEmpty ? "YOUR NAME HERE" : namePrinted.toUpperCase(),
+                              "••••  ••••  ••••  8824",
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              namePrinted.isEmpty
+                                  ? "YOUR NAME HERE"
+                                  : namePrinted.toUpperCase(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: namePrinted.isEmpty ? Colors.white54 : Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.8,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              cardLabel.toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white60,
-                                fontSize: 7,
+                                color: namePrinted.isEmpty
+                                    ? subColor.withValues(alpha: 0.6)
+                                    : textColor,
+                                fontSize: 11,
                                 fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
+                                letterSpacing: 1.0,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const Text(
+                      Text(
                         "VISA",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
+                          color: textColor,
+                          fontSize: 18,
                           fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
-                          letterSpacing: -0.2,
+                          letterSpacing: 1.0,
                         ),
                       ),
                     ],
@@ -399,6 +383,186 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
         ),
       );
     });
+  }
+
+  Widget _buildShippingForm() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFECECEC), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.015),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Obx(
+            () => _buildInputField(
+              label: "Name on Card",
+              controller: controller.nameController,
+              errorText: controller.nameError,
+              keyboardType: TextInputType.name,
+              prefixIcon: Icons.badge_rounded,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          Obx(
+            () => _buildInputField(
+              label: "Address Line 1",
+              controller: controller.address1Controller,
+              errorText: controller.address1Error,
+              keyboardType: TextInputType.streetAddress,
+              prefixIcon: Icons.home_rounded,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          _buildInputField(
+            label: "Address Line 2 (Optional)",
+            controller: controller.address2Controller,
+            keyboardType: TextInputType.streetAddress,
+            prefixIcon: Icons.location_city_rounded,
+          ),
+          const SizedBox(height: 16),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Obx(
+                  () => _buildInputField(
+                    label: "Pincode",
+                    controller: controller.pincodeController,
+                    errorText: controller.pincodeError,
+                    keyboardType: TextInputType.number,
+                    prefixIcon: Icons.pin_drop_rounded,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(6),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Obx(
+                  () => _buildInputField(
+                    label: "City",
+                    controller: controller.cityController,
+                    errorText: controller.cityError,
+                    keyboardType: TextInputType.text,
+                    prefixIcon: Icons.map_rounded,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Obx(
+                  () => _buildInputField(
+                    label: "State",
+                    controller: controller.stateController,
+                    errorText: controller.stateError,
+                    keyboardType: TextInputType.text,
+                    prefixIcon: Icons.explore_rounded,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: _buildInputField(
+                  label: "Country",
+                  controller: controller.countryController,
+                  enabled: false,
+                  prefixIcon: Icons.flag_rounded,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProceedButton() {
+    return Obx(() {
+      final isEnabled = controller.isFormValid;
+      return CustomButton(
+        text: "Proceed to pay ₹${controller.amount.value}",
+        btncolor: isEnabled ? Colors.black : Colors.grey.shade400,
+        suffixIcon: isEnabled
+            ? const Icon(
+                Icons.arrow_forward_rounded,
+                color: Colors.white,
+                size: 18,
+              )
+            : null,
+        onPressed: () {
+          if (isEnabled) {
+            Get.toNamed('/paymentmethod');
+          }
+        },
+      );
+    });
+  }
+
+  Widget _buildExtraCardDetails() {
+    return Container(
+      width: 320,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFECECEC), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.005),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.security_rounded, color: Colors.black, size: 18),
+              SizedBox(width: 8),
+              Text(
+                "Secure Verification",
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111111),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Please ensure the name on the card matches your official government ID. Shipping takes 5-7 business days.",
+            style: TextStyle(
+              fontSize: 11,
+              color: Colors.grey.shade600,
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildInputField({
@@ -428,16 +592,15 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
           fontWeight: FontWeight.w500,
         ),
         errorText: errorText,
-        errorStyle: const TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-        ),
+        errorStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
         filled: true,
         fillColor: enabled ? const Color(0xFFF9FAFB) : const Color(0xFFF3F4F6),
         prefixIcon: prefixIcon != null
             ? Icon(
                 prefixIcon,
-                color: enabled ? const Color(0xFF6B7280) : const Color(0xFF9CA3AF),
+                color: enabled
+                    ? const Color(0xFF6B7280)
+                    : const Color(0xFF9CA3AF),
                 size: 16,
               )
             : null,
@@ -457,7 +620,10 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: Color(0xFFE5E7EB), width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
     );
   }

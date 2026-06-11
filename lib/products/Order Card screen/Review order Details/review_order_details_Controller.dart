@@ -12,6 +12,7 @@ class ReviewOrderDetailsController extends GetxController {
   final pincodeController = TextEditingController();
   final cityController = TextEditingController();
   final stateController = TextEditingController();
+  final countryController = TextEditingController(text: "India");
 
   
   var name = ''.obs;
@@ -25,6 +26,8 @@ class ReviewOrderDetailsController extends GetxController {
   var cardGradient = <Color>[const Color(0xFF111111), const Color(0xFF2C2C2C)].obs;
   var cardGlowColor = const Color(0xFFE53935).obs;
   var cardLabel = "Obsidian Limited".obs;
+  var cardTextColor = Colors.white.obs;
+  var cardSubColor = Colors.white70.obs;
 
   @override
   void onInit() {
@@ -36,6 +39,8 @@ class ReviewOrderDetailsController extends GetxController {
       cardGradient.assignAll(activeStyle["colors"]);
       cardGlowColor.value = activeStyle["glowColor"];
       cardLabel.value = activeStyle["label"];
+      cardTextColor.value = activeStyle["textColor"] ?? Colors.white;
+      cardSubColor.value = activeStyle["subColor"] ?? Colors.white70;
       amount.value = orderCtrl.amount.value;
     }
 
@@ -96,6 +101,7 @@ class ReviewOrderDetailsController extends GetxController {
     pincodeController.dispose();
     cityController.dispose();
     stateController.dispose();
+    countryController.dispose();
     super.onClose();
   }
 }
