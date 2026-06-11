@@ -9,7 +9,7 @@ class WalletdetailsController extends GetxController {
   final argument = Get.arguments ?? {};
    @override
   void onInit() {
-    // TODO: implement onInit
+    
     super.onInit();
     log("voice");
      if (argument["data"] != null) {
@@ -25,7 +25,7 @@ class WalletdetailsController extends GetxController {
   
 
   var searchQuery = "".obs;
-  var selectedFilter = "all".obs; // all, income, expense, failed
+  var selectedFilter = "all".obs; 
   var isSearchActive = false.obs;
   var isFilterActive = false.obs;
 

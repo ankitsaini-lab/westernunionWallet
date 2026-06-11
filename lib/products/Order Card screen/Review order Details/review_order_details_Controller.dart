@@ -5,7 +5,7 @@ import 'package:transwallet/products/Order%20Card%20screen/order%20card%20screen
 class ReviewOrderDetailsController extends GetxController {
   var amount = 150.obs;
 
-  // Form Controllers
+  
   final nameController = TextEditingController();
   final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
@@ -13,7 +13,7 @@ class ReviewOrderDetailsController extends GetxController {
   final cityController = TextEditingController();
   final stateController = TextEditingController();
 
-  // Reactive Strings
+  
   var name = ''.obs;
   var address1 = ''.obs;
   var address2 = ''.obs;
@@ -21,7 +21,7 @@ class ReviewOrderDetailsController extends GetxController {
   var city = ''.obs;
   var state = ''.obs;
 
-  // Selected card style properties for visual preview
+  
   var cardGradient = <Color>[const Color(0xFF111111), const Color(0xFF2C2C2C)].obs;
   var cardGlowColor = const Color(0xFFE53935).obs;
   var cardLabel = "Obsidian Limited".obs;
@@ -29,7 +29,7 @@ class ReviewOrderDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Retrieve the chosen card design from OrdercardController if available
+    
     if (Get.isRegistered<OrdercardController>()) {
       final orderCtrl = Get.find<OrdercardController>();
       final activeStyle = orderCtrl.cardStyles[orderCtrl.activeCardIndex.value];
@@ -39,7 +39,7 @@ class ReviewOrderDetailsController extends GetxController {
       amount.value = orderCtrl.amount.value;
     }
 
-    // Set listeners to update reactive strings on text input changes
+    
     nameController.addListener(() => name.value = nameController.text);
     address1Controller.addListener(() => address1.value = address1Controller.text);
     address2Controller.addListener(() => address2.value = address2Controller.text);
@@ -48,7 +48,7 @@ class ReviewOrderDetailsController extends GetxController {
     stateController.addListener(() => state.value = stateController.text);
   }
 
-  // Validation Getters
+  
   String? get nameError {
     if (name.value.isEmpty) return null;
     if (name.value.trim().length < 3) return "Name must be at least 3 characters";
@@ -79,7 +79,7 @@ class ReviewOrderDetailsController extends GetxController {
     return null;
   }
 
-  // General Form Validity State
+  
   bool get isFormValid {
     return name.value.trim().length >= 3 &&
         address1.value.trim().length >= 5 &&

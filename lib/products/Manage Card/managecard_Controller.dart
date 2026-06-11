@@ -70,7 +70,7 @@ class ManagecardController extends GetxController {
 
                 const SizedBox(height: 18),
 
-                /// TITLE
+                
                 Text(
                   isCardBlocked.value
                       ? "Unblock Card"
@@ -237,7 +237,7 @@ class ManagecardController extends GetxController {
 
       child: Stack(
         children: [
-          /// TOP CIRCLE
+          
           Positioned(
             top: -20,
             left: -10,
@@ -251,7 +251,7 @@ class ManagecardController extends GetxController {
             ),
           ),
 
-          /// BOTTOM CIRCLE
+          
           Positioned(
             bottom: -40,
             right: -20,
@@ -265,7 +265,7 @@ class ManagecardController extends GetxController {
             ),
           ),
 
-          /// BLOCKED LABEL
+          
           if (isCardBlocked.value)
             Positioned(
               top: 18,
@@ -305,7 +305,7 @@ class ManagecardController extends GetxController {
               ),
             ),
 
-          /// CARD CONTENT
+          
           Padding(
             padding: const EdgeInsets.all(22),
 
@@ -333,7 +333,7 @@ class ManagecardController extends GetxController {
 
                 const Spacer(),
 
-                /// CARD NUMBER
+                
                 Opacity(
                   opacity:
                        isCardBlocked.value
@@ -358,7 +358,7 @@ class ManagecardController extends GetxController {
                       MainAxisAlignment.spaceBetween,
 
                   children: [
-                    /// HOLDER
+                    
                     Opacity(
                       opacity:
                           isCardBlocked.value
@@ -394,7 +394,7 @@ class ManagecardController extends GetxController {
                       ),
                     ),
 
-                    /// VALID
+                    
                     Opacity(
                       opacity:
                           isCardBlocked.value

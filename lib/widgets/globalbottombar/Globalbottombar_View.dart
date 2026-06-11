@@ -13,7 +13,7 @@ class GlobalbottombarView extends GetView<GlobalbottombarController> {
   static const Color greyColor = Color(0xFF6B7280);
   static const Color borderColor = Color(0xFFECECEC);
 
-  // 5 Tab Definitions
+  
   static const List<Map<String, dynamic>> _tabs = [
     {'label': 'Home', 'icon': Icons.home_rounded, 'backendIndex': 0},
     {'label': 'Wallet', 'icon': Icons.credit_card_rounded, 'backendIndex': 1},
@@ -199,7 +199,7 @@ class GlobalbottombarView extends GetView<GlobalbottombarController> {
   }
 }
 
-// ─── TAB PRESSABLE COMPONENT WITH REVOLUT HORIZONTAL EXPANSION ───────────────
+
 class _TabButton extends StatefulWidget {
   final IconData icon;
   final String label;
@@ -253,7 +253,7 @@ class _TabButtonState extends State<_TabButton> {
                     : GlobalbottombarView.greyColor,
                 size: widget.isSelected ? 24 : 22,
               ),
-              // Smooth width expansion and label appearance
+              
               AnimatedSize(
                 duration: const Duration(milliseconds: 250),
                 curve: Curves.easeInOutCubic,

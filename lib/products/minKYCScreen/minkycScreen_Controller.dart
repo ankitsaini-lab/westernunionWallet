@@ -180,7 +180,7 @@ class _OtpDialogState extends State<_OtpDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Cancel Icon Top Right
+              
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
@@ -236,7 +236,7 @@ class _OtpDialogState extends State<_OtpDialog> {
                     ),
                     const SizedBox(height: 24),
 
-                    // OTP boxes
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(4, (i) {
@@ -314,7 +314,7 @@ class _OtpDialogState extends State<_OtpDialog> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Countdown / Resend Capsule
+                    
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -376,7 +376,7 @@ class _OtpDialogState extends State<_OtpDialog> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Verify button
+                    
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -488,7 +488,7 @@ class _KycSuccessDialogState extends State<_KycSuccessDialog>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // ── top red accent bar ──────────────────────────────
+                    
                     Container(
                       height: 5,
                       width: 48,
@@ -499,7 +499,7 @@ class _KycSuccessDialogState extends State<_KycSuccessDialog>
                     ),
                     const SizedBox(height: 28),
 
-                    // ── animated check circle ───────────────────────────
+                    
                     Stack(
                       alignment: Alignment.center,
                       children: [
@@ -536,7 +536,7 @@ class _KycSuccessDialogState extends State<_KycSuccessDialog>
                     ),
                     const SizedBox(height: 24),
 
-                    // ── title ───────────────────────────────────────────
+                    
                     const Text(
                       'KYC Verified!',
                       style: TextStyle(
@@ -558,7 +558,7 @@ class _KycSuccessDialogState extends State<_KycSuccessDialog>
                     ),
                     const SizedBox(height: 24),
 
-                    // ── feature unlock chips in a Wrap layout for multi-screen safety ──
+                    
                     Wrap(
                       alignment: WrapAlignment.center,
                       spacing: 8,
@@ -573,11 +573,11 @@ class _KycSuccessDialogState extends State<_KycSuccessDialog>
                     ),
                     const SizedBox(height: 24),
 
-                    // ── divider ─────────────────────────────────────────
+                    
                     const Divider(color: Color(0xFFF0F0F0), height: 1),
                     const SizedBox(height: 16),
 
-                    // ── redirecting note ────────────────────────────────
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -649,7 +649,7 @@ class _Chip extends StatelessWidget {
   }
 }
 
-// ─── CREATE MPIN SCREEN ───────────────────────────────────────────────────────
+
 class _CreateMpinScreen extends StatefulWidget {
   const _CreateMpinScreen();
 
@@ -662,7 +662,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
   static const _textColor = Color(0xFF111111);
   static const _secondaryText = Color(0xFF6B7280);
 
-  // step 1 = enter new mpin, step 2 = confirm mpin
+  
   int _step = 1;
   String _mpin = '';
   String _confirmMpin = '';
@@ -731,7 +731,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
             children: [
               const SizedBox(height: 32),
 
-              // ── top icon ──────────────────────────────────────────
+              
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 400),
                 child: _isSuccess
@@ -765,7 +765,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
 
               const SizedBox(height: 24),
 
-              // ── title ─────────────────────────────────────────────
+              
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: _isSuccess
@@ -822,7 +822,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
 
               const SizedBox(height: 40),
 
-              // ── step indicator ────────────────────────────────────
+              
               if (!_isSuccess)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -835,7 +835,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
 
               const SizedBox(height: 32),
 
-              // ── pin dots ──────────────────────────────────────────
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(4, (i) {
@@ -879,7 +879,7 @@ class _CreateMpinScreenState extends State<_CreateMpinScreen> {
 
               const Spacer(),
 
-              // ── keypad ────────────────────────────────────────────
+              
               if (!_isSuccess) ...[
                 _buildKeypad(),
                 const SizedBox(height: 32),

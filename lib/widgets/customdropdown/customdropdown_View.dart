@@ -23,7 +23,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
   String selected = "";
   String search = "";
 
-  /// 🔁 Toggle Dropdown
+  
   void toggleDropdown() {
     if (_overlayEntry == null) {
       _overlayEntry = _createOverlay();
@@ -33,20 +33,20 @@ class _CustomDropdownState extends State<CustomDropdown> {
     }
   }
 
-  /// ❌ Close
+  
   void closeDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
   }
 
-  /// 🧠 Create Overlay
+  
   OverlayEntry _createOverlay() {
     final renderBox = context.findRenderObject() as RenderBox;
     final size = renderBox.size;
 
     return OverlayEntry(
       builder: (context) => GestureDetector(
-        onTap: closeDropdown, // close on outside tap
+        onTap: closeDropdown, 
         behavior: HitTestBehavior.translucent,
         child: Stack(
           children: [
@@ -67,7 +67,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
     );
   }
 
-  /// 🎨 Dropdown UI
+  
   Widget _buildDropdown() {
     final filtered = widget.options
         .where((e) => e.toLowerCase().contains(search.toLowerCase()))
@@ -85,7 +85,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// 🔍 Search
+          
           Padding(
             padding: const EdgeInsets.all(8),
             child: TextField(
@@ -106,7 +106,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             ),
           ),
 
-          /// 🧹 Clear
+          
           if (selected.isNotEmpty)
             Align(
               alignment: Alignment.centerRight,
@@ -122,7 +122,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
           const Divider(height: 1),
 
-          /// 📋 Options
+          
           SizedBox(
             height: 160,
             child: filtered.isEmpty
@@ -148,7 +148,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
     );
   }
 
-  /// 🔹 Input Field
+  
   @override
   Widget build(BuildContext context) {
     return CompositedTransformTarget(

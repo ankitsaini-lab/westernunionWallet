@@ -17,7 +17,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
     const darkRed = Color(0xFFB22B37);
 
     return Scaffold(
-      // backgroundColor: Colors.black, // Dark canvas for seamless loading
+      
       body: Stack(
         children: [
           Obx(() {
@@ -403,7 +403,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
                                     ),
                                   ),
 
-                                  /// RESEND SECTION
+                                  
                                   if (controller.isOtpSent.value) ...[
                                     const SizedBox(height: 12),
                                     Row(

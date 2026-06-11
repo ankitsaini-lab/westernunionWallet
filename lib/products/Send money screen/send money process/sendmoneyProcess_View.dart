@@ -46,7 +46,7 @@ class SendmoneyprocessView extends GetView<SendmoneyprocessController> {
 
           const SizedBox(height: 20),
 
-          /// PRESETS
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

@@ -24,7 +24,7 @@ class LoginSingupscreenController extends GetxController {
         isVideoInitialized.value = true;
         videoController.setLooping(true);
         videoController.play();
-        videoController.setVolume(0.0); // Mute to allow automatic autoplay
+        videoController.setVolume(0.0); 
       });
   }
 
@@ -77,7 +77,7 @@ class LoginSingupscreenController extends GetxController {
 
   var otp = ''.obs;
 
-  /// TIMER
+  
   var seconds = 60.obs;
   var canResend = false.obs;
   Timer? _timer;
@@ -105,7 +105,7 @@ class LoginSingupscreenController extends GetxController {
   void _sendOtp() {
     final phone = phoneController.text.trim();
 
-    /// PHONE VALIDATION
+    
     if (phone.isEmpty) {
       phoneError.value = "Mobile number is required";
       return;
@@ -116,10 +116,10 @@ class LoginSingupscreenController extends GetxController {
       return;
     }
 
-    /// CLEAR ERROR
+    
     phoneError.value = "";
 
-    /// OPEN PRIVACY SHEET
+    
     showPrivacyBottomSheet();
   }
 
@@ -134,7 +134,7 @@ class LoginSingupscreenController extends GetxController {
         ),
         child: Column(
           children: [
-            /// TOP HANDLE
+            
             Container(
               width: 40,
               height: 5,
@@ -145,7 +145,7 @@ class LoginSingupscreenController extends GetxController {
               ),
             ),
 
-            /// TITLE
+            
             const Row(
               children: [
                 Icon(Icons.info_outline, color: Colors.blue),
@@ -159,7 +159,7 @@ class LoginSingupscreenController extends GetxController {
 
             const SizedBox(height: 12),
 
-            /// CONTENT
+            
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -261,7 +261,7 @@ class LoginSingupscreenController extends GetxController {
 
                     _bodyText("We may update this policy periodically."),
 
-                    /// CONSENT
+                    
                     _sectionTitle("9. Consent"),
 
                     Row(
@@ -298,10 +298,10 @@ class LoginSingupscreenController extends GetxController {
               ),
             ),
 
-            /// BUTTONS
+            
             Row(
               children: [
-                /// DECLINE
+                
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -324,7 +324,7 @@ class LoginSingupscreenController extends GetxController {
 
                 const SizedBox(width: 10),
 
-                /// AGREE
+                
                 Expanded(
                   child: Obx(
                     () => ElevatedButton(
@@ -375,7 +375,7 @@ class LoginSingupscreenController extends GetxController {
     Get.toNamed('/createaccountview');
   }
 
-  /// ---------------- TIMER ----------------
+  
   void startTimer() {
     seconds.value = 60;
     canResend.value = false;

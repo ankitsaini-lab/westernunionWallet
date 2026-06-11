@@ -59,7 +59,7 @@ class _CustomButtonState extends State<CustomButton> {
               color: widget.color ?? widget.btncolor ?? const Color(0xFF111111),
               borderRadius: BorderRadius.circular(widget.borderRadius),
 
-              /// 🔥 PREMIUM SHADOW + RED GLOW
+              
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.15),
@@ -74,7 +74,7 @@ class _CustomButtonState extends State<CustomButton> {
               ],
             ),
 
-            /// 🔥 CONTENT
+            
             child: Center(
               child: widget.isLoading
                   ? const SizedBox(

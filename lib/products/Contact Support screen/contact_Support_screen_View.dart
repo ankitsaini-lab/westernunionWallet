@@ -50,7 +50,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header visual - Pulsing Support Representative Agent Bubble
+          
           Center(
             child: Column(
               children: [
@@ -101,7 +101,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           ),
           const SizedBox(height: 32),
 
-          // Support Channels Horizontal List
+          
           const Text(
             "Quick Channels",
             style: TextStyle(
@@ -153,7 +153,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           ),
           const SizedBox(height: 32),
 
-          // Message/Query Ticket Form Section
+          
           const Text(
             "Create a Support Ticket",
             style: TextStyle(
@@ -193,7 +193,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                 ),
                 const SizedBox(height: 10),
 
-                // Category Chips List
+                
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -251,7 +251,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                 ),
                 const SizedBox(height: 10),
 
-                // Query Text Area
+                
                 TextFormField(
                   controller: controller.messageController,
                   maxLines: 4,
@@ -293,7 +293,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           ),
           const SizedBox(height: 40),
 
-          // Submit Action Button
+          
           CustomButton(
             text: "Submit Support Ticket",
             btncolor: Colors.black,
@@ -308,7 +308,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
     );
   }
 
-  // --- TICKET CREATION SUCCESS RECEIPT SCREEN ---
+  
   Widget _buildTicketSuccessScreen(BuildContext context) {
     return _TicketEntranceAnimation(
       child: Center(
@@ -318,7 +318,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Ticket Header Checkmark Squircle
+              
               Container(
                 height: 74,
                 width: 74,
@@ -366,7 +366,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
               ),
               const SizedBox(height: 32),
 
-              // Physical Ticket cutout receipt summary stub
+              
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9F9F9),
@@ -399,7 +399,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                       ),
                     ),
 
-                    // Dotted Stub Tear Divider Cutout
+                    
                     Row(
                       children: [
                         Container(
@@ -445,7 +445,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                       ],
                     ),
 
-                    // Bottom Ticket details - Message Content
+                    
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -490,7 +490,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
 
               const SizedBox(height: 48),
 
-              // Action buttons
+              
               CustomButton(
                 text: "Back to Home",
                 btncolor: Colors.black,

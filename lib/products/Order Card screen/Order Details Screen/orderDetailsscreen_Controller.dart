@@ -15,18 +15,18 @@ class OrderdetailsscreenController extends GetxController {
   void onInit() {
     super.onInit();
     
-    // Generate a unique dynamic Reference ID (TXN + random 8 digits)
+    
     final rand = Random();
     final randomNum = 10000000 + rand.nextInt(90000000);
     referenceId.value = "TXN-$randomNum";
 
-    // Dynamic delivery date set exactly 7 days in the future
+    
     final targetDate = DateTime.now().add(const Duration(days: 7));
     final weekdayStr = _getWeekdayString(targetDate.weekday);
     final monthStr = _getMonthString(targetDate.month);
     deliveryDateStr.value = "$weekdayStr, ${targetDate.day} $monthStr ${targetDate.year}";
 
-    // Retrieve arguments passed from payment screen, otherwise fallback to defaults
+    
     if (Get.arguments != null && Get.arguments is Map) {
       final args = Get.arguments as Map;
       if (args.containsKey('amount')) {

@@ -4,7 +4,7 @@ class HistoryscreenController extends GetxController {
   var transactions = <Map<String, dynamic>>[].obs;
 
   var searchQuery = "".obs;
-  var selectedFilter = "all".obs; // all, income, expense, failed
+  var selectedFilter = "all".obs; 
   var isSearchActive = false.obs;
   var isFilterActive = false.obs;
 

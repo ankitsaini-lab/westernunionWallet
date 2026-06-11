@@ -47,7 +47,7 @@ class WalletscreenView extends GetView<WalletscreenController> {
                 ),
                 const SizedBox(height: 36),
 
-                // 3. OTHER WALLETS SECTION
+                
                 _animateWidget(delayIndex: 2, child: _buildOtherWallets()),
                 const SizedBox(height: 36),
               ],
@@ -162,7 +162,7 @@ class WalletscreenView extends GetView<WalletscreenController> {
         Obx(() {
           final _ = controller
               .expandedIndex
-              .value; // Force GetX to track this inside Obx
+              .value; 
           if (controller.wallets.length <= 1) return const SizedBox();
 
           return ListView.builder(
@@ -376,7 +376,7 @@ class WalletscreenView extends GetView<WalletscreenController> {
     );
   }
 
-  // ─── STAGGERED ENTRANCE ANIMATION WRAPPER ──────────────────────────────────
+  
   Widget _animateWidget({required int delayIndex, required Widget child}) {
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
@@ -446,7 +446,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
         gradient: const LinearGradient(
           colors: [
             Colors.white,
-            Color(0xFFFFF5F5), // White + Soft Red luxury blend
+            Color(0xFFFFF5F5), 
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -467,7 +467,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
       ),
       child: Stack(
         children: [
-          // Glass reflection elements
+          
           Positioned(
             right: -25,
             top: -25,
@@ -497,7 +497,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // TOP AREA: Title, Toggle Icon, Badge
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -719,7 +719,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
   }
 }
 
-// ─── PREMIUM SECURE MPIN BOTTOM SHEET ────────────────────────────────────────
+
 class _MpinVerifySheet extends StatefulWidget {
   final VoidCallback onSuccess;
   final String title;
@@ -1006,7 +1006,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
   }
 }
 
-// ─── PRESSABLE SCALE WIDGET ──────────────────────────────────────────────────
+
 class _PressableScale extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;

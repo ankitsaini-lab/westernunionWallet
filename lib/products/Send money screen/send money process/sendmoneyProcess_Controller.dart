@@ -190,7 +190,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Revolut-inspired glowing circular success checkmark
+            
             ScaleTransition(
               scale: _scaleAnimation,
               child: Container(
@@ -272,7 +272,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
   void initState() {
     super.initState();
 
-    // Dynamic Time & Date
+    
     final now = DateTime.now();
     final months = [
       "Jan",
@@ -298,7 +298,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
     final period = now.hour >= 12 ? "PM" : "AM";
     formattedDateTime = "$day $month $year • $hour:$minute $period";
 
-    // Random reference ID generator
+    
     final rand = DateTime.now().millisecondsSinceEpoch.toString();
     referenceId = "TXN${rand.substring(rand.length - 8)}";
 
@@ -389,7 +389,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
             children: [
               const Spacer(),
 
-              // Animated Success Checkmark Ring Pulsing Squircle
+              
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -428,7 +428,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
               ),
               const SizedBox(height: 28),
 
-              // Animated Success Title & Amount
+              
               FadeTransition(
                 opacity: _textFadeAnim,
                 child: SlideTransition(
@@ -460,7 +460,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
               ),
               const SizedBox(height: 36),
 
-              // Animated Elegant Summary Card
+              
               FadeTransition(
                 opacity: _cardFadeAnim,
                 child: SlideTransition(
@@ -537,7 +537,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
 
               const Spacer(flex: 2),
 
-              // Animated Go to Dashboard Button
+              
               FadeTransition(
                 opacity: _btnFadeAnim,
                 child: CustomButton(
@@ -618,7 +618,7 @@ class PaymentDetailsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             children: [
-              // High-fidelity ticket cutout receipt stub
+              
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9F9F9),
@@ -634,7 +634,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // Top Receipt Section
+                    
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 28,
@@ -684,7 +684,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       ),
                     ),
 
-                    // Dotted stub tear cutout representation
+                    
                     Row(
                       children: [
                         Container(
@@ -730,7 +730,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       ],
                     ),
 
-                    // Bottom Details section of card
+                    
                     Padding(
                       padding: const EdgeInsets.all(24),
                       child: Column(
@@ -899,7 +899,7 @@ class _PulsingBackgroundCirclesState extends State<PulsingBackgroundCircles>
         return Stack(
           alignment: Alignment.center,
           children: [
-            // Pulse Ring 1
+            
             Transform.scale(
               scale: 1.0 + (_controller.value * 0.9),
               child: Opacity(
@@ -917,7 +917,7 @@ class _PulsingBackgroundCirclesState extends State<PulsingBackgroundCircles>
                 ),
               ),
             ),
-            // Pulse Ring 2
+            
             Transform.scale(
               scale: 1.0 + (((_controller.value + 0.5) % 1.0) * 0.9),
               child: Opacity(
@@ -957,7 +957,7 @@ class ConfettiEffect extends StatelessWidget {
         final val = progress.value;
         if (val == 0.0) return const SizedBox();
 
-        // Staggered confetti shapes flying in multiple directions
+        
         return Stack(
           children: [
             _buildConfetti(val, const Offset(-45, -45), Colors.amber, 11, true),

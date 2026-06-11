@@ -7,9 +7,9 @@ import 'package:confetti/confetti.dart';
 class UpdateKycController extends GetxController {
   var isConsentChecked = false.obs;
   var isFullKycStarted = false.obs;
-  var selectedKycTier = "full".obs; // min, full
+  var selectedKycTier = "full".obs; 
 
-  // Redirection states
+  
   var isRedirecting = false.obs;
   var redirectionStatus = "Initializing secure connection...".obs;
   var redirectionProgress = 0.0.obs;
@@ -70,7 +70,7 @@ class UpdateKycController extends GetxController {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Subtitle from screenshot
+                    
                     const Text(
                       "Effortlessly verify your identity to enjoy uninterrupted access to everything we offer.",
                       style: TextStyle(
@@ -83,12 +83,12 @@ class UpdateKycController extends GetxController {
 
                     const SizedBox(height: 24),
 
-                    // Beautiful Premium Platinum Card Preview representing ₹200,000 limit
+                    
                     _buildPlatinumCard(),
 
                     const SizedBox(height: 28),
 
-                    // Heading from screenshot
+                    
                     const Text(
                       "Choose your KYC",
                       style: TextStyle(
@@ -101,12 +101,12 @@ class UpdateKycController extends GetxController {
 
                     const SizedBox(height: 16),
 
-                    // Premium Full KYC Card
+                    
                     _buildFullKycCard(),
 
                     const Spacer(),
 
-                    // Sleek dynamic consent panel box
+                    
                     Obx(
                       () => Container(
                         margin: const EdgeInsets.only(bottom: 24),
@@ -157,7 +157,7 @@ class UpdateKycController extends GetxController {
                       ),
                     ),
 
-                    // Proceed button from screenshot
+                    
                     Obx(
                       () => CustomButton(
                         text: "Proceed",
@@ -204,7 +204,7 @@ class UpdateKycController extends GetxController {
       clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
-          // Elegant metallic grid accents / futuristic glowing light circles
+          
           Positioned(
             right: -50,
             top: -50,
@@ -247,7 +247,7 @@ class UpdateKycController extends GetxController {
                         letterSpacing: 1.2,
                       ),
                     ),
-                    // Gold Metallic Holographic Chip representation
+                    
                     Container(
                       height: 28,
                       width: 36,
@@ -342,7 +342,7 @@ class UpdateKycController extends GetxController {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Radio indicator custom-built and animated
+          
           Container(
             margin: const EdgeInsets.only(top: 4),
             height: 22,
@@ -507,7 +507,7 @@ class UpdateKycController extends GetxController {
             ),
           ),
 
-          // Redirection loading overlay
+          
           if (isRedirecting.value) _buildRedirectionOverlay(),
         ],
       );
@@ -609,7 +609,7 @@ class UpdateKycController extends GetxController {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Padlock pulsing animation
+          
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0.85, end: 1.05),
             duration: const Duration(milliseconds: 1000),
@@ -664,7 +664,7 @@ class UpdateKycController extends GetxController {
           ),
           const SizedBox(height: 36),
 
-          // Progress bar indicators
+          
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: SizedBox(
@@ -754,7 +754,7 @@ class UpdateKycController extends GetxController {
               ),
             ),
 
-            // Main content
+            
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(

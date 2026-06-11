@@ -6,7 +6,7 @@ import 'package:transwallet/widgets/custombutton.dart';
 
 class SendmoneyController extends GetxController {
   var step = 0.obs;
-  var isOneTimeTransfer = false.obs; // Toggle direct transfer mode
+  var isOneTimeTransfer = false.obs; 
 
   var accountNumber = ''.obs;
   var confirmAccount = ''.obs;
@@ -759,7 +759,7 @@ class SendmoneyController extends GetxController {
     );
   }
 
-  /////////////////////////////////////
+  
   TextEditingController phoneController = TextEditingController();
   var istransferTypeP2P = true.obs;
   var selectedCountryCode = "+91".obs;

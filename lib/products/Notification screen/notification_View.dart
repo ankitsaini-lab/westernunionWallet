@@ -7,7 +7,7 @@ class NotificationView extends GetView<NotificationController> {
 
  @override
 Widget build(BuildContext context) {
-  Get.put(NotificationController()); // 👈 better than lazyPut here
+  Get.put(NotificationController()); 
 
   return Container(
     height: MediaQuery.of(context).size.height * 0.5,
@@ -29,7 +29,7 @@ Widget build(BuildContext context) {
           ),
         ),
 
-        /// 🧾 Header
+        
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
@@ -46,7 +46,7 @@ Widget build(BuildContext context) {
           ),
         ),
 
-        /// 📋 List
+        
         Expanded(
           child: Obx(() {
             if (controller.notifications.isEmpty) {
@@ -98,21 +98,21 @@ Widget build(BuildContext context) {
     ),
   ),
 
-  /// ✅ IMPORTANT FIX
+  
   confirmDismiss: (_) async {
     controller.markAsRead(index);
 
-    // Get.snackbar(
-    //   "Success",
-    //   "Notification marked as read",
+    
+    
+    
 
-    //   snackPosition: SnackPosition.BOTTOM,
-    //   backgroundColor: Colors.black,
-    //   colorText: Colors.white,
+    
+    
+    
 
-    //   margin: const EdgeInsets.all(12),
-    //   borderRadius: 12,
-    // );
+    
+    
+    
 
      
     return false;

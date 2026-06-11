@@ -23,7 +23,7 @@ class GlobalbottombarController extends GetxController {
   const ProfilescreenView(),
   isScrollControlled: true,
 );
-      // Get.offNamed("/profile");
+      
       break;
   }
 }

@@ -38,7 +38,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
       body: SafeArea(
         child: Column(
           children: [
-            // 1. Progress Stepper
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: _buildStepperProgress(),
@@ -51,7 +51,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 2. Invoice Summary Card
+                    
                     const Text(
                       "ORDER SUMMARY",
                       style: TextStyle(
@@ -66,7 +66,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
 
                     const SizedBox(height: 28),
 
-                    // 3. Payment Method Section
+                    
                     const Text(
                       "PAYMENT OPTIONS",
                       style: TextStyle(
@@ -78,7 +78,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
                     ),
                     const SizedBox(height: 12),
 
-                    // General Wallet Card Option
+                    
                     Obx(() {
                       final isSelected = controller.selectedMethod.value == 1;
                       final isLowBalance = controller.walletBalance.value < controller.amount.value;
@@ -175,7 +175,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
 
                     const SizedBox(height: 12),
 
-                    // Other Payment Options Card
+                    
                     Obx(() {
                       final isSelected = controller.selectedMethod.value == 2;
                       return GestureDetector(
@@ -216,7 +216,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
                       );
                     }),
                     
-                    // Insufficient funds warning card
+                    
                     Obx(() {
                       final isLowBalance = controller.selectedMethod.value == 1 &&
                           controller.walletBalance.value < controller.amount.value;
@@ -258,7 +258,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
               ),
             ),
 
-            // 4. Pay Button
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Obx(() {
@@ -361,7 +361,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Row: Model details
+          
           Row(
             children: [
               Obx(() => Container(
@@ -396,7 +396,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
           const Divider(height: 1, color: Color(0xFFF3F4F6)),
           const SizedBox(height: 12),
 
-          // Cardholder Name
+          
           const Text(
             "CARDHOLDER NAME",
             style: TextStyle(
@@ -418,7 +418,7 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
           
           const SizedBox(height: 12),
 
-          // Shipping Address
+          
           const Text(
             "SHIPPING ADDRESS",
             style: TextStyle(

@@ -27,41 +27,40 @@ const SizedBox width24 = SizedBox(width: 24);
 const SizedBox width32 = SizedBox(width: 32);
 
 const SizedBox heightZero = SizedBox.shrink();
-// void showCustomPopup(String message) {
-//   bool isHtml = _containsHtml(message);
 
-//   Get.dialog(
-//     Dialog(
-//       backgroundColor: Colors.white,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(5),
-//       ),
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: SingleChildScrollView(
-//           child: isHtml
-//               ? Html(
-//                   data: message, // Renders HTML content
-//                   style: {
-//                     "html": Style(
-//                       fontSize: FontSize(16),
-//                       color: Colors.black,
-//                     ),
-//                   },
-//                 )
-//               : Text(
-//                   message, // Renders plain text
-//                   style: TextStyle(fontSize: 16, color: Colors.black),
-//                 ),
-//         ),
-//       ),
-//     ),
-//   );
-// }
 
-// Helper function to check if a string contains HTML tags
-// bool _containsHtml(String text) {
-//   final htmlTagPattern =
-//       RegExp(r'<[^>]*>'); // A simple regex to detect HTML tags
-//   return htmlTagPattern.hasMatch(text);
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

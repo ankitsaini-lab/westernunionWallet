@@ -10,18 +10,18 @@ class PaymentMethodController extends GetxController {
   var walletBalance = 640.obs;
   var amount = 150.obs;
 
-  // Card style details to display on invoice summary
+  
   var cardGradient = <Color>[const Color(0xFF111111), const Color(0xFF2C2C2C)].obs;
   var cardStyleName = "Obsidian Black".obs;
   
-  // Delivery details to display on invoice summary
+  
   var deliveryAddress = "General Address".obs;
   var receiverName = "Jane Doe".obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Retrieve values from preceding steps if initialized
+    
     if (Get.isRegistered<OrdercardController>()) {
       final orderCtrl = Get.find<OrdercardController>();
       final activeStyle = orderCtrl.cardStyles[orderCtrl.activeCardIndex.value];
@@ -39,7 +39,7 @@ class PaymentMethodController extends GetxController {
   }
 
   void processPayment() {
-    // Insufficient funds check
+    
     if (selectedMethod.value == 1 && walletBalance.value < amount.value) {
       Get.snackbar(
         "Insufficient Balance",
@@ -53,7 +53,7 @@ class PaymentMethodController extends GetxController {
       return;
     }
 
-    // Trigger MPIN bottom sheet
+    
     Get.bottomSheet(
       MpinVerifySheetForPayment(
         onSuccess: () => _executePayment(),
@@ -66,7 +66,7 @@ class PaymentMethodController extends GetxController {
   }
 
   void _executePayment() async {
-    // Show visual payment processing loader
+    
     Get.to(() => const PaymentProcessingScreen());
 
     await Future.delayed(const Duration(seconds: 2));
@@ -75,7 +75,7 @@ class PaymentMethodController extends GetxController {
       walletBalance.value -= amount.value;
     }
 
-    // Navigate to order details success screen
+    
     Get.offAllNamed('/orderdetails', arguments: {
       'amount': amount.value,
       'cardGradient': cardGradient,

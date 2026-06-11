@@ -37,7 +37,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
       body: SafeArea(
         child: Column(
           children: [
-            // 1. Sleek Stepper Progress Capsule
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: _buildStepperProgress(),
@@ -50,7 +50,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 2. Real-time Live Cardholder Name Preview Mockup
+                    
                     Center(
                       child: _buildLiveCardPreview(),
                     ),
@@ -68,7 +68,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                     ),
                     const SizedBox(height: 14),
 
-                    // 3. Form input panel
+                    
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
@@ -85,7 +85,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                       ),
                       child: Column(
                         children: [
-                          // Name on Card Input
+                          
                           Obx(() => _buildInputField(
                                 label: "Name on Card",
                                 controller: controller.nameController,
@@ -95,7 +95,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                               )),
                           const SizedBox(height: 16),
 
-                          // Address Line 1 Input
+                          
                           Obx(() => _buildInputField(
                                 label: "Address Line 1",
                                 controller: controller.address1Controller,
@@ -105,7 +105,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                               )),
                           const SizedBox(height: 16),
 
-                          // Address Line 2 Input
+                          
                           _buildInputField(
                             label: "Address Line 2 (Optional)",
                             controller: controller.address2Controller,
@@ -114,7 +114,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Row: Pincode and City
+                          
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -145,7 +145,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Row: State and Country
+                          
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -178,7 +178,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
               ),
             ),
 
-            // 4. Action Button Bar
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Obx(() {
@@ -288,7 +288,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            // Glassmorphic glare details
+            
             Positioned(
               top: -50,
               left: -50,
@@ -302,7 +302,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
               ),
             ),
 
-            // Card Content Info
+            
             Padding(
               padding: const EdgeInsets.all(18),
               child: Column(
@@ -334,7 +334,7 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
                     ],
                   ),
 
-                  // Metallic SIM Chip mockup
+                  
                   Container(
                     height: 20,
                     width: 26,

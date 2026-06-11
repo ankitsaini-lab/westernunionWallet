@@ -119,7 +119,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            // Darkening gradient overlay to ensure details are readable
+            
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -150,7 +150,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
                           letterSpacing: 0.5,
                         ),
                       ),
-                      // Gold Metallic Holographic Chip representation
+                      
                       Container(
                         height: 26,
                         width: 34,

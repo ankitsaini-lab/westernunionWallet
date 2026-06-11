@@ -36,7 +36,7 @@ class OrdercardView extends GetView<OrdercardController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Subtitle
+            
             const Text(
               "Choose your signature card style",
               style: TextStyle(
@@ -47,7 +47,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 16),
 
-            // Premium Animated 3D Preview Card
+            
             Obx(() {
               final activeStyle = controller.cardStyles[controller.activeCardIndex.value];
               final List<Color> gradientColors = activeStyle["colors"];
@@ -80,7 +80,7 @@ class OrdercardView extends GetView<OrdercardController> {
                   borderRadius: BorderRadius.circular(24),
                   child: Stack(
                     children: [
-                      // Glossy wave overlays
+                      
                       Positioned(
                         top: -40,
                         right: -40,
@@ -106,14 +106,14 @@ class OrdercardView extends GetView<OrdercardController> {
                         ),
                       ),
 
-                      // Card Details
+                      
                       Padding(
                         padding: const EdgeInsets.all(24),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Card Brand Header
+                            
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -145,11 +145,11 @@ class OrdercardView extends GetView<OrdercardController> {
                               ],
                             ),
 
-                            // Gold Chip & NFC
+                            
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // Chip
+                                
                                 Container(
                                   height: 28,
                                   width: 38,
@@ -171,7 +171,7 @@ class OrdercardView extends GetView<OrdercardController> {
                               ],
                             ),
 
-                            // Footer Cardholder Details
+                            
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -222,7 +222,7 @@ class OrdercardView extends GetView<OrdercardController> {
             }),
             const SizedBox(height: 24),
 
-            // Style Selector Carousel/Toggles
+            
             SizedBox(
               height: 46,
               child: ListView.builder(
@@ -291,7 +291,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 32),
 
-            // Premium Benefits Header
+            
             const Text(
               "Exclusive Benefits",
               style: TextStyle(
@@ -303,7 +303,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 16),
 
-            // Benefits Grid
+            
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -340,7 +340,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 32),
 
-            // Elegant Pricing Receipt Section
+            
             const Text(
               "Order Pricing Details",
               style: TextStyle(
@@ -409,7 +409,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 24),
 
-            // Shipping Info Helper
+            
             Row(
               children: const [
                 Icon(Icons.local_shipping_outlined, color: Color(0xFF6B7280), size: 18),
@@ -426,7 +426,7 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 40),
 
-            // Order Button
+            
             CustomButton(
               text: "Confirm & Order Card",
               btncolor: Colors.black,
@@ -518,7 +518,7 @@ class OrdercardView extends GetView<OrdercardController> {
   }
 }
 
-// A simple custom painted dotted separator
+
 class DottedSeparator extends StatelessWidget {
   final double height;
   final Color color;

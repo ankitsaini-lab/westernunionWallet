@@ -15,7 +15,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
     const Color secondaryText = Color(0xFF6B7280);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB), // Clean, warm premium background
+      backgroundColor: const Color(0xFFF9FAFB), 
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9FAFB),
         elevation: 0,
@@ -41,7 +41,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Sliding Segmented Control Capsule
+              
               Obx(() {
                 final isP2P = controller.istransferTypeP2P.value;
                 return Container(
@@ -151,7 +151,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
 
               const SizedBox(height: 24),
 
-              // 2. Responsive Content Card
+              
               Obx(() {
                 final isP2P = controller.istransferTypeP2P.value;
                 if (isP2P) {
@@ -242,7 +242,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
                               ),
                             ),
                             
-                            // Selected Contact visual tile
+                            
                             Obx(() {
                               final contactName = controller.selectedContactName.value;
                               if (contactName.isEmpty) return const SizedBox();
@@ -316,7 +316,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
                         ),
                       ),
                       const SizedBox(height: 36),
-                      // Proceed Button (Only visible on P2P tab)
+                      
                       Obx(() {
                         final isEnabled = controller.isValid.value;
                         return CustomButton(
@@ -332,7 +332,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
                     ],
                   );
                 } else {
-                  // Bank Transfer State Steps
+                  
                   return controller.buildStep();
                 }
               }),

@@ -35,7 +35,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
           children: [
             const SizedBox(height: 12),
 
-            // ── Illustration card ──────────────────────────────────────────
+            
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
@@ -56,7 +56,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
               ),
               child: Stack(
                 children: [
-                  // decorative circles
+                  
                   Positioned(
                     top: -20,
                     right: -20,
@@ -84,7 +84,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // shield icon
+                      
                       Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // step pills
+                      
                       Row(
                         children: [
                           _StepPill(label: '1  Details', done: true),
@@ -135,7 +135,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
 
             const SizedBox(height: 32),
 
-            // ── Info tiles ────────────────────────────────────────────────
+            
             Row(
               children: [
                 Expanded(
@@ -163,7 +163,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
 
             const SizedBox(height: 32),
 
-            // ── PAN label ─────────────────────────────────────────────────
+            
             const Text(
               'PAN Card Number',
               style: TextStyle(
@@ -174,7 +174,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
             ),
             const SizedBox(height: 8),
 
-            // ── PAN input ─────────────────────────────────────────────────
+            
             Obx(
               () => TextField(
                 onChanged: controller.onPanChanged,

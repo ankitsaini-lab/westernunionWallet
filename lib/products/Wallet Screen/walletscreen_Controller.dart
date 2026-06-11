@@ -5,10 +5,10 @@ import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.d
 import 'dart:async';
 
 class WalletscreenController extends GetxController {
-  // Track which card is expanded to show buttons
+  
   var expandedIndex = (-1).obs;
 
-  // Global balance visibility state
+  
   var isBalanceRevealed = false.obs;
   Timer? _autoHideTimer;
 
@@ -95,7 +95,7 @@ class WalletscreenController extends GetxController {
             children: [
               Row(
                 children: [
-                  // Circular Icon Image
+                  
                   Container(
                     height: 50,
                     width: 50,
@@ -108,7 +108,7 @@ class WalletscreenController extends GetxController {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  // Title and Subtitle
+                  
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +129,7 @@ class WalletscreenController extends GetxController {
                       ],
                     ),
                   ),
-                  // Balance
+                  
                   Text(
                     "₹${wallet["balance"]}",
                     style: const TextStyle(
@@ -179,7 +179,7 @@ Widget actionButton(String text, {VoidCallback? onTap}) {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFFD64550).withOpacity(0.1), // Soft red background
+          color: const Color(0xFFD64550).withOpacity(0.1), 
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: const Color(0xFFD64550).withOpacity(0.2)),
         ),
@@ -187,7 +187,7 @@ Widget actionButton(String text, {VoidCallback? onTap}) {
         child: Text(
           text,
           style: const TextStyle(
-            color: Color(0xFFD64550), // Red text for a "decent" look
+            color: Color(0xFFD64550), 
             fontSize: 14,
             fontWeight: FontWeight.bold,
           ),

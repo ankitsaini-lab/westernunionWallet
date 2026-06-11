@@ -10,7 +10,7 @@ class ProfilescreenController extends GetxController {
   }
 
   void onMenuTap(String title) {
-    // Get.toNamed('/dummy', arguments: title);
+    
   }
 Widget menuItem(
   String title,
@@ -76,7 +76,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Warning Shield Icon Capsule
+            
             Container(
               height: 74,
               width: 74,
@@ -103,7 +103,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
             ),
             const SizedBox(height: 24),
 
-            // Dialog Title
+            
             const Text(
               "Secure Sign Out",
               style: TextStyle(
@@ -115,7 +115,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
             ),
             const SizedBox(height: 10),
 
-            // Dialog Subtitle
+            
             const Text(
               "Are you sure you want to sign out of your Transcorp account? You will need your credentials to sign back in.",
               textAlign: TextAlign.center,
@@ -128,10 +128,10 @@ void showLuxuryLogoutDialog(BuildContext context) {
             ),
             const SizedBox(height: 32),
 
-            // Action Buttons
+            
             Row(
               children: [
-                // Stay/Cancel Button
+                
                 Expanded(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16),
@@ -156,7 +156,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
                 ),
                 const SizedBox(width: 14),
 
-                // Confirm Sign Out Button
+                
                 Expanded(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(16),
@@ -168,7 +168,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
                       height: 48,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: textColor, // Deep premium black
+                        color: textColor, 
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Text(

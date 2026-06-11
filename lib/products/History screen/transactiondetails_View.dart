@@ -9,12 +9,12 @@ class TransactiondetailsView extends StatelessWidget {
     final Map<String, dynamic> args = Get.arguments ?? {};
     final tx = args["tx"] ?? {};
 
-    // Normalize transaction fields
+    
     final String name = tx["name"]?.toString() ?? "Payment Reference";
     final String date = tx["date"]?.toString() ?? "Today";
     final double amountValue = (tx["amount"] as num?)?.toDouble().abs() ?? 0.0;
 
-    // Determine credit vs debit
+    
     bool isCredit = false;
     if (tx.containsKey("isCredit")) {
       isCredit = tx["isCredit"] == true;
@@ -22,7 +22,7 @@ class TransactiondetailsView extends StatelessWidget {
       isCredit = (tx["amount"] as num) > 0;
     }
 
-    // Determine status (success, failed, pending)
+    
     String status = "success";
     if (tx.containsKey("isFailed")) {
       status = (tx["isFailed"] == true) ? "failed" : "success";
@@ -30,7 +30,7 @@ class TransactiondetailsView extends StatelessWidget {
       status = tx["status"]?.toString().toLowerCase() ?? "success";
     }
 
-    // Colors and symbols based on status
+    
     Color statusColor;
     IconData statusIcon;
     String statusText;
@@ -81,7 +81,7 @@ class TransactiondetailsView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             children: [
-              // Ticket-Stub visual receipt wrapper
+              
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9F9F9),
@@ -97,7 +97,7 @@ class TransactiondetailsView extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    // Header section of ticket
+                    
                     Padding(
                       padding: const EdgeInsets.only(top: 28, left: 24, right: 24, bottom: 20),
                       child: Column(
@@ -123,7 +123,7 @@ class TransactiondetailsView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          // Dynamic visual status badge
+                          
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             decoration: BoxDecoration(
@@ -151,7 +151,7 @@ class TransactiondetailsView extends StatelessWidget {
                       ),
                     ),
 
-                    // Beautiful Dotted Cutout separator representation
+                    
                     Row(
                       children: [
                         Container(
@@ -195,7 +195,7 @@ class TransactiondetailsView extends StatelessWidget {
                       ],
                     ),
 
-                    // Ledger table metadata details
+                    
                     Padding(
                       padding: const EdgeInsets.all(24),
                       child: Column(
@@ -235,7 +235,7 @@ class TransactiondetailsView extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // stark Action Buttons
+              
               GestureDetector(
                 onTap: () {
                   Get.snackbar(

@@ -31,7 +31,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
             builder: (_, scrollController) {
               return Container(
                 decoration: const BoxDecoration(
-                  color: Color(0xFFF9FAFB), // Warm, sleek background
+                  color: Color(0xFFF9FAFB), 
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
                   ),
@@ -41,7 +41,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      // Premium Interactive Multi-Card Fan Section (3D Perspective tilt on swipe)
+                      
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
@@ -70,7 +70,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
                               ),
                             ),
                           ),
-                          // Avatar Overlapping Banner
+                          
                           Positioned(
                             bottom: -45,
                             left: 24,
@@ -98,7 +98,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
                                     ),
                                   ),
                                 ),
-                                // Edit Camera Badge
+                                
                                 GestureDetector(
                                   onTap: () {},
                                   child: Container(
@@ -128,7 +128,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
 
                       const SizedBox(height: 60),
 
-                      // User Identity Block
+                      
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Row(
@@ -149,7 +149,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
                                       ),
                                     ),
                                     const SizedBox(width: 8),
-                                    // Elite Badge
+                                    
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                       decoration: BoxDecoration(
@@ -193,13 +193,13 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
 
                       const SizedBox(height: 28),
 
-                      // Grouped menu section cards
+                      
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // ─── CARDS & PAYMENTS SECTION ───
+                            
                             const Padding(
                               padding: EdgeInsets.only(left: 8, bottom: 8),
                               child: Text(
@@ -248,7 +248,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
 
                             const SizedBox(height: 24),
 
-                            // ─── ACCOUNT & SUPPORT SECTION ───
+                            
                             const Padding(
                               padding: EdgeInsets.only(left: 8, bottom: 8),
                               child: Text(
@@ -297,7 +297,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
 
                             const SizedBox(height: 24),
 
-                            // ─── LEGAL & HELPDESK SECTION ───
+                            
                             const Padding(
                               padding: EdgeInsets.only(left: 8, bottom: 8),
                               child: Text(
@@ -354,7 +354,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
 
                             const SizedBox(height: 36),
 
-                            // Solid Dark Logout capsule
+                            
                             CustomButton(
                               text: "Sign Out",
                               prefixIcon: const Icon(Icons.logout_rounded, color: Colors.white, size: 18),
@@ -389,7 +389,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
     );
   }
 
-  // --- Sleek Custom Menu Item Builder ---
+  
   Widget _buildCustomMenuItem({
     required String title,
     required String subtitle,
@@ -404,7 +404,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
-            // Soft colored ring for icon
+            
             Container(
               height: 40,
               width: 40,
@@ -419,7 +419,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
               ),
             ),
             const SizedBox(width: 16),
-            // Text Details
+            
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -445,7 +445,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
                 ],
               ),
             ),
-            // Trailing Chevron
+            
             const Icon(
               Icons.chevron_right_rounded,
               color: Color(0xFF9CA3AF),
@@ -458,7 +458,7 @@ class ProfilescreenView extends GetView<ProfilescreenController> {
   }
 }
 
-// ─── PREMIUM LIVING BREATHING MULTI-CARD DECK (VIDEO-LIKE CODE LOOP) ───────────
+
 class _InteractiveMultiCardFan extends StatefulWidget {
   const _InteractiveMultiCardFan();
 
@@ -470,7 +470,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
   late AnimationController _breathingController;
   late Animation<double> _breathingAnimation;
 
-  // Track gesture offset
+  
   double _dragX = 0.0;
   double _dragY = 0.0;
   bool _isDragging = false;
@@ -497,7 +497,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
   void _onPanUpdate(DragUpdateDetails details) {
     setState(() {
       _isDragging = true;
-      // Limit the drag tilt values to prevent excessive rotation
+      
       _dragX = (_dragX + details.delta.dx * 0.005).clamp(-0.4, 0.4);
       _dragY = (_dragY + details.delta.dy * 0.005).clamp(-0.4, 0.4);
     });
@@ -507,7 +507,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
     setState(() {
       _isDragging = false;
     });
-    // Smoothly animate back to center
+    
     Future.doWhile(() async {
       await Future.delayed(const Duration(milliseconds: 16));
       if (_isDragging) return false;
@@ -530,11 +530,11 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
         builder: (context, child) {
           final progress = _breathingAnimation.value;
           
-          // Map breathing progress
-          final leftBaseRot = -0.20 + (progress * 0.05); // -11 to -8 degrees rotation
-          final rightBaseRot = 0.20 - (progress * 0.05);  // 11 to 8 degrees rotation
           
-          // Apply gesture modifiers (tilt)
+          final leftBaseRot = -0.20 + (progress * 0.05); 
+          final rightBaseRot = 0.20 - (progress * 0.05);  
+          
+          
           final leftRot = leftBaseRot + _dragX * 0.5;
           final rightRot = rightBaseRot + _dragX * 0.5;
           final centerRot = _dragX * 0.4;
@@ -549,7 +549,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
             alignment: Alignment.center,
             clipBehavior: Clip.none,
             children: [
-              // 1. Premium Obsidian Gradient with mesh glows
+              
               Positioned.fill(
                 child: Container(
                   decoration: const BoxDecoration(
@@ -562,7 +562,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                 ),
               ),
               
-              // 2. Responsive Aura Glow 1 (Red)
+              
               Positioned(
                 left: -20 + (_dragX * 50),
                 top: -30 + (_dragY * 30),
@@ -584,7 +584,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                 ),
               ),
               
-              // Responsive Aura Glow 2 (Green)
+              
               Positioned(
                 right: -20 - (_dragX * 50),
                 bottom: -30 - (_dragY * 30),
@@ -606,10 +606,10 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                 ),
               ),
 
-              // Interactive 3D Perspective Stack wrapper
+              
               Transform(
                 transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001) // perspective
+                  ..setEntry(3, 2, 0.001) 
                   ..rotateX(-_dragY * 0.4)
                   ..rotateY(_dragX * 0.4),
                 alignment: FractionalOffset.center,
@@ -617,7 +617,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                   alignment: Alignment.center,
                   clipBehavior: Clip.none,
                   children: [
-                    // Card 1: Obsidian Black (Left)
+                    
                     Transform.translate(
                       offset: Offset(leftOffset, 12 + (_dragY * 15)),
                       child: Transform.rotate(
@@ -632,7 +632,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                       ),
                     ),
 
-                    // Card 3: Emerald Neon (Right)
+                    
                     Transform.translate(
                       offset: Offset(rightOffset, 16 + (_dragY * 15)),
                       child: Transform.rotate(
@@ -647,7 +647,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                       ),
                     ),
 
-                    // Card 2: Crimson Spark (Center)
+                    
                     Transform.translate(
                       offset: Offset(centerOffsetX, centerOffsetY),
                       child: Transform.rotate(
@@ -665,7 +665,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                 ),
               ),
 
-              // Interactive gesture tip overlay
+              
               Positioned(
                 bottom: 8,
                 child: Opacity(
@@ -756,7 +756,7 @@ class _InteractiveMultiCardFanState extends State<_InteractiveMultiCardFan> with
                   ),
                 ],
               ),
-              // Mini EMV chip representation
+              
               Container(
                 height: 12,
                 width: 16,

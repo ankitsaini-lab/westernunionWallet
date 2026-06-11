@@ -76,7 +76,7 @@ class NotificationController extends GetxController {
       crossAxisAlignment: CrossAxisAlignment.start,
 
       children: [
-        /// 🔔 Icon
+        
         Container(
           padding: const EdgeInsets.all(10),
 
@@ -99,7 +99,7 @@ class NotificationController extends GetxController {
 
         const SizedBox(width: 12),
 
-        /// 📝 Content
+        
         Expanded(
           child: Column(
             crossAxisAlignment:

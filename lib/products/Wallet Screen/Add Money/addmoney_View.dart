@@ -12,7 +12,7 @@ class AddmoneyView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AddmoneyController());
 
-    // Sync initial selection based on option visibility
+    
     if (!showGeneralWalletOption) {
       controller.fundingSource.value = "Other (UPI/Bank)";
     } else if (controller.fundingSource.value == "Other (UPI/Bank)") {
@@ -55,10 +55,10 @@ class AddmoneyView extends StatelessWidget {
                     left: 20,
                     right: 20,
                     top: 20,
-                    // bottom:
-                    //     20 +
-                    //     keyboardHeight +
-                    //     (keyboardHeight > 0 ? 0 : bottomSafeArea),
+                    
+                    
+                    
+                    
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.95),
@@ -80,7 +80,7 @@ class AddmoneyView extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // FUNDING SOURCE SELECTOR
+                        
                         if (showGeneralWalletOption) ...[
                           Obx(
                             () => Container(

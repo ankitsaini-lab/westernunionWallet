@@ -39,7 +39,7 @@ class ContactSupportScreenController extends GetxController {
 
     isSubmitting.value = true;
     
-    // Simulate API delay
+    
     await Future.delayed(const Duration(milliseconds: 1500));
     
     final rand = DateTime.now().millisecondsSinceEpoch.toString();

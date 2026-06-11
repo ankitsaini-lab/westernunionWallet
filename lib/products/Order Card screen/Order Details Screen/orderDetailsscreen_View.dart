@@ -93,22 +93,18 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
 
                   const SizedBox(height: 28),
 
-                  // 3. Dynamic Interactive Mockup of Customized Physical Card
                   _buildPhysicalCardMockup(),
 
                   const SizedBox(height: 28),
 
-                  // 4. Stepper tracking timeline
                   _buildDeliveryTimeline(),
 
                   const SizedBox(height: 24),
 
-                  // 5. Receipt details
                   _buildInvoiceSummary(),
 
                   const SizedBox(height: 30),
 
-                  // 6. Action Buttons
                   CustomButton(
                     text: "Back to Home",
                     btncolor: Colors.black,
@@ -161,14 +157,12 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
             ),
           ),
 
-          // 7. Cascading confetti overlay
           const Positioned.fill(child: IgnorePointer(child: _ConfettiShower())),
         ],
       ),
     );
   }
 
-  // Visual Mockup of Card Model
   Widget _buildPhysicalCardMockup() {
     return Obx(() {
       final gradient = controller.cardGradient.value;
@@ -199,7 +193,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            // Glassmorphic glare overlay
             Positioned(
               top: -50,
               left: -50,
@@ -213,17 +206,14 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
               ),
             ),
 
-            // Matte overlay grid for metallic look
             Positioned.fill(child: CustomPaint(painter: _CardMeshPainter())),
 
-            // Card details
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Row 1: Brand Logo & Chip
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -267,7 +257,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
                     ],
                   ),
 
-                  // Row 2: SIM Chip icon
                   Container(
                     height: 24,
                     width: 32,
@@ -281,7 +270,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
                     ),
                   ),
 
-                  // Row 3: Cardholder name & Visa Brand
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -335,7 +323,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
     });
   }
 
-  // Delivery Stepper timeline
   Widget _buildDeliveryTimeline() {
     return Container(
       padding: const EdgeInsets.all(18),
@@ -402,7 +389,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
           const Divider(height: 1, color: Color(0xFFECECEC)),
           const SizedBox(height: 18),
 
-          // Stepper indicators
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -436,7 +422,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
     );
   }
 
-  // Invoice Receipt Details in Stub Card design
   Widget _buildInvoiceSummary() {
     return Container(
       decoration: BoxDecoration(
@@ -454,7 +439,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Receipt header
           const Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 12),
             child: Text(
@@ -490,7 +474,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
             ),
           ),
 
-          // Aesthetic dotted cutout row
           const _CutoutDivider(),
 
           Padding(
@@ -521,7 +504,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
     );
   }
 
-  // Shipment Drawer popup
   void _showShipmentTrackingSheet(BuildContext context) {
     Get.bottomSheet(
       Container(
@@ -581,7 +563,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
             ),
             const SizedBox(height: 24),
 
-            // Vertical timeline logs
             _buildTrackingStep(
               title: "Card Customization Confirmed",
               time:
@@ -729,7 +710,6 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
   }
 }
 
-// concentric pulsing green checkmark success graphic
 class _PulsingSuccessIcon extends StatefulWidget {
   const _PulsingSuccessIcon();
 
@@ -797,7 +777,6 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
             return Stack(
               alignment: Alignment.center,
               children: [
-                // Pulse 2
                 Container(
                   width: 90 * _pulseAnimation.value,
                   height: 90 * _pulseAnimation.value,
@@ -808,7 +787,7 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
                     ),
                   ),
                 ),
-                // Pulse 1
+
                 Container(
                   width: 70 * _pulseAnimation.value,
                   height: 70 * _pulseAnimation.value,
@@ -819,7 +798,7 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
                     ),
                   ),
                 ),
-                // Solid Center Circle
+
                 Container(
                   height: 64,
                   width: 64,
@@ -854,7 +833,6 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
   }
 }
 
-// Dotted stub divider
 class _CutoutDivider extends StatelessWidget {
   const _CutoutDivider();
 
@@ -865,7 +843,6 @@ class _CutoutDivider extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Dotted horizontal line
           Row(
             children: List.generate(40, (index) {
               return Expanded(
@@ -877,7 +854,7 @@ class _CutoutDivider extends StatelessWidget {
               );
             }),
           ),
-          // Left cutout semicircle
+
           Positioned(
             left: -8,
             child: Container(
@@ -890,7 +867,7 @@ class _CutoutDivider extends StatelessWidget {
               ),
             ),
           ),
-          // Right cutout semicircle
+
           Positioned(
             right: -8,
             child: Container(
@@ -909,7 +886,6 @@ class _CutoutDivider extends StatelessWidget {
   }
 }
 
-// Horizontal Stepper Sub-Widgets
 class _TimelineStep extends StatelessWidget {
   final String label;
   final bool isActive;
@@ -977,7 +953,6 @@ class _TimelineStepDivider extends StatelessWidget {
   }
 }
 
-// Custom painter for luxury cards mesh
 class _CardMeshPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -995,7 +970,6 @@ class _CardMeshPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// Confetti shower canvas particle particle drop animation
 class _ConfettiShower extends StatefulWidget {
   const _ConfettiShower();
 
@@ -1016,7 +990,6 @@ class _ConfettiShowerState extends State<_ConfettiShower>
       duration: const Duration(seconds: 4),
     )..forward();
 
-    // Spawn 40 random colorful confetti items
     final colors = [
       const Color(0xFFE53935),
       const Color(0xFF4CAF50),
@@ -1048,7 +1021,6 @@ class _ConfettiShowerState extends State<_ConfettiShower>
     super.dispose();
   }
 
-  // Java-like simple math random generator
   _Random javaMathRand() => _Random();
 
   @override

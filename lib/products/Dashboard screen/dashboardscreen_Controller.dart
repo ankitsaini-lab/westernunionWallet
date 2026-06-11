@@ -20,7 +20,7 @@ class DashboardscreenController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    
     super.onInit();
   }
 
@@ -35,7 +35,7 @@ class DashboardscreenController extends GetxController {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          // shape: BoxShape.circle,
+          
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.06),
@@ -51,10 +51,10 @@ class DashboardscreenController extends GetxController {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset("$icon", height: 25, color: Colors.black),
-              // Icon(icon, color: Colors.black, size: 22),
+              
               const SizedBox(height: 6),
 
-              /// LABEL
+              
               Text(
                 text,
                 style: const TextStyle(
@@ -122,12 +122,12 @@ class DashboardscreenController extends GetxController {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// 🔝 Top Row
+          
           topRow(),
 
           const SizedBox(height: 20),
 
-          /// 💳 Card Number
+          
           Obx(
             () => blurWrapper(
               isVisible.value,
@@ -145,7 +145,7 @@ class DashboardscreenController extends GetxController {
 
           const Spacer(),
 
-          /// 👇 Bottom
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -174,7 +174,7 @@ class DashboardscreenController extends GetxController {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// STRIPE
+          
           Container(
             height: 38,
             width: double.infinity,
@@ -220,7 +220,7 @@ class DashboardscreenController extends GetxController {
                         color: Colors.black,
                       ),
                     ),
-                    // maskedText: "***",
+                    
                   ),
                 ),
               ],
@@ -229,7 +229,7 @@ class DashboardscreenController extends GetxController {
 
           const SizedBox(height: 10),
 
-          /// BUTTON
+          
           Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
@@ -281,7 +281,7 @@ class DashboardscreenController extends GetxController {
           colors: [Color(0xFFB71C1C), Color(0xFFD32F2F), Color(0xFFFF5252)],
         ),
 
-        /// 🧊 DEPTH SHADOW
+        
         boxShadow: [
           BoxShadow(
             color: Colors.red.withOpacity(0.35),
@@ -293,7 +293,7 @@ class DashboardscreenController extends GetxController {
 
       child: Stack(
         children: [
-          /// 🔥 LIGHT REFLECTION (glass effect)
+          
           Positioned(
             top: -30,
             right: -30,
@@ -307,7 +307,7 @@ class DashboardscreenController extends GetxController {
             ),
           ),
 
-          /// ✨ SECOND REFLECTION (more depth)
+          
           Positioned(
             bottom: -40,
             left: -40,
@@ -386,7 +386,7 @@ class DashboardscreenController extends GetxController {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// Top spacing (for buttons space)
+                
                 const SizedBox(height: 40),
 
                 Container(
@@ -412,7 +412,7 @@ class DashboardscreenController extends GetxController {
                   ],
                 ),
 
-                // const SizedBox(height: 10),
+                
               ],
             ),
           ),
@@ -502,7 +502,7 @@ class DashboardscreenController extends GetxController {
         color: Colors.transparent,
         child: Stack(
           children: [
-            /// 🌫️ BLUR BG
+            
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
               child: Container(color: Colors.black.withOpacity(0.4)),
@@ -554,11 +554,11 @@ class DashboardscreenController extends GetxController {
 
                           const SizedBox(height: 10),
 
-                          /// EXPIRY + CVV ROW
+                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              /// LEFT (Expiry + Name)
+                              
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
@@ -579,7 +579,7 @@ class DashboardscreenController extends GetxController {
                                 ],
                               ),
 
-                              /// RIGHT (CVV + COPY)
+                              
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -616,7 +616,7 @@ class DashboardscreenController extends GetxController {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          // color: Colors.black,
+                          
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Icon(

@@ -680,7 +680,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  // ─── INSIGHTS / OFFERS SECTION ───────────────────────────────────────────────
+  
   Widget _buildOffersSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -790,7 +790,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  // ─── ACTION BOTTOM SHEET FOR TOP-UP ──────────────────────────────────────────
+  
   void _openTopUpSheet() {
     Get.bottomSheet(
       const AddmoneyView(showGeneralWalletOption: false),
@@ -801,7 +801,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  // ─── FALLBACK BOTTOM SHEET FOR COMING SOON FEATURES ─────────────────────────
+  
   void _showComingSoonBottomSheet(String feature) {
     Get.bottomSheet(
       Container(
@@ -1439,7 +1439,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
   }
 
   void _biometricPress() {
-    // Bio authentication visual reveal simulation
+    
     setState(() {
       _isVerifying = true;
     });
@@ -1457,7 +1457,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
       _isVerifying = true;
     });
 
-    // Simulate verification
+    
     Timer(const Duration(milliseconds: 1000), () {
       if (mounted) {
         if (_mpin == "1234" || _mpin == "0000" || _mpin.length == 4) {
@@ -1496,7 +1496,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Drag handle
+          
           Container(
             width: 40,
             height: 4,
@@ -1507,7 +1507,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 20),
 
-          // Security Icon
+          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -1538,7 +1538,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 28),
 
-          // Pin Display Dots
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(4, (index) {
@@ -1587,7 +1587,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
             const SizedBox(height: 36),
           ],
 
-          // Keypad Grid
+          
           Column(
             children: [
               Row(
@@ -1635,7 +1635,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 20),
 
-          // Cancel text button
+          
           TextButton(
             onPressed: () => Get.back(),
             child: const Text(
@@ -1695,7 +1695,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
   }
 }
 
-// ─── FULL CARD DETAILS POPUP ─────────────────────────────────────────────────
+
 class _FullCardDetailsPopup extends StatefulWidget {
   const _FullCardDetailsPopup();
 
@@ -1744,7 +1744,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
       color: Colors.transparent,
       child: Stack(
         children: [
-          // Dark blur overlay — tap to dismiss
+          
           GestureDetector(
             onTap: () => Get.back(),
             child: BackdropFilter(
@@ -1753,7 +1753,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
             ),
           ),
 
-          // Centered card with scale animation
+          
           Center(
             child: ScaleTransition(
               scale: _scaleAnim,
@@ -1762,7 +1762,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Premium Card
+                    
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(24),
@@ -1787,7 +1787,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                       ),
                       child: Stack(
                         children: [
-                          // Glass reflection
+                          
                           Positioned(
                             top: -30,
                             right: -30,
@@ -1815,7 +1815,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Top row: label + VISA
+                              
                               const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1841,7 +1841,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                               ),
                               const SizedBox(height: 20),
 
-                              // Gold chip
+                              
                               Container(
                                 width: 45,
                                 height: 30,
@@ -1859,7 +1859,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                               ),
                               const SizedBox(height: 20),
 
-                              // Card number + copy
+                              
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1892,12 +1892,12 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                               ),
                               const SizedBox(height: 20),
 
-                              // Bottom row: holder, expiry, CVV
+                              
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  // Holder
+                                  
                                   const Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -1922,7 +1922,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                                       ),
                                     ],
                                   ),
-                                  // Expiry
+                                  
                                   const Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -1946,7 +1946,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                                       ),
                                     ],
                                   ),
-                                  // CVV with toggle
+                                  
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
@@ -1998,7 +1998,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
 
                     const SizedBox(height: 20),
 
-                    // Close button
+                    
                     GestureDetector(
                       onTap: () => Get.back(),
                       child: Container(
@@ -2031,7 +2031,7 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
   }
 }
 
-// ─── PRESSABLE SCALE WIDGET ──────────────────────────────────────────────────
+
 class _PressableScale extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
@@ -2062,7 +2062,7 @@ class _PressableScaleState extends State<_PressableScale> {
 }
 
 
-// ─── ALL CARDS SCREEN ────────────────────────────────────────────────────────
+
 class _AllCardsScreen extends StatelessWidget {
   const _AllCardsScreen();
 
@@ -2268,7 +2268,7 @@ class _AllCardsScreen extends StatelessWidget {
   }
 }
 
-// ─── CARD DETAILS POPUP (per-card) ───────────────────────────────────────────
+
 class _CardDetailsPopup extends StatefulWidget {
   final Map<String, dynamic> card;
   const _CardDetailsPopup({required this.card});

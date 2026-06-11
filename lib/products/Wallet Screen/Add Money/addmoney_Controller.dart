@@ -49,7 +49,7 @@ class AddmoneyController extends GetxController {
       return await auth.authenticate(
         localizedReason: 'Confirm payment',
         biometricOnly: true,
-        // stickyAuth: true,
+        
       );
     } catch (_) {
       return false;
@@ -74,7 +74,7 @@ class AddmoneyController extends GetxController {
       backgroundColor: Colors.transparent,
     ).whenComplete(() {
       if (isProcessing.value) {
-        // If sheet closed without success, reset processing state
+        
         isProcessing.value = false;
       }
     });
@@ -216,7 +216,7 @@ class PaymentReceiptView extends StatelessWidget {
   }
 }
 
-// ─── PREMIUM SECURE MPIN BOTTOM SHEET FOR PAYMENT ────────────────────────────
+
 class MpinVerifySheetForPayment extends StatefulWidget {
   final VoidCallback onSuccess;
   final String title;

@@ -19,10 +19,10 @@ class HistoryscreenView extends GetView<HistoryscreenController> {
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyActions: false,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
-        //   onPressed: () => Get.back(),
-        // ),
+        
+        
+        
+        
         centerTitle: false,
         titleSpacing: 0,
 
