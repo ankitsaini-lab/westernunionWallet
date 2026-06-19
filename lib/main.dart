@@ -25,6 +25,7 @@ import 'package:transwallet/products/minKYCScreen/minkycScreen_View.dart';
 import 'package:transwallet/products/splashscreen/splashscreen_view.dart';
 import 'package:transwallet/products/update_KYC/update_KYC_View.dart';
 import 'package:transwallet/products/Contact%20Support%20screen/contact_Support_screen_View.dart';
+import 'package:transwallet/products/Onboarding Screen/onboardingscreen_View.dart';
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
@@ -63,6 +64,10 @@ class MyApp extends StatelessWidget {
   GetPage(
     name: '/',
     page: () => const SplashscreenView(),
+  ),
+  GetPage(
+    name: '/onboarding',
+    page: () => const OnboardingscreenView(),
   ),
   GetPage(
     name: '/login_singupview',

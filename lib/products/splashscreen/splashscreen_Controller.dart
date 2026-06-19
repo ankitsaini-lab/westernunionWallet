@@ -14,7 +14,7 @@ class SplashscreenController extends GetxController {
       await Future.delayed(const Duration(seconds: 3));
 
       
-        Get.offAllNamed('/login_singupview');
+        Get.offAllNamed('/onboarding');
       
         
       

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class CustomDropdown extends StatefulWidget {
   final List<String> options;
   final String placeholder;
+  final String? selectedValue;
   final Function(String)? onChanged;
 
   const CustomDropdown({
     super.key,
     required this.options,
     this.placeholder = "Select...",
+    this.selectedValue,
     this.onChanged,
   });
 
@@ -22,6 +24,20 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   String selected = "";
   String search = "";
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.selectedValue ?? "";
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomDropdown oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.selectedValue != oldWidget.selectedValue) {
+      selected = widget.selectedValue ?? "";
+    }
+  }
 
   
   void toggleDropdown() {

@@ -17,12 +17,9 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
     const Color secondaryText = Color(0xFF6B7280);
 
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF9FAFB,
-      ), // Clean, warm premium background
+      backgroundColor: const Color(0xFFF9FAFB),
       body: Stack(
         children: [
-          // 1. Decorative Soft Background Glows
           Positioned(
             top: -100,
             left: -50,
@@ -718,8 +715,9 @@ class _PulsingSuccessIcon extends StatefulWidget {
 }
 
 class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _animController;
+  late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _pulseAnimation;
 
@@ -731,38 +729,38 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
       duration: const Duration(milliseconds: 1600),
     )..repeat();
 
-    _scaleAnimation =
-        TweenSequence<double>([
-          TweenSequenceItem(
-            tween: Tween(
-              begin: 0.0,
-              end: 1.15,
-            ).chain(CurveTween(curve: Curves.easeOutCubic)),
-            weight: 70,
-          ),
-          TweenSequenceItem(
-            tween: Tween(
-              begin: 1.15,
-              end: 1.0,
-            ).chain(CurveTween(curve: Curves.easeInCubic)),
-            weight: 30,
-          ),
-        ]).animate(
-          AnimationController(
-            vsync: this,
-            duration: const Duration(milliseconds: 800),
-          )..forward(),
-        );
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..forward();
+
+    _scaleAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 0.0,
+          end: 1.15,
+        ).chain(CurveTween(curve: Curves.easeOutCubic)),
+        weight: 70,
+      ),
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 1.15,
+          end: 1.0,
+        ).chain(CurveTween(curve: Curves.easeInCubic)),
+        weight: 30,
+      ),
+    ]).animate(_scaleController);
 
     _pulseAnimation = Tween<double>(
-      begin: 0.8,
-      end: 2.0,
+      begin: 0.9,
+      end: 1.5,
     ).animate(CurvedAnimation(parent: _animController, curve: Curves.easeOut));
   }
 
   @override
   void dispose() {
     _animController.dispose();
+    _scaleController.dispose();
     super.dispose();
   }
 
@@ -771,62 +769,68 @@ class _PulsingSuccessIconState extends State<_PulsingSuccessIcon>
     return ScaleTransition(
       scale: _scaleAnimation,
       child: Center(
-        child: AnimatedBuilder(
-          animation: _pulseAnimation,
-          builder: (context, child) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 90 * _pulseAnimation.value,
-                  height: 90 * _pulseAnimation.value,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFF4CAF50).withOpacity(
-                      0.12 * (1.0 - (_pulseAnimation.value - 0.8) / 1.2),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  width: 70 * _pulseAnimation.value,
-                  height: 70 * _pulseAnimation.value,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFF4CAF50).withOpacity(
-                      0.2 * (1.0 - (_pulseAnimation.value - 0.8) / 1.2),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  height: 64,
-                  width: 64,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [Color(0xFF66BB6A), Color(0xFF4CAF50)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFF4CAF50),
-                        blurRadius: 16,
-                        offset: Offset(0, 4),
+        child: SizedBox(
+          width: 150,
+          height: 150,
+          child: AnimatedBuilder(
+            animation: _pulseAnimation,
+            builder: (context, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 74 * _pulseAnimation.value,
+                    height: 74 * _pulseAnimation.value,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF4CAF50).withOpacity(
+                        (0.12 * (1.0 - (_pulseAnimation.value - 0.9) / 0.6))
+                            .clamp(0.0, 1.0),
                       ),
-                    ],
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.check_rounded,
-                    color: Colors.white,
-                    size: 34,
+
+                  Container(
+                    width: 62 * _pulseAnimation.value,
+                    height: 62 * _pulseAnimation.value,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xFF4CAF50).withOpacity(
+                        (0.2 * (1.0 - (_pulseAnimation.value - 0.9) / 0.6))
+                            .clamp(0.0, 1.0),
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+
+                  Container(
+                    height: 68,
+                    width: 68,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [Color(0xFF66BB6A), Color(0xFF4CAF50)],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0xFF4CAF50),
+                          blurRadius: 12,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.check_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
