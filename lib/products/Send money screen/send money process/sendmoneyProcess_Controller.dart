@@ -4,11 +4,18 @@ import 'package:get/get.dart';
 import 'package:transwallet/products/Send%20money%20screen/sendMoney_Controller.dart';
 import 'package:transwallet/widgets/custombutton.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_Controller.dart';
+import 'package:transwallet/utilities/getStorage.dart';
 
 class SendmoneyprocessController extends GetxController {
-  var balance = 1600.0.obs;
+  var balance = 0.0.obs;
   var enteredAmount = ''.obs;
   var isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    balance.value = (box.read('balance') ?? 1600).toDouble();
+  }
 
   double get amount {
     String cleaned = enteredAmount.value.replaceAll(',', '');
@@ -117,7 +124,7 @@ class PaymentProcessingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: Color(0xFFE53935), strokeWidth: 3),
+            CircularProgressIndicator(color: Color(0xFFFFCC00), strokeWidth: 3),
             SizedBox(height: 24),
             Text(
               "Processing Payment...",
@@ -515,7 +522,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
                                 const Text(
                                   "View Details",
                                   style: TextStyle(
-                                    color: Color(0xFFE53935),
+                                    color: Color(0xFF111111),
                                     fontSize: 14,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -523,7 +530,7 @@ class _PaymentafterSuccessScreenState extends State<PaymentafterSuccessScreen>
                                 const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 14,
-                                  color: Color(0xFFE53935),
+                                  color: Color(0xFF111111),
                                 ),
                               ],
                             ),

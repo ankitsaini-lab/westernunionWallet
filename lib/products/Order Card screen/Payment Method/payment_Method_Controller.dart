@@ -4,10 +4,11 @@ import 'package:transwallet/products/Order%20Card%20screen/order%20card%20screen
 import 'package:transwallet/products/Order%20Card%20screen/Review%20order%20Details/review_order_details_Controller.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_Controller.dart';
 import 'package:transwallet/products/Send%20money%20screen/send%20money%20process/sendmoneyProcess_Controller.dart';
+import 'package:transwallet/utilities/getStorage.dart';
 
 class PaymentMethodController extends GetxController {
   final RxInt selectedMethod = 1.obs; 
-  var walletBalance = 640.obs;
+  var walletBalance = 0.obs;
   var amount = 150.obs;
 
   
@@ -16,11 +17,13 @@ class PaymentMethodController extends GetxController {
   
   
   var deliveryAddress = "General Address".obs;
-  var receiverName = "Jane Doe".obs;
+  var receiverName = "".obs;
 
   @override
   void onInit() {
     super.onInit();
+    walletBalance.value = (box.read('balance') ?? 640).toInt();
+    receiverName.value = box.read('name') ?? "Jane Doe";
     
     if (Get.isRegistered<OrdercardController>()) {
       final orderCtrl = Get.find<OrdercardController>();
@@ -31,7 +34,7 @@ class PaymentMethodController extends GetxController {
     }
     if (Get.isRegistered<ReviewOrderDetailsController>()) {
       final reviewCtrl = Get.find<ReviewOrderDetailsController>();
-      receiverName.value = reviewCtrl.name.value.isEmpty ? "Jane Doe" : reviewCtrl.name.value;
+      receiverName.value = reviewCtrl.name.value.isEmpty ? (box.read('name') ?? "Jane Doe") : reviewCtrl.name.value;
       deliveryAddress.value = reviewCtrl.address1.value.isEmpty
           ? "General Address"
           : "${reviewCtrl.address1.value}, ${reviewCtrl.city.value}, ${reviewCtrl.state.value} - ${reviewCtrl.pincode.value}";

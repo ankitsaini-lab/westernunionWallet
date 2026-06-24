@@ -38,7 +38,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
               icon: Icon(
                 Icons.search_rounded,
                 color: isSearch
-                    ? const Color(0xFFE53935)
+                    ? const Color(0xFFFFB300)
                     : const Color(0xFF111111),
               ),
               onPressed: () {
@@ -57,7 +57,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
               icon: Icon(
                 Icons.tune_rounded,
                 color: isFilter
-                    ? const Color(0xFFE53935)
+                    ? const Color(0xFFFFB300)
                     : const Color(0xFF111111),
               ),
               onPressed: () {
@@ -95,7 +95,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
       if (w.isEmpty) {
         return const Padding(
           padding: EdgeInsets.all(20),
-          child: CircularProgressIndicator(color: Color(0xFFE53935)),
+          child: CircularProgressIndicator(color: Color(0xFFFFCC00)),
         );
       }
 
@@ -245,7 +245,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
             onChanged: (val) => controller.searchQuery.value = val,
             style: const TextStyle(color: Color(0xFF111111), fontSize: 14),
             decoration: InputDecoration(
-              icon: const Icon(Icons.search, color: Color(0xFFE53935)),
+              icon: const Icon(Icons.search, color: Color(0xFF111111)),
               hintText: "Search transactions...",
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
               border: InputBorder.none,
@@ -410,7 +410,9 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Row(
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
                   children: [
                     Text(
                       tx["date"]?.toString() ?? "",
@@ -420,8 +422,7 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    if (isFailed) ...[
-                      const SizedBox(width: 8),
+                    if (isFailed)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 6,
@@ -440,7 +441,6 @@ class WalletdetailsView extends GetView<WalletdetailsController> {
                           ),
                         ),
                       ),
-                    ],
                   ],
                 ),
               ],

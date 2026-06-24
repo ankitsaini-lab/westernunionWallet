@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Trans Wallet',
+      title: 'Western Union Wallet',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
       

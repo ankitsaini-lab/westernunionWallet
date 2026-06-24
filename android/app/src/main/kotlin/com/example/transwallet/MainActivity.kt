@@ -1,4 +1,4 @@
-package com.trans.wallet
+package com.westernunion.wallet
 
 import android.os.Bundle
 import android.view.WindowManager

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:transwallet/utilities/getStorage.dart';
 
 class LoginSingupscreenController extends GetxController {
   late VideoPlayerController videoController;
@@ -19,12 +20,12 @@ class LoginSingupscreenController extends GetxController {
     phoneFocusNode.addListener(() {
       isPhoneFocused.value = phoneFocusNode.hasFocus;
     });
-    videoController = VideoPlayerController.asset("assets/videomp_.mp4")
+    videoController = VideoPlayerController.asset("assets/videounion.mp4")
       ..initialize().then((_) {
         isVideoInitialized.value = true;
         videoController.setLooping(true);
         videoController.play();
-        videoController.setVolume(0.0); 
+        videoController.setVolume(0.0);
       });
   }
 
@@ -32,52 +33,12 @@ class LoginSingupscreenController extends GetxController {
   var isChecked = false.obs;
   var isOtpSent = false.obs;
   var isPressed = false.obs;
-  var isCheckedpopup = false.obs;
   final phoneController = TextEditingController();
 
   RxString phoneError = ''.obs;
-  Widget _sectionTitle(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 12, bottom: 6),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 15.5, fontWeight: FontWeight.w600),
-      ),
-    );
-  }
-
-  Widget _bodyText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Text(text, style: const TextStyle(fontSize: 13.5, height: 1.5)),
-    );
-  }
-
-  Widget _bullet(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 6, bottom: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("• ", style: TextStyle(fontSize: 14)),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 13.5, height: 1.5),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void toggleCheckbox(bool? value) {
-    isCheckedpopup.value = value ?? false;
-  }
 
   var otp = ''.obs;
 
-  
   var seconds = 60.obs;
   var canResend = false.obs;
   Timer? _timer;
@@ -105,7 +66,6 @@ class LoginSingupscreenController extends GetxController {
   void _sendOtp() {
     final phone = phoneController.text.trim();
 
-    
     if (phone.isEmpty) {
       phoneError.value = "Mobile number is required";
       return;
@@ -116,253 +76,11 @@ class LoginSingupscreenController extends GetxController {
       return;
     }
 
-    
     phoneError.value = "";
 
-    
-    showPrivacyBottomSheet();
-  }
-
-  void showPrivacyBottomSheet() {
-    Get.bottomSheet(
-      Container(
-        height: Get.height * 0.85,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
-        ),
-        child: Column(
-          children: [
-            
-            Container(
-              width: 40,
-              height: 5,
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-
-            
-            const Row(
-              children: [
-                Icon(Icons.info_outline, color: Colors.blue),
-                SizedBox(width: 8),
-                Text(
-                  "User Data Privacy Policy",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 12),
-
-            
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _sectionTitle("1. Introduction"),
-
-                    _bodyText(
-                      'Transcorp International Ltd. ("Transcorp", "we", "our", "us") is committed to protecting the privacy and security of your personal data. This Policy explains how we collect, use, disclose, and safeguard your information when you use the TransWallet App or related services.',
-                    ),
-
-                    _sectionTitle("2. Information We Collect"),
-
-                    const Text(
-                      "We collect information necessary to provide our services, including:",
-                      style: TextStyle(fontSize: 13.5, height: 1.5),
-                    ),
-
-                    _bullet(
-                      "Personal Information: Name, contact details, DOB, address.",
-                    ),
-
-                    _bullet(
-                      "KYC & Identity Data: PAN, Aadhaar, government-issued ID proofs, biometrics.",
-                    ),
-
-                    _bullet(
-                      "Transaction Information: Account numbers, wallet transactions, payments, wallet loading and spends.",
-                    ),
-
-                    _bullet(
-                      "Device & Technical Data: IP address, device type, operating system, location.",
-                    ),
-
-                    _bullet(
-                      "Communication & Feedback: Emails, calls, chats with support.",
-                    ),
-
-                    _sectionTitle("3. Use of Information"),
-
-                    const Text(
-                      "We use your information to:",
-                      style: TextStyle(fontSize: 13.5, height: 1.5),
-                    ),
-
-                    _bullet("Verify identity and complete KYC"),
-
-                    _bullet("Provide wallet and payment services."),
-
-                    _bullet("Detect and prevent fraud."),
-
-                    _bullet("Enhance app functionality."),
-
-                    _bullet("Comply with legal requirements."),
-
-                    _bullet("Send alerts and updates."),
-
-                    _sectionTitle("4. Sharing of Information"),
-
-                    const Text(
-                      "We may share your information with:",
-                      style: TextStyle(fontSize: 13.5, height: 1.5),
-                    ),
-
-                    _bullet("Banks, payment networks, and service providers."),
-
-                    _bullet("Government authorities where legally required."),
-
-                    _bullet(
-                      "Third-party vendors under confidentiality agreements.",
-                    ),
-
-                    _sectionTitle("5. Data Security"),
-
-                    _bodyText(
-                      "We implement industry-standard security measures including encryption and access controls.",
-                    ),
-
-                    _sectionTitle("6. Your Rights"),
-
-                    const Text(
-                      "You have the right to:",
-                      style: TextStyle(fontSize: 13.5, height: 1.5),
-                    ),
-
-                    _bullet("Access or correct your data."),
-
-                    _bullet("Withdraw consent where applicable."),
-
-                    _bullet("Raise concerns with support."),
-
-                    _sectionTitle("7. Data Retention"),
-
-                    _bodyText(
-                      "Personal data is retained only as long as necessary.",
-                    ),
-
-                    _sectionTitle("8. Updates to Policy"),
-
-                    _bodyText("We may update this policy periodically."),
-
-                    
-                    _sectionTitle("9. Consent"),
-
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Obx(
-                          () => Checkbox(
-                            value: isCheckedpopup.value,
-                            onChanged: toggleCheckbox,
-                            activeColor: Colors.green,
-                          ),
-                        ),
-
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => toggleCheckbox(!isCheckedpopup.value),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(
-                                "By registering or using the TransWallet App, you agree to the collection and use of your data as described in this policy.",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  height: 1.5,
-                                  color: Colors.blue.shade700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            
-            Row(
-              children: [
-                
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    onPressed: () {
-                      isOtpSent.value = false;
-                      Get.back();
-                    },
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(width: 10),
-
-                
-                Expanded(
-                  child: Obx(
-                    () => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: isCheckedpopup.value
-                            ? Colors.black
-                            : Colors.grey.shade300,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      onPressed: isCheckedpopup.value
-                          ? () {
-                              isOtpSent.value = true;
-
-                              startTimer();
-
-                              Get.back();
-
-                              log("OTP Sent");
-                            }
-                          : null,
-                      child: const Text(
-                        "Agree & Continue",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
+    isOtpSent.value = true;
+    startTimer();
+    log("OTP Sent");
   }
 
   void _verifyOtp() {
@@ -371,11 +89,24 @@ class LoginSingupscreenController extends GetxController {
       return;
     }
 
+    final enteredPhone = phoneController.text.trim();
+    if (enteredPhone == "9876543210" && otp.value == "1234") {
+      box.write('name', "Vince Tallent");
+      box.write('email', "vince.tallent@westernunion.com");
+      box.write('phone', "9876543210");
+      box.write('address', "Blk 222 Jurong Street 21,#06-222,Singapore 600222");
+      box.write('pan', "ABCDE1234f");
+      box.write('balance', 10000.0);
+
+      log("OTP Verified for Vince Tallent. Navigating directly to Dashboard.");
+      Get.offAllNamed('/dashboard');
+      return;
+    }
+
     log("OTP Verified");
     Get.toNamed('/createaccountview');
   }
 
-  
   void startTimer() {
     seconds.value = 60;
     canResend.value = false;
@@ -503,7 +234,7 @@ class _PremiumOtpCellState extends State<PremiumOtpCell> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryRed = Color(0xFFD64550);
+    const primaryRed = Color(0xFFFFCC00);
     final bool hasText = widget.controller.text.isNotEmpty;
 
     return AnimatedScale(

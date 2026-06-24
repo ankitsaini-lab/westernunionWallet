@@ -62,7 +62,7 @@ class CreateaccountController extends GetxController {
     TextInputType? keyboardtype,
     bool enabled = true,
   }) {
-    const primaryRed = Color(0xFFD64550);
+    const primaryRed = Color(0xFFFFCC00);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -222,7 +222,7 @@ class CreateaccountController extends GetxController {
   }
 
   Widget buildStep(String title, int index) {
-    const primaryRed = Color(0xFFD64550);
+    const primaryRed = Color(0xFFFFCC00);
 
     return Obx(() {
       bool isActive = step.value == index;
@@ -494,7 +494,7 @@ class CreateaccountController extends GetxController {
           () => Row(
             children: [
               Checkbox(
-                activeColor: const Color(0xFFD64550),
+                activeColor: const Color(0xFFFFCC00),
                 value: hasCode.value,
                 onChanged: (v) => toggleCode(v ?? false),
               ),

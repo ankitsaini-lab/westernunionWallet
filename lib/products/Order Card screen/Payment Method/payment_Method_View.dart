@@ -154,13 +154,13 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFE53935).withOpacity(0.08),
+                                    color: const Color(0xFFFFCC00).withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: const Text(
                                     "Add ₹500",
                                     style: TextStyle(
-                                      color: primaryRed,
+                                      color: Color(0xFF111111),
                                       fontSize: 11,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -202,12 +202,14 @@ class PaymentMethodView extends GetView<PaymentMethodController> {
                                 },
                               ),
                               const SizedBox(width: 4),
-                              const Text(
-                                "Other Payment Options (UPI / NetBanking)",
-                                style: TextStyle(
-                                  color: textColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
+                              const Expanded(
+                                child: Text(
+                                  "Other Payment Options (UPI / NetBanking)",
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                  ),
                                 ),
                               ),
                             ],

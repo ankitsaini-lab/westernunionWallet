@@ -9,7 +9,7 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => ContactSupportScreenController());
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
@@ -50,7 +50,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          
           Center(
             child: Column(
               children: [
@@ -63,15 +62,15 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                       width: 84,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: primaryRed.withOpacity(0.08),
+                        color: primaryRed.withOpacity(0.15),
                         border: Border.all(
-                          color: primaryRed.withOpacity(0.2),
+                          color: primaryRed.withOpacity(0.3),
                           width: 2,
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.support_agent_rounded,
-                        color: primaryRed,
+                        color: Color(0xFF111111),
                         size: 42,
                       ),
                     ),
@@ -88,20 +87,19 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  "We typically reply within 5–15 minutes",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                // const Text(
+                //   "We typically reply within 5–15 minutes",
+                //   style: TextStyle(
+                //     fontSize: 13,
+                //     color: Color(0xFF6B7280),
+                //     fontWeight: FontWeight.w600,
+                //   ),
+                // ),
               ],
             ),
           ),
           const SizedBox(height: 32),
 
-          
           const Text(
             "Quick Channels",
             style: TextStyle(
@@ -118,16 +116,16 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               children: [
-                _buildChannelCard(
-                  Icons.chat_bubble_outline_rounded,
-                  "Live Chat",
-                  "Active 24/7",
-                  Colors.green,
-                  () => _showQuickChannelSnackbar(
-                    "Live Chat",
-                    "Launching live chat session...",
-                  ),
-                ),
+                // _buildChannelCard(
+                //   Icons.chat_bubble_outline_rounded,
+                //   "Live Chat",
+                //   "Active 24/7",
+                //   Colors.green,
+                //   () => _showQuickChannelSnackbar(
+                //     "Live Chat",
+                //     "Launching live chat session...",
+                //   ),
+                // ),
                 _buildChannelCard(
                   Icons.email_outlined,
                   "Email Support",
@@ -153,7 +151,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           ),
           const SizedBox(height: 32),
 
-          
           const Text(
             "Create a Support Ticket",
             style: TextStyle(
@@ -193,7 +190,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                 ),
                 const SizedBox(height: 10),
 
-                
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -251,7 +247,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                 ),
                 const SizedBox(height: 10),
 
-                
                 TextFormField(
                   controller: controller.messageController,
                   maxLines: 4,
@@ -293,7 +288,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           ),
           const SizedBox(height: 40),
 
-          
           CustomButton(
             text: "Submit Support Ticket",
             btncolor: Colors.black,
@@ -308,7 +302,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
     );
   }
 
-  
   Widget _buildTicketSuccessScreen(BuildContext context) {
     return _TicketEntranceAnimation(
       child: Center(
@@ -318,7 +311,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               Container(
                 height: 74,
                 width: 74,
@@ -366,7 +358,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
               ),
               const SizedBox(height: 32),
 
-              
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFFF9F9F9),
@@ -399,7 +390,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                       ),
                     ),
 
-                    
                     Row(
                       children: [
                         Container(
@@ -445,7 +435,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
                       ],
                     ),
 
-                    
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -490,7 +479,6 @@ class ContactSupportScreenView extends GetView<ContactSupportScreenController> {
 
               const SizedBox(height: 48),
 
-              
               CustomButton(
                 text: "Back to Home",
                 btncolor: Colors.black,
@@ -669,7 +657,7 @@ class _PulsingSupportRingState extends State<_PulsingSupportRing>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: const Color(0xFFE53935).withOpacity(0.3),
+                      color: const Color(0xFFFFCC00).withOpacity(0.4),
                       width: 2,
                     ),
                   ),

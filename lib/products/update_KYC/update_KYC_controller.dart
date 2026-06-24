@@ -127,7 +127,7 @@ class UpdateKycController extends GetxController {
                                 width: 24,
                                 child: Checkbox(
                                   value: isConsentChecked.value,
-                                  activeColor: const Color(0xFFE53935),
+                                  activeColor: const Color(0xFFFFCC00),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6),
                                   ),
@@ -162,7 +162,7 @@ class UpdateKycController extends GetxController {
                       () => CustomButton(
                         text: "Proceed",
                         btncolor: isConsentChecked.value
-                            ? Color(0xFFC62828)
+                            ? const Color(0xFFFFCC00)
                             : Colors.grey.shade300,
                         onPressed: () {
                           if (isConsentChecked.value) {
@@ -189,13 +189,13 @@ class UpdateKycController extends GetxController {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         gradient: const LinearGradient(
-          colors: [Color(0xFF111111), Color(0xFFC62828), Color(0xFFE53935)],
+          colors: [const Color(0xFF111111), const Color(0xFFFFB300), const Color(0xFFFFCC00)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFE53935).withOpacity(0.25),
+            color: const Color(0xFFFFCC00).withOpacity(0.25),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -239,7 +239,7 @@ class UpdateKycController extends GetxController {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "TransWallet Platinum",
+                      "Western Union Platinum",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -329,10 +329,10 @@ class UpdateKycController extends GetxController {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFFE53935), width: 2.5),
+        border: Border.all(color: const Color(0xFFFFCC00), width: 2.5),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFE53935).withOpacity(0.06),
+            color: const Color(0xFFFFCC00).withOpacity(0.06),
             blurRadius: 16,
             offset: const Offset(0, 8),
           ),
@@ -349,13 +349,13 @@ class UpdateKycController extends GetxController {
             width: 22,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFFE53935), width: 2),
+              border: Border.all(color: const Color(0xFFFFCC00), width: 2),
             ),
             padding: const EdgeInsets.all(3),
             child: Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(0xFFE53935),
+                color: Color(0xFFFFCC00),
               ),
             ),
           ),
@@ -413,12 +413,12 @@ class UpdateKycController extends GetxController {
                       height: 48,
                       width: 48,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE53935).withOpacity(0.08),
+                        color: const Color(0xFFFFCC00).withOpacity(0.08),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.verified_user_rounded,
-                        color: Color(0xFFE53935),
+                        color: Color(0xFFFFCC00),
                         size: 22,
                       ),
                     ),
@@ -487,7 +487,7 @@ class UpdateKycController extends GetxController {
                         stepNumber: "3",
                         title: "Video Call Verification",
                         description:
-                            "Quick check-in call with a secure TransWallet compliance officer.",
+                            "Quick check-in call with a secure Western Union compliance officer.",
                         icon: Icons.videocam_outlined,
                       ),
                     ],
@@ -497,7 +497,7 @@ class UpdateKycController extends GetxController {
                 const SizedBox(height: 20),
                 CustomButton(
                   text: "Get Started",
-                  btncolor: const Color(0xFFE53935),
+                  btncolor: const Color(0xFFFFCC00),
                   onPressed: () {
                     startBrowserRedirection();
                   },
@@ -542,10 +542,10 @@ class UpdateKycController extends GetxController {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFE53935).withOpacity(0.05),
+              color: const Color(0xFFFFCC00).withOpacity(0.08),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: const Color(0xFFE53935), size: 18),
+            child: Icon(icon, color: const Color(0xFFFFCC00), size: 18),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -622,12 +622,12 @@ class UpdateKycController extends GetxController {
               width: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFE53935).withOpacity(0.15),
-                border: Border.all(color: const Color(0xFFE53935), width: 2),
+                color: const Color(0xFFFFCC00).withOpacity(0.15),
+                border: Border.all(color: const Color(0xFFFFCC00), width: 2),
               ),
               child: const Icon(
                 Icons.lock_outline_rounded,
-                color: Color(0xFFE53935),
+                color: Color(0xFFFFCC00),
                 size: 36,
               ),
             ),
@@ -636,7 +636,7 @@ class UpdateKycController extends GetxController {
           const Text(
             "SECURE REDIRECTION",
             style: TextStyle(
-              color: Color(0xFFE53935),
+              color: const Color(0xFFFFCC00),
               fontSize: 11,
               fontWeight: FontWeight.w900,
               letterSpacing: 1.5,
@@ -673,7 +673,7 @@ class UpdateKycController extends GetxController {
               child: LinearProgressIndicator(
                 value: redirectionProgress.value,
                 backgroundColor: Colors.white10,
-                color: const Color(0xFFE53935),
+                color: const Color(0xFFFFCC00),
               ),
             ),
           ),

@@ -77,7 +77,7 @@ class ManagecardView
                           controller.isCardBlocked.value
                               ? Colors.green
                               : const Color(
-                                  0xFFD90429,
+                                  0xFF111111,
                                 ),
 
                       width: 1.4,
@@ -110,7 +110,7 @@ class ManagecardView
                             controller.isCardBlocked.value
                                 ? Colors.green
                                 : const Color(
-                                    0xFFD90429,
+                                    0xFF111111,
                                   ),
                       ),
 
@@ -131,7 +131,7 @@ class ManagecardView
                                       .value
                                   ? Colors.green
                                   : const Color(
-                                      0xFFD90429,
+                                      0xFF111111,
                                     ),
                         ),
                       ),

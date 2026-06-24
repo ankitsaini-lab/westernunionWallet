@@ -118,8 +118,8 @@ class AddmoneyView extends StatelessWidget {
                                           Container(
                                             padding: const EdgeInsets.all(6),
                                             decoration: BoxDecoration(
-                                              color: Colors.red.withOpacity(
-                                                0.1,
+                                              color: const Color(0xFFFFCC00).withOpacity(
+                                                0.12,
                                               ),
                                               shape: BoxShape.circle,
                                             ),
@@ -129,7 +129,7 @@ class AddmoneyView extends StatelessWidget {
                                                         .account_balance_wallet_rounded
                                                   : Icons
                                                         .account_balance_rounded,
-                                              color: Colors.red,
+                                              color: const Color(0xFF111111),
                                               size: 16,
                                             ),
                                           ),
@@ -211,7 +211,7 @@ class AddmoneyView extends StatelessWidget {
                                 .toString();
                             FocusScope.of(context).unfocus();
                           },
-                          activeColor: Colors.red,
+                          activeColor: const Color(0xFFFFCC00),
                         ),
 
                         GridView.count(
@@ -257,7 +257,7 @@ class AddmoneyView extends StatelessWidget {
                                                           .sliderValue
                                                           .value ==
                                                       e)
-                                          ? Colors.red
+                                          ? const Color(0xFFFFCC00)
                                           : Colors.white,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
@@ -280,8 +280,22 @@ class AddmoneyView extends StatelessWidget {
                                                                 .sliderValue
                                                                 .value ==
                                                             e)
-                                                ? Colors.white
+                                                ? const Color(0xFF111111)
                                                 : Colors.black,
+                                            fontWeight: ((e == -1 &&
+                                                        controller
+                                                            .isCustom
+                                                            .value) ||
+                                                    (e != -1 &&
+                                                        !controller
+                                                            .isCustom
+                                                            .value &&
+                                                        controller
+                                                                .sliderValue
+                                                                .value ==
+                                                            e))
+                                                ? FontWeight.bold
+                                                : FontWeight.normal,
                                           ),
                                         ),
                                       ),
@@ -339,7 +353,7 @@ class AddmoneyView extends StatelessWidget {
                             () => Container(
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: const Color(0xFFFFCC00),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Center(
@@ -353,14 +367,14 @@ class AddmoneyView extends StatelessWidget {
                                             width: 18,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2,
-                                              color: Colors.white,
+                                              color: Color(0xFF111111),
                                             ),
                                           ),
                                           SizedBox(width: 10),
                                           Text(
                                             "Processing...",
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Color(0xFF111111),
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -369,7 +383,7 @@ class AddmoneyView extends StatelessWidget {
                                     : const Text(
                                         "Pay Now",
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: Color(0xFF111111),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

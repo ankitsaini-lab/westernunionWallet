@@ -25,8 +25,8 @@ return Scaffold(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xffD32F2F),
-              Color(0xFFD64550),
+              Color(0xFFFFCC00),
+              Color(0xFFFFB300),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -49,12 +49,12 @@ return Scaffold(
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(.15),
+                      color: Colors.black.withOpacity(.08),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
                       Icons.arrow_back,
-                      color: Colors.white,
+                      color: Color(0xFF111111),
                     ),
                   ),
                 ),
@@ -64,7 +64,7 @@ return Scaffold(
                 const Text(
                   "Profile Detail",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color(0xFF111111),
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
@@ -110,7 +110,7 @@ return Scaffold(
               () => Text(
                 controller.name.value,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF111111),
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -123,12 +123,12 @@ return Scaffold(
               () => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.verified,size: 18,color: Colors.white.withOpacity(.9),),
+                  Icon(Icons.verified,size: 18,color: Color(0xFF111111),),
                   width4,
                   Text(
                     controller.accountverification.value,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(.9),
+                      color: Color(0xFF111111),
                       fontSize: 14,
                     ),
                   ),
@@ -193,12 +193,12 @@ return Scaffold(
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(.1),
+                        color: const Color(0xFFFFCC00).withOpacity(.15),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: const Icon(
                         Icons.support_agent,
-                        color: Colors.red,
+                        color: Color(0xFF111111),
                       ),
                     ),
 
@@ -238,8 +238,8 @@ return Scaffold(
                           "Contact Support Clicked",
                           snackPosition:
                               SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
+                          backgroundColor: const Color(0xFFFFCC00),
+                          colorText: const Color(0xFF111111),
                           margin: const EdgeInsets.all(14),
                           borderRadius: 12,
                         );
@@ -250,14 +250,14 @@ return Scaffold(
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: const Color(0xFFFFCC00),
                           borderRadius:
                               BorderRadius.circular(12),
                         ),
                         child: const Text(
                           "Contact",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF111111),
                             fontWeight: FontWeight.w600,
                           ),
                         ),

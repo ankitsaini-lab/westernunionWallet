@@ -8,7 +8,7 @@ import 'package:transwallet/widgets/upercasetextformatter.dart';
 class MinkycscreenView extends GetView<MinkycscreenController> {
   const MinkycscreenView({super.key});
 
-  static const _primaryRed = Color(0xFFE53935);
+  static const _primaryRed = Color(0xFFFFCC00);
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +40,15 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [_primaryRed, Color(0xFFFF6B6B)],
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF111111), Color(0xFF2E2E2E)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: _primaryRed.withOpacity(0.3),
+                    color: _primaryRed.withOpacity(0.2),
                     blurRadius: 24,
                     offset: const Offset(0, 10),
                   ),
@@ -93,7 +93,7 @@ class MinkycscreenView extends GetView<MinkycscreenController> {
                         ),
                         child: const Icon(
                           Icons.verified_user_rounded,
-                          color: Colors.white,
+                          color: _primaryRed,
                           size: 32,
                         ),
                       ),
@@ -326,13 +326,13 @@ class _InfoTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF5F5),
+        color: const Color(0xFFFFFBE6),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE53935).withOpacity(0.1)),
+        border: Border.all(color: const Color(0xFFFFCC00).withOpacity(0.15)),
       ),
       child: Column(
         children: [
-          Icon(icon, color: const Color(0xFFE53935), size: 22),
+          Icon(icon, color: const Color(0xFF111111), size: 22),
           const SizedBox(height: 6),
           Text(
             label,

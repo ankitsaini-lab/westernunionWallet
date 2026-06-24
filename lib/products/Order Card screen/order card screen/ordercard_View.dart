@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transwallet/products/Order%20Card%20screen/order%20card%20screen/ordercard_Controller.dart';
+import 'package:transwallet/widgets/constsize.dart';
 import 'package:transwallet/widgets/custombutton.dart';
+import 'package:transwallet/widgets/premium_visa_card.dart';
+import 'package:get_storage/get_storage.dart';
 
 class OrdercardView extends GetView<OrdercardController> {
   const OrdercardView({super.key});
@@ -9,6 +12,9 @@ class OrdercardView extends GetView<OrdercardController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => OrdercardController());
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double itemWidth = (screenWidth - 40 - 14) / 2;
+    final double dynamicAspectRatio = itemWidth / 115;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FB),
@@ -36,7 +42,6 @@ class OrdercardView extends GetView<OrdercardController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             const Text(
               "Choose your signature card style",
               style: TextStyle(
@@ -47,182 +52,24 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 16),
 
-            
             Obx(() {
-              final activeStyle = controller.cardStyles[controller.activeCardIndex.value];
-              final List<Color> gradientColors = activeStyle["colors"];
+              final activeStyle =
+                  controller.cardStyles[controller.activeCardIndex.value];
               final Color glowColor = activeStyle["glowColor"];
-              final String labelName = activeStyle["label"];
-              final Color textColor = activeStyle["textColor"];
-              final Color subColor = activeStyle["subColor"];
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-                height: 196,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  gradient: LinearGradient(
-                    colors: gradientColors,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: glowColor.withOpacity(0.35),
-                      blurRadius: 24,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(24),
-                  child: Stack(
-                    children: [
-                      
-                      Positioned(
-                        top: -40,
-                        right: -40,
-                        child: Container(
-                          height: 150,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.04),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: -30,
-                        left: -20,
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.black.withOpacity(0.06),
-                          ),
-                        ),
-                      ),
-
-                      
-                      Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "TRANSWALLET",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 2.0,
-                                  ),
-                                ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.12),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    labelName.toUpperCase(),
-                                    style: TextStyle(
-                                      color: subColor,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                
-                                Container(
-                                  height: 28,
-                                  width: 38,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    gradient: const LinearGradient(
-                                      colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Icon(
-                                  Icons.contactless_rounded,
-                                  color: textColor.withOpacity(0.7),
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-
-                            
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "••••  ••••  ••••  8824",
-                                      style: TextStyle(
-                                        color: textColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1.5,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "JANE DOE",
-                                      style: TextStyle(
-                                        color: subColor,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  "VISA",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    fontStyle: FontStyle.italic,
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+              return Center(
+                child: PremiumVisaCard(
+                  cardNumber: "••••••••••••8824",
+                  cardHolder: GetStorage().read('name') ?? "Vince Tallent",
+                  expiryDate: "12/28",
+                  cvv: "•••",
+                  bgImage: 'assets/unioncardblack.webp',
+                  shadowColor: glowColor,
                 ),
               );
             }),
             const SizedBox(height: 24),
 
-            
             SizedBox(
               height: 46,
               child: ListView.builder(
@@ -235,7 +82,8 @@ class OrdercardView extends GetView<OrdercardController> {
                   final String name = style["name"];
 
                   return Obx(() {
-                    final bool isSelected = controller.activeCardIndex.value == index;
+                    final bool isSelected =
+                        controller.activeCardIndex.value == index;
 
                     return GestureDetector(
                       onTap: () {
@@ -249,7 +97,9 @@ class OrdercardView extends GetView<OrdercardController> {
                           color: isSelected ? Colors.black : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
-                            color: isSelected ? Colors.transparent : const Color(0xFFECECEC),
+                            color: isSelected
+                                ? Colors.transparent
+                                : const Color(0xFFECECEC),
                             width: 1.2,
                           ),
                           boxShadow: isSelected
@@ -258,7 +108,7 @@ class OrdercardView extends GetView<OrdercardController> {
                                     color: Colors.black.withOpacity(0.15),
                                     blurRadius: 10,
                                     offset: const Offset(0, 4),
-                                  )
+                                  ),
                                 ]
                               : null,
                         ),
@@ -276,7 +126,9 @@ class OrdercardView extends GetView<OrdercardController> {
                             Text(
                               name,
                               style: TextStyle(
-                                color: isSelected ? Colors.white : const Color(0xFF111111),
+                                color: isSelected
+                                    ? Colors.white
+                                    : const Color(0xFF111111),
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -291,7 +143,6 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 32),
 
-            
             const Text(
               "Exclusive Benefits",
               style: TextStyle(
@@ -303,14 +154,13 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 16),
 
-            
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
               crossAxisSpacing: 14,
               mainAxisSpacing: 14,
-              childAspectRatio: 1.6,
+              childAspectRatio: dynamicAspectRatio,
               children: [
                 _buildBenefitCard(
                   Icons.card_giftcard_rounded,
@@ -340,7 +190,6 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 32),
 
-            
             const Text(
               "Order Pricing Details",
               style: TextStyle(
@@ -361,7 +210,11 @@ class OrdercardView extends GetView<OrdercardController> {
               ),
               child: Column(
                 children: [
-                  _buildPricingRow("Signature Card Fee", "₹${controller.amount.value}.00", isPrimary: true),
+                  _buildPricingRow(
+                    "Signature Card Fee",
+                    "₹${controller.amount.value}.00",
+                    isPrimary: true,
+                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(color: Color(0xFFECECEC)),
@@ -394,14 +247,16 @@ class OrdercardView extends GetView<OrdercardController> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Obx(() => Text(
-                            "₹${controller.amount.value}.00",
-                            style: const TextStyle(
-                              color: Color(0xFFE53935),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          )),
+                      Obx(
+                        () => Text(
+                          "₹${controller.amount.value}.00",
+                          style: const TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -409,10 +264,13 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 24),
 
-            
             Row(
               children: const [
-                Icon(Icons.local_shipping_outlined, color: Color(0xFF6B7280), size: 18),
+                Icon(
+                  Icons.local_shipping_outlined,
+                  color: Color(0xFF6B7280),
+                  size: 18,
+                ),
                 SizedBox(width: 8),
                 Text(
                   "Delivered to your home in 5–7 business days.",
@@ -426,7 +284,6 @@ class OrdercardView extends GetView<OrdercardController> {
             ),
             const SizedBox(height: 40),
 
-            
             CustomButton(
               text: "Confirm & Order Card",
               btncolor: Colors.black,
@@ -441,9 +298,14 @@ class OrdercardView extends GetView<OrdercardController> {
     );
   }
 
-  Widget _buildBenefitCard(IconData icon, String title, String subtitle, Color color) {
+  Widget _buildBenefitCard(
+    IconData icon,
+    String title,
+    String subtitle,
+    Color color,
+  ) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -491,7 +353,12 @@ class OrdercardView extends GetView<OrdercardController> {
     );
   }
 
-  Widget _buildPricingRow(String title, String value, {bool isFree = false, bool isPrimary = false}) {
+  Widget _buildPricingRow(
+    String title,
+    String value, {
+    bool isFree = false,
+    bool isPrimary = false,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -508,9 +375,13 @@ class OrdercardView extends GetView<OrdercardController> {
           style: TextStyle(
             color: isFree
                 ? Colors.green.shade700
-                : (isPrimary ? const Color(0xFF111111) : const Color(0xFF6B7280)),
+                : (isPrimary
+                      ? const Color(0xFF111111)
+                      : const Color(0xFF6B7280)),
             fontSize: 13,
-            fontWeight: (isFree || isPrimary) ? FontWeight.bold : FontWeight.w500,
+            fontWeight: (isFree || isPrimary)
+                ? FontWeight.bold
+                : FontWeight.w500,
           ),
         ),
       ],
@@ -518,12 +389,15 @@ class OrdercardView extends GetView<OrdercardController> {
   }
 }
 
-
 class DottedSeparator extends StatelessWidget {
   final double height;
   final Color color;
 
-  const DottedSeparator({super.key, this.height = 1, this.color = Colors.black});
+  const DottedSeparator({
+    super.key,
+    this.height = 1,
+    this.color = Colors.black,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -540,9 +414,7 @@ class DottedSeparator extends StatelessWidget {
             return SizedBox(
               width: dashWidth,
               height: dashHeight,
-              child: DecoratedBox(
-                decoration: BoxDecoration(color: color),
-              ),
+              child: DecoratedBox(decoration: BoxDecoration(color: color)),
             );
           }),
         );

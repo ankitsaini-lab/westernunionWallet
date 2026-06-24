@@ -13,8 +13,8 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => LoginSingupscreenController());
 
-    const primaryRed = Color(0xFFD64550);
-    const darkRed = Color(0xFFB22B37);
+    const primaryRed = Color(0xFFFFCC00);
+    const darkRed = Color(0xFFFFB300);
 
     return Scaffold(
       
@@ -51,7 +51,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
                   children: [
                     const SizedBox(height: 60),
 
-                    Image.asset("assets/WHITE TRANSCORP .png", height: 24),
+                    Image.asset("assets/WU.png", height: 48),
 
                     const SizedBox(height: 40),
 
@@ -132,7 +132,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
                                     () => Text(
                                       controller.isOtpSent.value
                                           ? "Enter the 4-digit code sent to +91 ******${controller.phone.value.length >= 4 ? controller.phone.value.substring(controller.phone.value.length - 4) : controller.phone.value}"
-                                          : "Login to Transcorp app to securely access your wallet & make effortless payments.",
+                                          : "Login to Western Union app to securely access your wallet & make effortless payments.",
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 13,
@@ -384,7 +384,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
                                                   ? "VERIFY & PROCEED"
                                                   : "SEND OTP",
                                               style: const TextStyle(
-                                                color: Colors.white,
+                                                color: Color(0xFF111111),
                                                 fontWeight: FontWeight.w900,
                                                 letterSpacing: 1.1,
                                               ),
@@ -393,7 +393,7 @@ class LoginSingupscreenView extends GetView<LoginSingupscreenController> {
                                               const SizedBox(width: 8),
                                               const Icon(
                                                 Icons.arrow_forward_rounded,
-                                                color: Colors.white,
+                                                color: Color(0xFF111111),
                                                 size: 18,
                                               ),
                                             ],

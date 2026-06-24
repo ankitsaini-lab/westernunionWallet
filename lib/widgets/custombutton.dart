@@ -40,6 +40,10 @@ class _CustomButtonState extends State<CustomButton> {
 
   @override
   Widget build(BuildContext context) {
+    final Color buttonColor = widget.color ?? widget.btncolor ?? const Color(0xFF111111);
+    final bool isLightColor = buttonColor.computeLuminance() > 0.65;
+    final Color defaultTextColor = isLightColor ? const Color(0xFF111111) : Colors.white;
+
     return Obx(
       () => GestureDetector(
         onTapDown: (_) => isPressed.value = true,
@@ -56,10 +60,9 @@ class _CustomButtonState extends State<CustomButton> {
             width: widget.width ?? double.infinity,
             height: widget.height,
             decoration: BoxDecoration(
-              color: widget.color ?? widget.btncolor ?? const Color(0xFF111111),
+              color: buttonColor,
               borderRadius: BorderRadius.circular(widget.borderRadius),
 
-              
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.15),
@@ -67,14 +70,13 @@ class _CustomButtonState extends State<CustomButton> {
                   offset: const Offset(0, 4),
                 ),
                 BoxShadow(
-                  color: const Color(0xFFE53935).withOpacity(0.25),
+                  color: const Color(0xFFFFCC00).withOpacity(isLightColor ? 0.2 : 0.15),
                   blurRadius: 20,
                   offset: const Offset(0, 8),
                 ),
               ],
             ),
 
-            
             child: Center(
               child: widget.isLoading
                   ? const SizedBox(
@@ -97,7 +99,7 @@ class _CustomButtonState extends State<CustomButton> {
                         Text(
                           widget.text,
                           style: TextStyle(
-                            color: widget.textColor ?? Colors.white,
+                            color: widget.textColor ?? defaultTextColor,
                             fontSize: widget.textsize,
                             fontWeight: FontWeight.w600,
                           ),

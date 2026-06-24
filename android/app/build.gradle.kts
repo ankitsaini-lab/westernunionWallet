@@ -5,14 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "com.trans.wallet"
+    namespace = "com.westernunion.wallet"
 
     compileSdk = 36   // ✅ required by plugins
 
     ndkVersion = "29.0.13846066"
 
     defaultConfig {
-        applicationId = "com.trans.wallet"
+        applicationId = "com.westernunion.wallet"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
 

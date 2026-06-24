@@ -13,7 +13,7 @@ class CreateaccountView extends GetView<CreateaccountController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => CreateaccountController());
 
-    const primaryRed = Color(0xFFD64550);
+    const primaryRed = Color(0xFFFFCC00);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
@@ -37,7 +37,7 @@ class CreateaccountView extends GetView<CreateaccountController> {
                       ),
                     );
                   },
-                  child: Image.asset("assets/Layer_1.png", height: 22),
+                  child: Image.asset("assets/Wuu.png", height: 38),
                 ),
 
                 const SizedBox(height: 30),

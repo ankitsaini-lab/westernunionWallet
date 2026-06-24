@@ -64,7 +64,7 @@ class _OtpDialog extends StatefulWidget {
 }
 
 class _OtpDialogState extends State<_OtpDialog> {
-  static const _primaryRed = Color(0xFFE53935);
+  static const _primaryRed = Color(0xFFFFCC00);
 
   final List<TextEditingController> _controllers = List.generate(
     4,
@@ -322,7 +322,7 @@ class _OtpDialogState extends State<_OtpDialog> {
                       ),
                       decoration: BoxDecoration(
                         color: _canResend
-                            ? const Color(0xFFFFF5F5)
+                            ? const Color(0xFFFFFBE6)
                             : const Color(0xFFF3F4F6),
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
@@ -435,7 +435,7 @@ class _KycSuccessDialog extends StatefulWidget {
 class _KycSuccessDialogState extends State<_KycSuccessDialog>
     with SingleTickerProviderStateMixin {
   static const _green = Color(0xFF22C55E);
-  static const _primaryRed = Color(0xFFE53935);
+  static const _primaryRed = Color(0xFFFFCC00);
 
   late AnimationController _ctrl;
   late Animation<double> _scale;
@@ -658,7 +658,7 @@ class _CreateMpinScreen extends StatefulWidget {
 }
 
 class _CreateMpinScreenState extends State<_CreateMpinScreen> {
-  static const _primaryRed = Color(0xFFE53935);
+  static const _primaryRed = Color(0xFFFFCC00);
   static const _textColor = Color(0xFF111111);
   static const _secondaryText = Color(0xFF6B7280);
 
@@ -947,7 +947,7 @@ class _StepDot extends StatelessWidget {
       height: 8,
       decoration: BoxDecoration(
         color: active || done
-            ? const Color(0xFFE53935)
+            ? const Color(0xFFFFCC00)
             : const Color(0xFFECECEC),
         borderRadius: BorderRadius.circular(4),
       ),
@@ -983,8 +983,8 @@ class _KeyButtonState extends State<_KeyButton> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _pressed
-                ? const Color(0xFFE53935).withOpacity(0.08)
-                : const Color(0xFFF5F5F5),
+                 ? const Color(0xFFFFCC00).withOpacity(0.12)
+                 : const Color(0xFFF5F5F5),
           ),
           alignment: Alignment.center,
           child: Text(

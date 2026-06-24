@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.dart';
+import 'package:transwallet/utilities/getStorage.dart';
 
 import 'dart:async';
 
@@ -31,10 +32,16 @@ class WalletscreenController extends GetxController {
     super.onClose();
   }
 
-  var wallets = [
+  var wallets = <Map<String, dynamic>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    final storedBalance = (box.read('balance') ?? 1600).toDouble();
+    wallets.value = [
     {
       "title": "General Wallet",
-      "balance": 1600,
+      "balance": storedBalance.toInt(),
       "icon": "assets/walletcard/Generaldigital.jpg",
     },
     {
@@ -57,7 +64,8 @@ class WalletscreenController extends GetxController {
       "balance": 2000,
       "icon": "assets/walletcard/Public transport.jpg",
     },
-  ].obs;
+  ];
+  }
 
   Widget walletList() {
     return Obx(() => ListView.builder(

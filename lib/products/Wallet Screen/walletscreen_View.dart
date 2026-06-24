@@ -8,8 +8,8 @@ import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.d
 class WalletscreenView extends GetView<WalletscreenController> {
   const WalletscreenView({super.key});
 
-  static const Color primaryRed = Color(0xFFE53935);
-  static const Color secondaryRed = Color(0xFFFF6B6B);
+  static const Color primaryRed = Color(0xFFFFCC00);
+  static const Color secondaryRed = Color(0xFFFFB300);
   static const Color textColor = Color(0xFF111111);
   static const Color secondaryText = Color(0xFF6B7280);
   static const Color borderColor = Color(0xFFECECEC);
@@ -102,14 +102,14 @@ class WalletscreenView extends GetView<WalletscreenController> {
                   children: [
                     Icon(
                       isRevealed ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-                      color: primaryRed,
+                      color: Color(0xFF111111),
                       size: 16,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       isRevealed ? "Hide Balances" : "Show Balances",
                       style: const TextStyle(
-                        color: primaryRed,
+                        color: Color(0xFF111111),
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                       ),
@@ -351,20 +351,20 @@ class WalletscreenView extends GetView<WalletscreenController> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: primaryRed.withOpacity(0.08),
+            color: const Color(0xFFFFCC00).withOpacity(0.15),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: primaryRed.withOpacity(0.15)),
+            border: Border.all(color: const Color(0xFFFFCC00).withOpacity(0.3)),
           ),
           alignment: Alignment.center,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: primaryRed, size: 16),
+              Icon(icon, color: const Color(0xFF111111), size: 16),
               const SizedBox(width: 6),
               Text(
                 text,
                 style: const TextStyle(
-                  color: primaryRed,
+                  color: Color(0xFF111111),
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
@@ -434,7 +434,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
     const Color borderColor = Color(0xFFECECEC);
@@ -446,7 +446,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
         gradient: const LinearGradient(
           colors: [
             Colors.white,
-            Color(0xFFFFF5F5), 
+            Color(0xFFFFFDF0), 
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -459,7 +459,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
             offset: const Offset(0, 10),
           ),
           BoxShadow(
-            color: primaryRed.withOpacity(0.02),
+            color: primaryRed.withOpacity(0.05),
             blurRadius: 30,
             offset: const Offset(0, 15),
           ),
@@ -551,18 +551,18 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
                         vertical: 6,
                       ),
                       decoration: BoxDecoration(
-                        color: primaryRed.withOpacity(0.08),
+                        color: primaryRed.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: primaryRed.withOpacity(0.12)),
+                        border: Border.all(color: primaryRed.withOpacity(0.3)),
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.star_rounded, color: primaryRed, size: 12),
+                          Icon(Icons.star_rounded, color: Color(0xFF111111), size: 12),
                           SizedBox(width: 4),
                           Text(
                             "Primary",
                             style: TextStyle(
-                              color: primaryRed,
+                              color: Color(0xFF111111),
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.5,
@@ -624,13 +624,13 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: primaryRed.withOpacity(0.06),
+                            color: primaryRed.withOpacity(0.15),
                           ),
                           child: Icon(
                             isRevealed
                                 ? Icons.visibility_rounded
                                 : Icons.visibility_off_rounded,
-                            color: primaryRed,
+                            color: const Color(0xFF111111),
                             size: 20,
                           ),
                         ),
@@ -688,7 +688,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: WalletscreenView.primaryRed.withOpacity(0.15),
+              color: WalletscreenView.primaryRed.withOpacity(0.3),
             ),
             boxShadow: [
               BoxShadow(
@@ -701,7 +701,7 @@ class _PrimaryGeneralWalletCardState extends State<_PrimaryGeneralWalletCard> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: WalletscreenView.primaryRed, size: 20),
+              Icon(icon, color: const Color(0xFF111111), size: 20),
               const SizedBox(height: 6),
               Text(
                 title,
@@ -798,7 +798,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
 
@@ -830,12 +830,12 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: primaryRed.withOpacity(0.08),
+              color: primaryRed.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.shield_outlined,
-              color: primaryRed,
+              color: Color(0xFF111111),
               size: 28,
             ),
           ),

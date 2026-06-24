@@ -7,8 +7,8 @@ class GlobalbottombarView extends GetView<GlobalbottombarController> {
 
   const GlobalbottombarView({super.key, required this.seletedIndex});
 
-  static const Color primaryRed = Color(0xFFE53935);
-  static const Color activeBgColor = Color(0xFFFFF1F1);
+  static const Color primaryRed = Color(0xFFFFCC00);
+  static const Color activeBgColor = Color(0xFFFFFBE6);
   static const Color textColor = Color(0xFF111111);
   static const Color greyColor = Color(0xFF6B7280);
   static const Color borderColor = Color(0xFFECECEC);

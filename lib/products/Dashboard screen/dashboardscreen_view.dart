@@ -3,13 +3,16 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:transwallet/products/Dashboard%20screen/dashboardscreen_Controller.dart';
 import 'package:transwallet/products/Notification%20screen/notification_View.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.dart';
 import 'package:transwallet/widgets/globalbottombar/Globalbottombar_View.dart';
+import 'package:transwallet/utilities/getStorage.dart';
+import 'package:transwallet/widgets/premium_visa_card.dart';
 
-const Color _primaryRed = Color(0xFFE53935);
-const Color _secondaryRed = Color(0xFFFF6B6B);
+const Color _primaryRed = Color(0xFFFFCC00);
+const Color _secondaryRed = Color(0xFFFFB300);
 const Color _textColor = Color(0xFF111111);
 const Color _secondaryText = Color(0xFF6B7280);
 const Color _borderColor = Color(0xFFECECEC);
@@ -91,9 +94,9 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                                   letterSpacing: -0.1,
                                 ),
                               ),
-                              const Text(
-                                "Jane Doe",
-                                style: TextStyle(
+                              Text(
+                                box.read('name') ?? "Jane Doe",
+                                style: const TextStyle(
                                   color: _textColor,
                                   fontWeight: FontWeight.w800,
                                   fontSize: 20,
@@ -137,54 +140,42 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                   ),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
                 _animateWidget(
                   delayIndex: 1,
                   child: const _PremiumBalanceSection(),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
                 _animateWidget(
                   delayIndex: 2,
                   child: const _PremiumCardsSection(),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
-                _animateWidget(
-                  delayIndex: 3,
-                  child: _buildQuickActions(),
-                ),
+                _animateWidget(delayIndex: 3, child: _buildQuickActions()),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
-                _animateWidget(
-                  delayIndex: 4,
-                  child: _buildKycBanner(),
-                ),
+                _animateWidget(delayIndex: 4, child: _buildKycBanner()),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
-                _animateWidget(
-                  delayIndex: 5,
-                  child: _buildAnalyticsSection(),
-                ),
+                _animateWidget(delayIndex: 5, child: _buildAnalyticsSection()),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
                 _animateWidget(
                   delayIndex: 6,
                   child: _buildRecentTransactionsSection(),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
 
-                _animateWidget(
-                  delayIndex: 7,
-                  child: _buildOffersSection(),
-                ),
+                _animateWidget(delayIndex: 7, child: _buildOffersSection()),
 
                 const SizedBox(height: 22),
               ],
@@ -212,7 +203,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
         Expanded(
           child: _QuickActionButton(
             icon: Icons.send_rounded,
-            label: "Transfer",
+            label: "Send Money",
             onTap: () => Get.toNamed("/sendmoney"),
           ),
         ),
@@ -220,7 +211,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
         Expanded(
           child: _QuickActionButton(
             icon: Icons.add_rounded,
-            label: "Top-up",
+            label: "Add Money",
             onTap: _openTopUpSheet,
           ),
         ),
@@ -229,7 +220,10 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
           child: _QuickActionButton(
             icon: Icons.receipt_long_rounded,
             label: "Pay Bill",
-            onTap: () => Get.to(() => const _PayBillScreen(), transition: Transition.cupertino),
+            onTap: () => Get.to(
+              () => const _PayBillScreen(),
+              transition: Transition.cupertino,
+            ),
           ),
         ),
       ],
@@ -238,12 +232,36 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
 
   Widget _buildBillersSection() {
     final billers = [
-      {"icon": Icons.bolt_rounded, "label": "Electricity", "color": const Color(0xFFFFA726)},
-      {"icon": Icons.phone_android_rounded, "label": "Mobile", "color": const Color(0xFF42A5F5)},
-      {"icon": Icons.tv_rounded, "label": "DTH", "color": const Color(0xFF7E57C2)},
-      {"icon": Icons.water_drop_rounded, "label": "Water", "color": const Color(0xFF26C6DA)},
-      {"icon": Icons.local_gas_station_rounded, "label": "Gas", "color": const Color(0xFF66BB6A)},
-      {"icon": Icons.wifi_rounded, "label": "Broadband", "color": const Color(0xFFEF5350)},
+      {
+        "icon": Icons.bolt_rounded,
+        "label": "Electricity",
+        "color": const Color(0xFFFFA726),
+      },
+      {
+        "icon": Icons.phone_android_rounded,
+        "label": "Mobile",
+        "color": const Color(0xFF42A5F5),
+      },
+      {
+        "icon": Icons.tv_rounded,
+        "label": "DTH",
+        "color": const Color(0xFF7E57C2),
+      },
+      {
+        "icon": Icons.water_drop_rounded,
+        "label": "Water",
+        "color": const Color(0xFF26C6DA),
+      },
+      {
+        "icon": Icons.local_gas_station_rounded,
+        "label": "Gas",
+        "color": const Color(0xFF66BB6A),
+      },
+      {
+        "icon": Icons.wifi_rounded,
+        "label": "Broadband",
+        "color": const Color(0xFFEF5350),
+      },
     ];
 
     return Column(
@@ -293,9 +311,16 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                         decoration: BoxDecoration(
                           color: color.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: color.withOpacity(0.18), width: 1.5),
+                          border: Border.all(
+                            color: color.withOpacity(0.18),
+                            width: 1.5,
+                          ),
                         ),
-                        child: Icon(b["icon"] as IconData, color: color, size: 26),
+                        child: Icon(
+                          b["icon"] as IconData,
+                          color: color,
+                          size: 26,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -396,7 +421,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                   Text(
                     "Verify",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color(0xFF111111),
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -404,7 +429,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                   SizedBox(width: 4),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    color: Colors.white,
+                    color: Color(0xFF111111),
                     size: 10,
                   ),
                 ],
@@ -524,7 +549,6 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  
   Widget _buildRecentTransactionsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -548,7 +572,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
               child: const Text(
                 "See All",
                 style: TextStyle(
-                  color: _primaryRed,
+                  color: _textColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -590,12 +614,12 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
                 isLast: false,
               ),
               _buildTransactionItem(
-                initial: "J",
-                merchant: "Jane Doe",
-                category: "Bank Transfer",
-                amount: "+ ₹2,500",
-                isCredit: true,
-                isLast: true,
+                initial: "Z",
+                merchant: "Zomato",
+                category: "Food Delivery",
+                amount: "- ₹289",
+                isCredit: false,
+                isLast: false,
               ),
             ],
           ),
@@ -663,7 +687,9 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
               Text(
                 amount,
                 style: TextStyle(
-                  color: isCredit ? const Color(0xFF4CAF50) : _primaryRed,
+                  color: isCredit
+                      ? const Color(0xFF2E7D32)
+                      : const Color(0xFFD32F2F),
                   fontWeight: FontWeight.w800,
                   fontSize: 15,
                 ),
@@ -680,7 +706,6 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  
   Widget _buildOffersSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -759,7 +784,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
             child: Text(
               tag,
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF111111),
                 fontSize: 9,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
@@ -790,7 +815,6 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  
   void _openTopUpSheet() {
     Get.bottomSheet(
       const AddmoneyView(showGeneralWalletOption: false),
@@ -801,7 +825,6 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 
-  
   void _showComingSoonBottomSheet(String feature) {
     Get.bottomSheet(
       Container(
@@ -839,7 +862,11 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
             const Text(
               "We are working hard to bring this feature to your wallet app very soon. Stay tuned!",
               textAlign: TextAlign.center,
-              style: TextStyle(color: _secondaryText, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: _secondaryText,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -867,7 +894,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
       backgroundColor: Colors.transparent,
     );
   }
- 
+
   Widget _animateWidget({required int delayIndex, required Widget child}) {
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
@@ -886,7 +913,7 @@ class _DashboardscreenViewState extends State<DashboardscreenView> {
     );
   }
 }
- 
+
 class _PremiumBalanceSection extends StatefulWidget {
   const _PremiumBalanceSection();
 
@@ -966,7 +993,7 @@ class _PremiumBalanceSectionState extends State<_PremiumBalanceSection> {
 
   @override
   Widget build(BuildContext context) {
-    const Color _primaryRed = Color(0xFFE53935);
+    const Color _primaryRed = Color(0xFFFFCC00);
     const Color _textColor = Color(0xFF111111);
     const Color _secondaryText = Color(0xFF6B7280);
 
@@ -998,7 +1025,7 @@ class _PremiumBalanceSectionState extends State<_PremiumBalanceSection> {
                       _isRevealed
                           ? Icons.visibility_rounded
                           : Icons.visibility_off_rounded,
-                      color: _primaryRed,
+                      color: Color(0xFF111111),
                       size: 17,
                     ),
                   ),
@@ -1021,8 +1048,8 @@ class _PremiumBalanceSectionState extends State<_PremiumBalanceSection> {
                           letterSpacing: 1,
                         ),
                       ),
-                      secondChild: const Text(
-                        "₹45,280.50",
+                      secondChild: Text(
+                        "₹${(box.read('balance') ?? 45280.50).toStringAsFixed(2)}",
                         style: TextStyle(
                           color: _textColor,
                           fontSize: 32,
@@ -1041,11 +1068,11 @@ class _PremiumBalanceSectionState extends State<_PremiumBalanceSection> {
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: _primaryRed.withOpacity(0.07),
+                          color: const Color(0xFFFFCC00).withOpacity(0.15),
                         ),
                         child: const Icon(
                           Icons.lock_outline_rounded,
-                          color: _primaryRed,
+                          color: Color(0xFF111111),
                           size: 13,
                         ),
                       ),
@@ -1055,23 +1082,23 @@ class _PremiumBalanceSectionState extends State<_PremiumBalanceSection> {
               ),
             ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: _primaryRed.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: _primaryRed.withOpacity(0.12)),
-            ),
-            child: const Text(
-              "PREMIUM",
-              style: TextStyle(
-                color: _primaryRed,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.8,
-              ),
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          //   decoration: BoxDecoration(
+          //     color: _primaryRed.withOpacity(0.08),
+          //     borderRadius: BorderRadius.circular(10),
+          //     border: Border.all(color: _primaryRed.withOpacity(0.12)),
+          //   ),
+          //   child: const Text(
+          //     "PREMIUM",
+          //     style: TextStyle(
+          //       color: _primaryRed,
+          //       fontSize: 10,
+          //       fontWeight: FontWeight.bold,
+          //       letterSpacing: 0.8,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -1086,25 +1113,19 @@ const List<Map<String, dynamic>> _kCards = [
     'expiry': '12/28',
     'holder': 'JANE DOE',
     'cvv': '123',
-    'colors': [Color(0xFFB71C1C), Color(0xFFD32F2F), Color(0xFFFF5252)],
+    'bgImage': 'assets/unioncardblack.webp',
+    'colors': [Color(0xFF111111), Color(0xFF222222), Color(0xFF333333)],
   },
   {
-    'label': 'Digital Fuel',
+    'label': 'Premium Card',
     'number': '•••• •••• •••• 5678',
-    'fullNumber': '1234  5678  9012  5678',
-    'expiry': '09/27',
+    'fullNumber': '5678  1234  9012  5678',
+    'expiry': '12/28',
     'holder': 'JANE DOE',
     'cvv': '456',
-    'colors': [Color(0xFF1A237E), Color(0xFF283593), Color(0xFF3949AB)],
-  },
-  {
-    'label': 'Healthcare',
-    'number': '•••• •••• •••• 9012',
-    'fullNumber': '1234  5678  9012  9012',
-    'expiry': '03/26',
-    'holder': 'JANE DOE',
-    'cvv': '789',
-    'colors': [Color(0xFF004D40), Color(0xFF00695C), Color(0xFF00897B)],
+    'bgImage': 'assets/unioncardyellow.webp',
+    'colors': [Color(0xFFE5A93C), Color(0xFFF7D070)],
+    'useBlackLogos': true,
   },
 ];
 
@@ -1154,27 +1175,15 @@ class _PremiumCardsSectionState extends State<_PremiumCardsSection> {
                   letterSpacing: -0.4,
                 ),
               ),
-              GestureDetector(
-                onTap: () => Get.to(
-                  () => const _AllCardsScreen(),
-                  transition: Transition.cupertino,
-                ),
-                child: const Text(
-                  'See All',
-                  style: TextStyle(
-                    color: Color(0xFFE53935),
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
             ],
           ),
         ),
         SizedBox(
-          height: 190,
+          height: 220,
           child: PageView.builder(
-            controller: PageController(viewportFraction: 0.88),
+            controller: PageController(
+              viewportFraction: _kCards.length == 1 ? 1.0 : 0.88,
+            ),
             itemCount: _kCards.length,
             onPageChanged: (i) => setState(() => _activeIndex = i),
             itemBuilder: (context, index) {
@@ -1182,140 +1191,83 @@ class _PremiumCardsSectionState extends State<_PremiumCardsSection> {
               final colors = card['colors'] as List<Color>;
               return _PressableScale(
                 onTap: () => _onCardTap(index),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.only(right: 14, bottom: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    gradient: LinearGradient(
-                      colors: colors,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    right: _kCards.length == 1 ? 0 : 14,
+                    bottom: 8,
                   ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: -28,
-                        right: -28,
-                        child: Container(
-                          height: 110,
-                          width: 110,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.05),
-                          ),
-                        ),
-                      ),
-                     
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  card['label'] as String,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Text(
-                                  'VISA',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            Container(
-                              width: 38,
-                              height: 26,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                gradient: const LinearGradient(
-                                  colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              card['number'] as String,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                letterSpacing: 1.5,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  card['holder'] as String,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
-                                Text(
-                                  card['expiry'] as String,
-                                  style: const TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: Center(
+                    child: PremiumVisaCard(
+                      cardNumber: card['fullNumber'] as String,
+                      cardHolder:
+                          GetStorage().read('name') ?? card['holder'] as String,
+                      expiryDate: card['expiry'] as String,
+                      cvv: "•••",
+                      bgImage:
+                          card['bgImage'] as String? ??
+                          'assets/unioncardblack.webp',
+                      useBlackLogos: card['useBlackLogos'] as bool? ?? false,
+                    ),
                   ),
                 ),
               );
             },
           ),
         ),
+
+        if (_kCards.length > 1) ...[
+          const SizedBox(height: 12),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(_kCards.length, (i) {
+              final isActive = i == _activeIndex;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: isActive ? 20 : 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? const Color(0xFFFFCC00)
+                      : const Color(0xFFFFCC00).withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              );
+            }),
+          ),
+        ],
         const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(_kCards.length, (i) {
-            final isActive = i == _activeIndex;
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: isActive ? 20 : 6,
-              height: 6,
-              decoration: BoxDecoration(
-                color: isActive
-                    ? const Color(0xFFE53935)
-                    : const Color(0xFFE53935).withOpacity(0.25),
-                borderRadius: BorderRadius.circular(3),
+        GestureDetector(
+          onTap: () => Get.to(
+            () => const ServicesMoreScreen(),
+            transition: Transition.cupertino,
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'View More',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            );
-          }),
+              // SizedBox(width: 4),
+              // Icon(
+              //   Icons.arrow_forward_ios_rounded,
+              //   color: Colors.black,
+              //   size: 14,
+              // ),
+            ],
+          ),
         ),
       ],
     );
   }
 }
- 
+
 class _QuickActionButton extends StatefulWidget {
   final IconData icon;
   final String label;
@@ -1350,7 +1302,10 @@ class _QuickActionButtonState extends State<_QuickActionButton> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: _primaryRed.withOpacity(0.12), width: 1.2),
+            border: Border.all(
+              color: _primaryRed.withOpacity(0.45),
+              width: 1.2,
+            ),
             boxShadow: [
               BoxShadow(
                 color: _primaryRed.withOpacity(0.02),
@@ -1376,7 +1331,11 @@ class _QuickActionButtonState extends State<_QuickActionButton> {
                     ),
                   ],
                 ),
-                child: Icon(widget.icon, color: Colors.white, size: 20),
+                child: Icon(
+                  widget.icon,
+                  color: const Color(0xFF111111),
+                  size: 20,
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -1395,7 +1354,7 @@ class _QuickActionButtonState extends State<_QuickActionButton> {
     );
   }
 }
- 
+
 class _MpinVerifySheet extends StatefulWidget {
   final VoidCallback onSuccess;
   final String title;
@@ -1439,7 +1398,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
   }
 
   void _biometricPress() {
-    
     setState(() {
       _isVerifying = true;
     });
@@ -1457,7 +1415,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
       _isVerifying = true;
     });
 
-    
     Timer(const Duration(milliseconds: 1000), () {
       if (mounted) {
         if (_mpin == "1234" || _mpin == "0000" || _mpin.length == 4) {
@@ -1476,7 +1433,7 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
 
   @override
   Widget build(BuildContext context) {
-    const Color _primaryRed = Color(0xFFE53935);
+    const Color _primaryRed = Color(0xFFFFCC00);
     const Color _textColor = Color(0xFF111111);
     const Color _secondaryText = Color(0xFF6B7280);
 
@@ -1496,7 +1453,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          
           Container(
             width: 40,
             height: 4,
@@ -1507,16 +1463,15 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 20),
 
-          
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: _primaryRed.withOpacity(0.08),
+              color: _primaryRed.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.shield_outlined,
-              color: _primaryRed,
+              color: Color(0xFF111111),
               size: 28,
             ),
           ),
@@ -1538,7 +1493,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 28),
 
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(4, (index) {
@@ -1587,7 +1541,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
             const SizedBox(height: 36),
           ],
 
-          
           Column(
             children: [
               Row(
@@ -1635,7 +1588,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
           ),
           const SizedBox(height: 20),
 
-          
           TextButton(
             onPressed: () => Get.back(),
             child: const Text(
@@ -1695,7 +1647,6 @@ class _MpinVerifySheetState extends State<_MpinVerifySheet> {
   }
 }
 
-
 class _FullCardDetailsPopup extends StatefulWidget {
   const _FullCardDetailsPopup();
 
@@ -1744,7 +1695,6 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
       color: Colors.transparent,
       child: Stack(
         children: [
-          
           GestureDetector(
             onTap: () => Get.back(),
             child: BackdropFilter(
@@ -1753,7 +1703,6 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
             ),
           ),
 
-          
           Center(
             child: ScaleTransition(
               scale: _scaleAnim,
@@ -1762,24 +1711,18 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFB71C1C),
-                            Color(0xFFD32F2F),
-                            Color(0xFFFF5252),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                        image: const DecorationImage(
+                          image: AssetImage('assets/unioncardblack.webp'),
+                          fit: BoxFit.cover,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.red.withOpacity(0.35),
+                            color: const Color(0xFFFFCC00).withOpacity(0.2),
                             blurRadius: 30,
                             offset: const Offset(0, 16),
                           ),
@@ -1787,61 +1730,28 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                       ),
                       child: Stack(
                         children: [
-                          
-                          Positioned(
-                            top: -30,
-                            right: -30,
-                            child: Container(
-                              height: 120,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withOpacity(0.08),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: -40,
-                            left: -40,
-                            child: Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.black.withOpacity(0.08),
-                              ),
-                            ),
-                          ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Prepaid Card",
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                  Image.asset(
+                                    'assets/WU.png',
+                                    height: 22,
+                                    fit: BoxFit.contain,
                                   ),
-                                  Text(
-                                    "VISA",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 2,
-                                    ),
+                                  Image.asset(
+                                    'assets/WHITE TRANSCORP .png',
+                                    height: 14,
+                                    fit: BoxFit.contain,
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 20),
 
-                              
                               Container(
                                 width: 45,
                                 height: 30,
@@ -1859,7 +1769,6 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                               ),
                               const SizedBox(height: 20),
 
-                              
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -1892,63 +1801,63 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                               ),
                               const SizedBox(height: 20),
 
-                              
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  
-                                  const Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "CARD HOLDER",
-                                        style: TextStyle(
-                                          color: Colors.white54,
-                                          fontSize: 10,
-                                          letterSpacing: 0.5,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          "CARD HOLDER",
+                                          style: TextStyle(
+                                            color: Colors.white54,
+                                            fontSize: 10,
+                                            letterSpacing: 0.5,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        "JANE DOE",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                          letterSpacing: 1,
+                                        const SizedBox(height: 3),
+                                        Text(
+                                          GetStorage().read('name') ??
+                                              "VINCE TALLENT",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 6),
+                                        const Row(
+                                          children: [
+                                            Text(
+                                              "VALID THRU  ",
+                                              style: TextStyle(
+                                                color: Colors.white54,
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 0.5,
+                                              ),
+                                            ),
+                                            Text(
+                                              "12/28",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  
-                                  const Column(
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "EXPIRY",
-                                        style: TextStyle(
-                                          color: Colors.white54,
-                                          fontSize: 10,
-                                          letterSpacing: 0.5,
-                                        ),
-                                      ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        "12/28",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       const Text(
                                         "CVV",
@@ -1988,6 +1897,11 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
                                       ),
                                     ],
                                   ),
+                                  Image.asset(
+                                    'assets/VisaFree.png',
+                                    height: 18,
+                                    fit: BoxFit.contain,
+                                  ),
                                 ],
                               ),
                             ],
@@ -1998,7 +1912,6 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
 
                     const SizedBox(height: 20),
 
-                    
                     GestureDetector(
                       onTap: () => Get.back(),
                       child: Container(
@@ -2031,7 +1944,6 @@ class _FullCardDetailsPopupState extends State<_FullCardDetailsPopup>
   }
 }
 
-
 class _PressableScale extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
@@ -2060,8 +1972,6 @@ class _PressableScaleState extends State<_PressableScale> {
     );
   }
 }
-
-
 
 class _AllCardsScreen extends StatelessWidget {
   const _AllCardsScreen();
@@ -2099,12 +2009,21 @@ class _AllCardsScreen extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: _borderColor, width: 1.5),
             ),
-            child: const Icon(Icons.arrow_back_rounded, color: _textColor, size: 20),
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: _textColor,
+              size: 20,
+            ),
           ),
         ),
         title: const Text(
           'My Cards',
-          style: TextStyle(color: _textColor, fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: -0.4),
+          style: TextStyle(
+            color: _textColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.4,
+          ),
         ),
         centerTitle: false,
         actions: [
@@ -2118,7 +2037,11 @@ class _AllCardsScreen extends StatelessWidget {
             ),
             child: Text(
               '${_kCards.length} Cards',
-              style: const TextStyle(color: _primaryRed, fontSize: 12, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: _primaryRed,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -2133,133 +2056,56 @@ class _AllCardsScreen extends StatelessWidget {
           final colors = card['colors'] as List<Color>;
           return _PressableScale(
             onTap: () => _onCardTap(index),
-            child: Container(
-              width: double.infinity,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(26),
-                gradient: LinearGradient(
-                  colors: colors,
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            child: Stack(
+              children: [
+                PremiumVisaCard(
+                  cardNumber: card['fullNumber'] as String,
+                  cardHolder:
+                      GetStorage().read('name') ?? card['holder'] as String,
+                  expiryDate: card['expiry'] as String,
+                  cvv: "•••",
+                  bgImage:
+                      card['bgImage'] as String? ??
+                      'assets/unioncardblack.webp',
+                  useBlackLogos: card['useBlackLogos'] as bool? ?? false,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: colors[1].withOpacity(0.4),
-                    blurRadius: 24,
-                    offset: const Offset(0, 12),
-                  ),
-                ],
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -30,
-                    right: -30,
+                Positioned.fill(
+                  child: Center(
                     child: Container(
-                      height: 130,
-                      width: 130,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.07),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 8,
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -40,
-                    left: -40,
-                    child: Container(
-                      height: 110,
-                      width: 110,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.07),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              card['label'] as String,
-                              style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600),
-                            ),
-                            const Text(
-                              'VISA',
-                              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 18),
-                        Container(
-                          width: 42,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          card['number'] as String,
-                          style: const TextStyle(color: Colors.white, fontSize: 17, letterSpacing: 2, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 14),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('CARD HOLDER', style: TextStyle(color: Colors.white54, fontSize: 9, letterSpacing: 0.5)),
-                                const SizedBox(height: 3),
-                                Text(card['holder'] as String, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 0.8)),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const Text('EXPIRY', style: TextStyle(color: Colors.white54, fontSize: 9, letterSpacing: 0.5)),
-                                const SizedBox(height: 3),
-                                Text(card['expiry'] as String, style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 24,
-                    right: 24,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.black.withOpacity(0.45),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white.withOpacity(0.2)),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.15),
+                        ),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.lock_outline_rounded, color: Colors.white70, size: 12),
-                          SizedBox(width: 5),
-                          Text('Tap to view', style: TextStyle(color: Colors.white70, fontSize: 11, fontWeight: FontWeight.w600)),
+                          Icon(
+                            Icons.lock_outline_rounded,
+                            color: Colors.white,
+                            size: 13,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            'Tap to view',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
@@ -2267,7 +2113,6 @@ class _AllCardsScreen extends StatelessWidget {
     );
   }
 }
-
 
 class _CardDetailsPopup extends StatefulWidget {
   final Map<String, dynamic> card;
@@ -2286,7 +2131,10 @@ class _CardDetailsPopupState extends State<_CardDetailsPopup>
   @override
   void initState() {
     super.initState();
-    _scaleCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 350));
+    _scaleCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    );
     _scaleAnim = CurvedAnimation(parent: _scaleCtrl, curve: Curves.easeOutBack);
     _scaleCtrl.forward();
   }
@@ -2312,6 +2160,9 @@ class _CardDetailsPopupState extends State<_CardDetailsPopup>
   @override
   Widget build(BuildContext context) {
     final colors = widget.card['colors'] as List<Color>;
+    final useBlackLogos = widget.card['useBlackLogos'] as bool? ?? false;
+    final textColor = useBlackLogos ? Colors.black : Colors.white;
+    final subColor = useBlackLogos ? Colors.black54 : Colors.white70;
     return Material(
       color: Colors.transparent,
       child: Stack(
@@ -2336,14 +2187,28 @@ class _CardDetailsPopupState extends State<_CardDetailsPopup>
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(26),
-                        gradient: LinearGradient(
-                          colors: colors,
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        gradient: widget.card['bgImage'] != null
+                            ? null
+                            : LinearGradient(
+                                colors: colors,
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                        image: widget.card['bgImage'] != null
+                            ? DecorationImage(
+                                image: AssetImage(
+                                  widget.card['bgImage'] as String,
+                                ),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                         boxShadow: [
                           BoxShadow(
-                            color: colors[1].withOpacity(0.4),
+                            color:
+                                (widget.card['bgImage'] != null
+                                        ? const Color(0xFFFFCC00)
+                                        : colors[1])
+                                    .withOpacity(0.3),
                             blurRadius: 32,
                             offset: const Offset(0, 16),
                           ),
@@ -2351,88 +2216,209 @@ class _CardDetailsPopupState extends State<_CardDetailsPopup>
                       ),
                       child: Stack(
                         children: [
-                          Positioned(
-                            top: -30, right: -30,
-                            child: Container(height: 120, width: 120,
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.08))),
-                          ),
-                          Positioned(
-                            bottom: -40, left: -40,
-                            child: Container(height: 100, width: 100,
-                              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.black.withOpacity(0.08))),
-                          ),
+                          if (widget.card['bgImage'] == null) ...[
+                            Positioned(
+                              top: -30,
+                              right: -30,
+                              child: Container(
+                                height: 120,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.white.withOpacity(0.08),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -40,
+                              left: -40,
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.black.withOpacity(0.08),
+                                ),
+                              ),
+                            ),
+                          ],
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(widget.card['label'] as String,
-                                    style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.w600)),
-                                  const Text('VISA',
-                                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                                  Image.asset(
+                                    'assets/WU.png',
+                                    height: 22,
+                                    fit: BoxFit.contain,
+                                    color: useBlackLogos ? Colors.black : null,
+                                  ),
+                                  Image.asset(
+                                    'assets/WHITE TRANSCORP .png',
+                                    height: 14,
+                                    fit: BoxFit.contain,
+                                    color: useBlackLogos ? Colors.black : null,
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                width: 45, height: 30,
+                                width: 45,
+                                height: 30,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
                                   gradient: const LinearGradient(
-                                    colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
-                                    begin: Alignment.topLeft, end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFFFFECB3),
+                                      Color(0xFFE5C158),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 20),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(widget.card['fullNumber'] as String,
-                                    style: const TextStyle(color: Colors.white, fontSize: 18, letterSpacing: 2, fontWeight: FontWeight.w500)),
+                                  Text(
+                                    widget.card['fullNumber'] as String,
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontSize: 18,
+                                      letterSpacing: 2,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                   GestureDetector(
                                     onTap: _copyNumber,
                                     child: Container(
                                       padding: const EdgeInsets.all(6),
                                       decoration: BoxDecoration(
-                                        color: Colors.white.withOpacity(0.15),
+                                        color: textColor.withOpacity(0.15),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      child: const Icon(Icons.copy_rounded, color: Colors.white, size: 16),
+                                      child: Icon(
+                                        Icons.copy_rounded,
+                                        color: textColor,
+                                        size: 16,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 20),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                    const Text('CARD HOLDER', style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 0.5)),
-                                    const SizedBox(height: 3),
-                                    Text(widget.card['holder'] as String,
-                                      style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                                  ]),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                                    const Text('EXPIRY', style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 0.5)),
-                                    const SizedBox(height: 3),
-                                    Text(widget.card['expiry'] as String,
-                                      style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
-                                  ]),
-                                  Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                                    const Text('CVV', style: TextStyle(color: Colors.white54, fontSize: 10, letterSpacing: 0.5)),
-                                    const SizedBox(height: 3),
-                                    GestureDetector(
-                                      onTap: () => setState(() => _showCvv = !_showCvv),
-                                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                                        Text(_showCvv ? widget.card['cvv'] as String : '•••',
-                                          style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
-                                        const SizedBox(width: 6),
-                                        Icon(_showCvv ? Icons.visibility_rounded : Icons.visibility_off_rounded,
-                                          color: Colors.white70, size: 16),
-                                      ]),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          GetStorage().read('name') ??
+                                              widget.card['holder'] as String,
+                                          style: TextStyle(
+                                            color: textColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "VALID\nTHRU   ",
+                                              style: TextStyle(
+                                                color: subColor,
+                                                fontSize: 8,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 0.5,
+                                              ),
+                                            ),
+                                            Text(
+                                              widget.card['expiry'] as String,
+                                              style: TextStyle(
+                                                color: textColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ]),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'CVV',
+                                          style: TextStyle(
+                                            color: subColor,
+                                            fontSize: 10,
+                                            letterSpacing: 0.5,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 3),
+                                        GestureDetector(
+                                          onTap: () => setState(
+                                            () => _showCvv = !_showCvv,
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                _showCvv
+                                                    ? widget.card['cvv']
+                                                          as String
+                                                    : '•••',
+                                                style: TextStyle(
+                                                  color: textColor,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Icon(
+                                                _showCvv
+                                                    ? Icons.visibility_rounded
+                                                    : Icons
+                                                          .visibility_off_rounded,
+                                                color: subColor,
+                                                size: 16,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        'assets/VisaFree.png',
+                                        height: 18,
+                                        fit: BoxFit.contain,
+                                        color: useBlackLogos
+                                            ? Colors.black
+                                            : null,
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ],
@@ -2444,13 +2430,22 @@ class _CardDetailsPopupState extends State<_CardDetailsPopup>
                     GestureDetector(
                       onTap: () => Get.back(),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 28,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(24),
                         ),
-                        child: const Text('Close',
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -2468,15 +2463,66 @@ class _PayBillScreen extends StatelessWidget {
   const _PayBillScreen();
 
   static const _billers = [
-    {'icon': Icons.bolt_rounded, 'label': 'Electricity', 'color': Color(0xFFFFA726), 'sub': 'Pay your electricity bill'},
-    {'icon': Icons.credit_card, 'label': 'Credit Card Bill', 'color': Color.fromARGB(255, 38, 110, 255), 'sub': 'Pay your electricity bill'},
-    {'icon': Icons.phone_android_rounded, 'label': 'Mobile', 'color': Color(0xFF42A5F5), 'sub': 'Recharge or pay postpaid'},
-    {'icon': Icons.tv_rounded, 'label': 'DTH', 'color': Color(0xFF7E57C2), 'sub': 'Recharge your DTH'},
-    {'icon': Icons.water_drop_rounded, 'label': 'Water', 'color': Color(0xFF26C6DA), 'sub': 'Pay water utility bill'},
-    {'icon': Icons.local_gas_station_rounded, 'label': 'Gas', 'color': Color(0xFF66BB6A), 'sub': 'Pay gas pipeline bill'},
-    {'icon': Icons.wifi_rounded, 'label': 'Broadband', 'color': Color(0xFFEF5350), 'sub': 'Pay internet bill'},
-    {'icon': Icons.directions_bus_rounded, 'label': 'Transport', 'color': Color(0xFF26A69A), 'sub': 'Bus & metro recharge'},
-    {'icon': Icons.local_hospital_rounded, 'label': 'Insurance', 'color': Color(0xFFEC407A), 'sub': 'Pay insurance premium'},
+    {
+      'icon': Icons.bolt_rounded,
+      'label': 'Electricity',
+      'color': Color(0xFFFFA726),
+      'sub': 'Pay your electricity bill',
+    },
+    {
+      'icon': Icons.credit_card,
+      'label': 'Credit Card Bill',
+      'color': Color.fromARGB(255, 38, 110, 255),
+      'sub': 'Pay your card bill',
+    },
+    {
+      'icon': Icons.phone_android_rounded,
+      'label': 'Mobile',
+      'color': Color(0xFF42A5F5),
+      'sub': 'Recharge or pay postpaid',
+    },
+    {
+      'icon': Icons.tv_rounded,
+      'label': 'DTH',
+      'color': Color(0xFF7E57C2),
+      'sub': 'Recharge your DTH',
+    },
+    {
+      'icon': Icons.water_drop_rounded,
+      'label': 'Water',
+      'color': Color(0xFF26C6DA),
+      'sub': 'Pay water utility bill',
+    },
+    {
+      'icon': Icons.local_gas_station_rounded,
+      'label': 'Gas',
+      'color': Color(0xFF66BB6A),
+      'sub': 'Pay gas pipeline bill',
+    },
+    {
+      'icon': Icons.wifi_rounded,
+      'label': 'Broadband',
+      'color': Color(0xFFEF5350),
+      'sub': 'Pay internet bill',
+    },
+    {
+      'icon': Icons.toll_rounded,
+      'label': 'Fastag',
+      'color': Color(0xFF26A69A),
+      'sub': 'Recharge your Fastag',
+    },
+    {
+      'icon': Icons.account_balance_rounded,
+      'label': 'Loan/EMI Payments',
+      'color': Color(0xFF8D6E63),
+      'sub': 'Pay your loan EMI',
+    },
+    {
+      'icon': Icons.local_hospital_rounded,
+      'label': 'Insurance',
+      'color': Color(0xFFEC407A),
+      'sub': 'Pay insurance premium',
+    },
   ];
 
   void _showComingSoon(BuildContext context, String label) {
@@ -2497,18 +2543,30 @@ class _PayBillScreen extends StatelessWidget {
                 color: _primaryRed.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.hourglass_empty_rounded, color: _primaryRed, size: 28),
+              child: const Icon(
+                Icons.hourglass_empty_rounded,
+                color: _primaryRed,
+                size: 28,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               '$label Coming Soon',
-              style: const TextStyle(color: _textColor, fontSize: 18, fontWeight: FontWeight.w800),
+              style: const TextStyle(
+                color: _textColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 8),
             const Text(
               'We are working hard to bring this feature very soon. Stay tuned!',
               textAlign: TextAlign.center,
-              style: TextStyle(color: _secondaryText, fontSize: 13, height: 1.4),
+              style: TextStyle(
+                color: _secondaryText,
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -2519,10 +2577,15 @@ class _PayBillScreen extends StatelessWidget {
                   backgroundColor: _textColor,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   elevation: 0,
                 ),
-                child: const Text('Got it', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                child: const Text(
+                  'Got it',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
               ),
             ),
           ],
@@ -2548,12 +2611,21 @@ class _PayBillScreen extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: const Color(0xFFECECEC), width: 1.5),
             ),
-            child: const Icon(Icons.arrow_back_rounded, color: _textColor, size: 20),
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: _textColor,
+              size: 20,
+            ),
           ),
         ),
         title: const Text(
           'Pay Bills',
-          style: TextStyle(color: _textColor, fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: -0.4),
+          style: TextStyle(
+            color: _textColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.4,
+          ),
         ),
         centerTitle: false,
       ),
@@ -2567,7 +2639,10 @@ class _PayBillScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [_primaryRed.withOpacity(0.07), _primaryRed.withOpacity(0.02)],
+                  colors: [
+                    _primaryRed.withOpacity(0.07),
+                    _primaryRed.withOpacity(0.02),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -2582,15 +2657,29 @@ class _PayBillScreen extends StatelessWidget {
                       color: _primaryRed.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.receipt_long_rounded, color: _primaryRed, size: 22),
+                    child: const Icon(
+                      Icons.receipt_long_rounded,
+                      color: _primaryRed,
+                      size: 22,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Quick & Secure Payments', style: TextStyle(color: _textColor, fontSize: 14, fontWeight: FontWeight.w700)),
+                      Text(
+                        'Quick & Secure Payments',
+                        style: TextStyle(
+                          color: _textColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                       SizedBox(height: 2),
-                      Text('Pay all your bills in one place', style: TextStyle(color: _secondaryText, fontSize: 12)),
+                      Text(
+                        'Pay all your bills in one place',
+                        style: TextStyle(color: _secondaryText, fontSize: 12),
+                      ),
                     ],
                   ),
                 ],
@@ -2599,7 +2688,12 @@ class _PayBillScreen extends StatelessWidget {
             const SizedBox(height: 24),
             const Text(
               'Select a Category',
-              style: TextStyle(color: _textColor, fontSize: 16, fontWeight: FontWeight.w800, letterSpacing: -0.3),
+              style: TextStyle(
+                color: _textColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.3,
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -2618,11 +2712,17 @@ class _PayBillScreen extends StatelessWidget {
                   return _PressableScale(
                     onTap: () => _showComingSoon(context, b['label'] as String),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
                         color: color.withOpacity(0.07),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: color.withOpacity(0.18), width: 1.2),
+                        border: Border.all(
+                          color: color.withOpacity(0.18),
+                          width: 1.2,
+                        ),
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -2633,7 +2733,11 @@ class _PayBillScreen extends StatelessWidget {
                               color: color.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Icon(b['icon'] as IconData, color: color, size: 22),
+                            child: Icon(
+                              b['icon'] as IconData,
+                              color: color,
+                              size: 22,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -2643,12 +2747,20 @@ class _PayBillScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   b['label'] as String,
-                                  style: const TextStyle(color: _textColor, fontSize: 13, fontWeight: FontWeight.w700),
+                                  style: const TextStyle(
+                                    color: _textColor,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
                                   b['sub'] as String,
-                                  style: const TextStyle(color: _secondaryText, fontSize: 10, fontWeight: FontWeight.w500),
+                                  style: const TextStyle(
+                                    color: _secondaryText,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -2725,7 +2837,7 @@ class _BezierChartPainter extends CustomPainter {
     fillPath.close();
 
     const gradient = LinearGradient(
-      colors: [Color(0x28E53935), Color(0x00E53935)],
+      colors: [Color(0x28FFCC00), Color(0x00FFCC00)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
     );
@@ -2752,4 +2864,422 @@ class _BezierChartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class ServicesMoreScreen extends StatelessWidget {
+  const ServicesMoreScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double itemWidth = (screenWidth - 40 - 16) / 2;
+    final double dynamicAspectRatio = itemWidth / 130;
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF9F9FB),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        leading: GestureDetector(
+          onTap: () => Get.back(),
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(color: const Color(0xFFECECEC), width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.arrow_back_rounded,
+              color: _textColor,
+              size: 20,
+            ),
+          ),
+        ),
+        title: const Text(
+          'More Services',
+          style: TextStyle(
+            color: _textColor,
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.5,
+          ),
+        ),
+        centerTitle: false,
+      ),
+      body: Stack(
+        children: [
+          // Ambient light blobs in background
+          Positioned(
+            top: -100,
+            right: -100,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFFFCC00).withOpacity(0.08),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: -50,
+            left: -100,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _primaryRed.withOpacity(0.04),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Financial Hub',
+                  style: TextStyle(
+                    color: _textColor,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -0.6,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Select from our premium range of wallet operations.',
+                  style: TextStyle(
+                    color: _secondaryText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 28),
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: dynamicAspectRatio,
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      _buildServiceCard(
+                        icon: Icons.send_rounded,
+                        title: 'Send Money',
+                        subtitle: 'Instant transfer to bank / wallet',
+                        color: const Color(0xFF00C853),
+                        onTap: () => Get.toNamed("/sendmoney"),
+                      ),
+                      _buildServiceCard(
+                        icon: Icons.add_rounded,
+                        title: 'Add Money',
+                        subtitle: 'Top-up wallet via UPI / Card',
+                        color: const Color(0xFF2979FF),
+                        onTap: () {
+                          Get.bottomSheet(
+                            const AddmoneyView(showGeneralWalletOption: false),
+                            isScrollControlled: true,
+                            isDismissible: false,
+                            enableDrag: false,
+                            backgroundColor: Colors.transparent,
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        icon: Icons.receipt_long_rounded,
+                        title: 'Pay Bill',
+                        subtitle: 'Quick utility payments',
+                        color: const Color(0xFFFF9100),
+                        onTap: () => Get.to(
+                          () => const _PayBillScreen(),
+                          transition: Transition.cupertino,
+                        ),
+                      ),
+                      _buildServiceCard(
+                        icon: Icons.credit_card_rounded,
+                        title: 'Forex Card',
+                        subtitle: 'Multi-currency travel card',
+                        color: const Color(0xFF651FFF),
+                        isUpcoming: true,
+                        onTap: () {},
+                      ),
+                      _buildServiceCard(
+                        icon: Icons.swap_horizontal_circle_rounded,
+                        title: 'Remittance',
+                        subtitle: 'International money exchange',
+                        color: const Color(0xFF00B0FF),
+                        onTap: () => _openRemittanceBottomSheet(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildServiceCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+    bool isUpcoming = false,
+  }) {
+    return _PressableScale(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isUpcoming
+                ? const Color(0xFFECECEC)
+                : color.withOpacity(0.12),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isUpcoming
+                  ? Colors.black.withOpacity(0.02)
+                  : color.withOpacity(0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isUpcoming
+                        ? const Color(0xFFF0F0F2)
+                        : color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: isUpcoming ? Colors.grey[500] : color,
+                    size: 20,
+                  ),
+                ),
+                if (isUpcoming)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFEBEE),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'SOON',
+                      style: TextStyle(
+                        color: Color(0xFFC62828),
+                        fontSize: 7,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: isUpcoming ? Colors.grey[600] : _textColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: isUpcoming ? Colors.grey[400] : _secondaryText,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomSheetItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+    bool isUpcoming = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: isUpcoming ? const Color(0xFFF9F9FB) : Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isUpcoming
+                ? const Color(0xFFECECEC)
+                : _primaryRed.withOpacity(0.12),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 14,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isUpcoming
+                    ? const Color(0xFFF0F0F2)
+                    : _primaryRed.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                icon,
+                color: isUpcoming ? Colors.grey[500] : _primaryRed,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: isUpcoming ? Colors.grey[600] : _textColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: isUpcoming ? Colors.grey[400] : _secondaryText,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (!isUpcoming)
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: _secondaryText,
+                size: 14,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openRemittanceBottomSheet(BuildContext context) {
+    Get.bottomSheet(
+      Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        ),
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Remittance',
+              style: TextStyle(
+                color: _textColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                letterSpacing: -0.4,
+              ),
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Select a remittance option',
+              style: TextStyle(color: _secondaryText, fontSize: 14),
+            ),
+            const SizedBox(height: 24),
+            _buildBottomSheetItem(
+              icon: Icons.send_rounded,
+              title: 'Send Money (Upcoming)',
+              subtitle: 'Send money to bank account or wallet',
+              isUpcoming: true,
+              onTap: () {},
+            ),
+            const SizedBox(height: 12),
+            _buildBottomSheetItem(
+              icon: Icons.call_received_rounded,
+              title: 'Receive Money (Upcoming)',
+              subtitle: 'Receive money directly into your account',
+              isUpcoming: true,
+              onTap: () {},
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
 }

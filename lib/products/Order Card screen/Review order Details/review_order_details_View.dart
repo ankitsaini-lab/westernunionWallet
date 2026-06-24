@@ -209,177 +209,127 @@ class ReviewOrderDetailsView extends GetView<ReviewOrderDetailsController> {
 
   Widget _buildLiveCardPreview() {
     return Obx(() {
-      final gradient = controller.cardGradient;
       final glowColor = controller.cardGlowColor.value;
-      final cardLabel = controller.cardLabel.value;
       final namePrinted = controller.name.value;
-      final textColor = controller.cardTextColor.value;
-      final subColor = controller.cardSubColor.value;
 
-      return Container(
-        height: 196,
-        width: 320,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: LinearGradient(
-            colors: gradient.isNotEmpty
-                ? gradient
-                : [const Color(0xFF111111), const Color(0xFF2C2C2C)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      return AspectRatio(
+        aspectRatio: 85.60 / 45,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: AssetImage('assets/unioncardblack.webp'),
+              fit: BoxFit.cover,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: glowColor.withValues(alpha: 0.35),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-          boxShadow: [
-            BoxShadow(
-              color: glowColor.withValues(alpha: 0.35),
-              blurRadius: 24,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            Positioned(
-              top: -40,
-              right: -40,
-              child: Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.04),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
-              ),
-            ),
-            Positioned(
-              bottom: -30,
-              left: -20,
-              child: Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.black.withValues(alpha: 0.06),
-                ),
-              ),
-            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/WU.png',
+                          height: 22,
+                          fit: BoxFit.contain,
+                        ),
+                        Image.asset(
+                          'assets/WHITE TRANSCORP .png',
+                          height: 14,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ),
 
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "TRANSWALLET",
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 2.0,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          cardLabel.toUpperCase(),
-                          style: TextStyle(
-                            color: subColor,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 26,
+                          width: 36,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        const SizedBox(width: 12),
+                        const Icon(
+                          Icons.contactless_rounded,
+                          color: Colors.white70,
+                          size: 18,
+                        ),
+                      ],
+                    ),
 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 28,
-                        width: 38,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFFFECB3), Color(0xFFE5C158)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "••••  ••••  ••••  8824",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                namePrinted.isEmpty
+                                    ? "YOUR NAME HERE"
+                                    : namePrinted.toUpperCase(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: namePrinted.isEmpty
+                                      ? Colors.white70.withValues(alpha: 0.6)
+                                      : Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.0,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Icon(
-                        Icons.contactless_rounded,
-                        color: textColor.withValues(alpha: 0.7),
-                        size: 20,
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "••••  ••••  ••••  8824",
-                              style: TextStyle(
-                                color: textColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              namePrinted.isEmpty
-                                  ? "YOUR NAME HERE"
-                                  : namePrinted.toUpperCase(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: namePrinted.isEmpty
-                                    ? subColor.withValues(alpha: 0.6)
-                                    : textColor,
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                          ],
+                        Image.asset(
+                          'assets/VisaFree.png',
+                          height: 18,
+                          fit: BoxFit.contain,
                         ),
-                      ),
-                      Text(
-                        "VISA",
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                          fontStyle: FontStyle.italic,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });

@@ -92,7 +92,7 @@ class SendmoneyController extends GetxController {
           return const Center(
             child: Padding(
               padding: EdgeInsets.all(40),
-              child: CircularProgressIndicator(color: Color(0xFFE53935)),
+              child: CircularProgressIndicator(color: Color(0xFFFFCC00)),
             ),
           );
         case 4:
@@ -130,11 +130,11 @@ class SendmoneyController extends GetxController {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFFE53935).withOpacity(0.08),
+              color: const Color(0xFFFFCC00).withOpacity(0.15),
             ),
             child: SvgPicture.asset(
               "assets/User_empty.svg",
-              colorFilter: const ColorFilter.mode(Color(0xFFE53935), BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(Color(0xFF111111), BlendMode.srcIn),
             ),
           ),
           const SizedBox(height: 20),
@@ -225,7 +225,7 @@ class SendmoneyController extends GetxController {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFFE53935),
+                    color: Color(0xFF111111),
                   ),
                 ),
               ),
@@ -526,9 +526,9 @@ class SendmoneyController extends GetxController {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: const Color(0xFFE53935).withOpacity(0.08),
+              color: const Color(0xFFFFCC00).withOpacity(0.15),
             ),
-            child: const Icon(Icons.phonelink_ring_rounded, color: Color(0xFFE53935), size: 28),
+            child: const Icon(Icons.phonelink_ring_rounded, color: Color(0xFF111111), size: 28),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -563,7 +563,7 @@ class SendmoneyController extends GetxController {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Color(0xFFE53935), width: 1.5),
+                      borderSide: const BorderSide(color: Color(0xFFFFCC00), width: 1.5),
                     ),
                   ),
                   onChanged: (v) {
@@ -633,7 +633,7 @@ class SendmoneyController extends GetxController {
           ),
           const SizedBox(height: 6),
           const Text(
-            "You can now send money instantly to this beneficiary from your Transcorp wallet.",
+            "You can now send money instantly to this beneficiary from your Western Union wallet.",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12, color: Color(0xFF6B7280), height: 1.4, fontWeight: FontWeight.w500),
           ),
@@ -671,14 +671,14 @@ class SendmoneyController extends GetxController {
               onTap: () => step.value = 1,
               child: const Row(
                 children: [
-                  Icon(Icons.add_circle_outline_rounded, color: Color(0xFFE53935), size: 14),
+                  Icon(Icons.add_circle_outline_rounded, color: Color(0xFF111111), size: 14),
                   SizedBox(width: 4),
                   Text(
                     "Add New",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFE53935),
+                      color: Color(0xFF111111),
                     ),
                   ),
                 ],
@@ -705,13 +705,13 @@ class SendmoneyController extends GetxController {
                         height: 38,
                         width: 38,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFE53935),
+                          color: Color(0xFFFFCC00),
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           b["name"]![0].toUpperCase(),
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: const TextStyle(color: Color(0xFF111111), fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ),
                       title: Text(

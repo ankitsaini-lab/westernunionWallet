@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:transwallet/widgets/constsize.dart';
+import 'package:transwallet/utilities/getStorage.dart';
+import 'package:transwallet/widgets/premium_visa_card.dart';
+
 class FeatureControl {
   RxBool enabled;
   RxDouble limit;
 
-  FeatureControl({
-    bool enabled = false,
-    double limit = 50,
-  })  : enabled = enabled.obs,
-        limit = limit.obs;
+  FeatureControl({bool enabled = false, double limit = 50})
+    : enabled = enabled.obs,
+      limit = limit.obs;
 }
 
 class ManagecardController extends GetxController {
@@ -23,6 +25,7 @@ class ManagecardController extends GetxController {
   void toggleCardStatus() {
     isCardBlocked.toggle();
   }
+
   void showBlockUnblockDialog() {
     Get.dialog(
       Dialog(
@@ -41,7 +44,6 @@ class ManagecardController extends GetxController {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-               
                 Container(
                   height: 55,
                   width: 55,
@@ -51,8 +53,7 @@ class ManagecardController extends GetxController {
 
                     color: isCardBlocked.value
                         ? Colors.green.withOpacity(.1)
-                        : const Color(0xFFD90429)
-                            .withOpacity(.1),
+                        : const Color(0xFF111111).withOpacity(.1),
                   ),
 
                   child: Icon(
@@ -64,17 +65,14 @@ class ManagecardController extends GetxController {
 
                     color: isCardBlocked.value
                         ? Colors.green
-                        : const Color(0xFFD90429),
+                        : const Color(0xFF111111),
                   ),
                 ),
 
                 const SizedBox(height: 18),
 
-                
                 Text(
-                  isCardBlocked.value
-                      ? "Unblock Card"
-                      : "Block Card",
+                  isCardBlocked.value ? "Unblock Card" : "Block Card",
 
                   style: const TextStyle(
                     fontSize: 18,
@@ -84,7 +82,6 @@ class ManagecardController extends GetxController {
 
                 height12,
 
-                
                 Text(
                   isCardBlocked.value
                       ? "Your card will be activated again."
@@ -99,9 +96,8 @@ class ManagecardController extends GetxController {
                   ),
                 ),
 
-              height24,
+                height24,
 
-                 
                 Row(
                   children: [
                     Expanded(
@@ -109,19 +105,14 @@ class ManagecardController extends GetxController {
                         onPressed: Get.back,
 
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 15,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
 
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
 
-                        child: const Text(
-                          "Cancel",
-                        ),
+                        child: const Text("Cancel"),
                       ),
                     ),
 
@@ -130,9 +121,7 @@ class ManagecardController extends GetxController {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                         
-
-                           toggleCardStatus();
+                          toggleCardStatus();
                           Get.back();
 
                           Get.snackbar(
@@ -141,8 +130,7 @@ class ManagecardController extends GetxController {
                                 ? "Card Blocked"
                                 : "Card Unblocked",
 
-                            snackPosition:
-                                SnackPosition.BOTTOM,
+                            snackPosition: SnackPosition.BOTTOM,
 
                             backgroundColor: Colors.black,
                             colorText: Colors.white,
@@ -153,30 +141,21 @@ class ManagecardController extends GetxController {
                         },
 
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              isCardBlocked.value
-                                  ? Colors.green
-                                  : const Color(
-                                      0xFFD90429,
-                                    ),
+                          backgroundColor: isCardBlocked.value
+                              ? Colors.green
+                              : const Color(0xFF111111),
 
                           elevation: 0,
 
-                          padding:
-                              const EdgeInsets.symmetric(
-                            vertical: 15,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
 
                           shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
 
                         child: Text(
-                          isCardBlocked.value
-                              ? "Unblock"
-                              : "Block",
+                          isCardBlocked.value ? "Unblock" : "Block",
 
                           style: const TextStyle(
                             color: Colors.white,
@@ -198,252 +177,22 @@ class ManagecardController extends GetxController {
   }
 
   Widget cardPreview() {
-  return Obx(
-    () => Container(
-      height: 210,
-      width: double.infinity,
-
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-
-          colors: isCardBlocked.value
-              ? [
-                  const Color(0xFF4A4A4A),
-                  const Color(0xFF2C2C2C),
-                  const Color(0xFF121212),
-                ]
-              : [
-                  const Color(0xFFFF2E4D),
-                  const Color(0xFFD90429),
-                  const Color(0xFF8D021F),
-                ],
+    final box = GetStorage();
+    return Obx(
+      () => Center(
+        child: PremiumVisaCard(
+          cardNumber: "••••••••••••4567",
+          cardHolder: box.read('name') ?? "John Doe",
+          expiryDate: "12/28",
+          cvv: "•••",
+          isBlocked: isCardBlocked.value,
         ),
-
-        boxShadow: [
-          BoxShadow(
-            color:  isCardBlocked.value
-                ? Colors.black.withOpacity(.18)
-                : Colors.red.withOpacity(.25),
-
-            blurRadius: 20,
-            offset: const Offset(0, 12),
-          ),
-        ],
       ),
-
-      child: Stack(
-        children: [
-          
-          Positioned(
-            top: -20,
-            left: -10,
-            child: Container(
-              height: 180,
-              width: 180,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(.06),
-              ),
-            ),
-          ),
-
-          
-          Positioned(
-            bottom: -40,
-            right: -20,
-            child: Container(
-              height: 180,
-              width: 180,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(.05),
-              ),
-            ),
-          ),
-
-          
-          if (isCardBlocked.value)
-            Positioned(
-              top: 18,
-              left: 18,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(.18),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                    color: Colors.redAccent,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.block,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      "CARD BLOCKED",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-          
-          Padding(
-            padding: const EdgeInsets.all(22),
-
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-
-                  child: Text(
-                     isCardBlocked.value
-                        ? "BLOCKED"
-                        : "TRANSCORP",
-
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                ),
-
-                const Spacer(),
-
-                
-                Opacity(
-                  opacity:
-                       isCardBlocked.value
-                          ? 0.55
-                          : 1,
-                  child: const Text(
-                    "****  ****  ****  4567",
-
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    
-                    Opacity(
-                      opacity:
-                          isCardBlocked.value
-                              ? 0.55
-                              : 1,
-                      child: const Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
-                        children: [
-                          Text(
-                            "CARD HOLDER",
-
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 11,
-                            ),
-                          ),
-
-                          SizedBox(height: 6),
-
-                          Text(
-                            "John Doe",
-
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight:
-                                  FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    
-                    Opacity(
-                      opacity:
-                          isCardBlocked.value
-                              ? 0.55
-                              : 1,
-                      child: const Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-
-                        children: [
-                          Text(
-                            "VALID THRU",
-
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 11,
-                            ),
-                          ),
-
-                          SizedBox(height: 6),
-
-                          Text(
-                            "06/28",
-
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight:
-                                  FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+    );
+  }
 }
-}
-Widget featureTile(
-  String title,
-  FeatureControl control,
-) {
+
+Widget featureTile(String title, FeatureControl control) {
   return Obx(
     () => Container(
       margin: const EdgeInsets.only(bottom: 18),
@@ -464,10 +213,8 @@ Widget featureTile(
 
       child: Column(
         children: [
-   
           Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
               Text(
@@ -489,7 +236,6 @@ Widget featureTile(
             ],
           ),
 
-         
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
 
@@ -499,51 +245,40 @@ Widget featureTile(
                       const SizedBox(height: 18),
 
                       PremiumSlider(
-                        value:
-                            control.limit.value,
+                        value: control.limit.value,
 
                         min: 5000,
                         max: 500000,
 
                         onChanged: (value) {
-                          control.limit.value =
-                              value;
+                          control.limit.value = value;
                         },
                       ),
 
                       const SizedBox(height: 12),
 
                       Align(
-                        alignment:
-                            Alignment.centerRight,
+                        alignment: Alignment.centerRight,
 
                         child: Container(
-                          padding:
-                              const EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 14,
                             vertical: 7,
                           ),
 
                           decoration: BoxDecoration(
-                            color: const Color(
-                              0xFFD90429,
-                            ).withOpacity(.08),
+                            color: const Color(0xFFFFCC00).withOpacity(.15),
 
-                            borderRadius:
-                                BorderRadius.circular(
-                              30,
-                            ),
+                            borderRadius: BorderRadius.circular(30),
                           ),
 
                           child: Text(
                             "Limit: ${control.limit.value.toInt()}",
 
                             style: const TextStyle(
-                              color:
-                                  Color(0xFFD90429),
+                              color: const Color(0xFF111111),
 
-                              fontWeight:
-                                  FontWeight.w500,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -557,7 +292,7 @@ Widget featureTile(
     ),
   );
 }
- 
+
 class PremiumToggle extends StatelessWidget {
   final bool value;
   final Function(bool) onChanged;
@@ -584,28 +319,21 @@ class PremiumToggle extends StatelessWidget {
         padding: const EdgeInsets.all(3),
 
         decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(30),
 
           gradient: value
               ? const LinearGradient(
-                  colors: [
-                    Color(0xFFFF2E4D),
-                    Color(0xFFD90429),
-                  ],
+                  colors: [Color(0xFFFFB300), Color(0xFFFFCC00)],
                 )
               : null,
 
-          color:
-              value ? null : Colors.grey.shade300,
+          color: value ? null : Colors.grey.shade300,
         ),
 
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 250),
 
-          alignment: value
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
+          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
 
           child: Container(
             width: 25,
@@ -644,21 +372,12 @@ class PremiumSlider extends StatelessWidget {
           data: SliderTheme.of(context).copyWith(
             trackHeight: 5,
 
-            activeTrackColor:
-                const Color(0xFFD90429),
-
-            inactiveTrackColor:
-                Colors.red.shade100,
-
+            activeTrackColor: const Color(0xFFFFCC00),
+            inactiveTrackColor: const Color(0xFFFFCC00).withOpacity(0.18),
             thumbColor: Colors.white,
+            overlayColor: const Color(0xFFFFCC00).withOpacity(.15),
 
-            overlayColor:
-                Colors.red.withOpacity(.15),
-
-            thumbShape:
-                const RoundSliderThumbShape(
-              enabledThumbRadius: 11,
-            ),
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 11),
           ),
 
           child: Slider(
@@ -672,12 +391,10 @@ class PremiumSlider extends StatelessWidget {
         ),
 
         Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
 
           child: Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
               Text(

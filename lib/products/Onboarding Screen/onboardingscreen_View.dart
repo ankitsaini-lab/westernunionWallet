@@ -11,7 +11,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => OnboardingscreenController());
 
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
 
@@ -162,7 +162,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                         ),
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [primaryRed, Color(0xFFC62828)],
+                            colors: [primaryRed, Color(0xFFFFB300)],
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
                           ),
@@ -184,9 +184,9 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                               return Text(
                                 isLastPage ? "Get Started" : "Next",
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF111111),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               );
                             }),
@@ -194,7 +194,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                             const Icon(
                               Icons.arrow_forward_rounded,
                               size: 16,
-                              color: Colors.white,
+                              color: Color(0xFF111111),
                             ),
                           ],
                         ),
@@ -211,9 +211,13 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
   }
 
   // --- Wave Background with Double Layer for Depth ---
-  Widget _buildIllustrationBackground(Widget child) {
+  Widget _buildIllustrationBackground(BuildContext context, Widget child) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double illustrationHeight = (screenHeight * 0.45).clamp(240.0, 410.0);
+    final double starScale = illustrationHeight / 410.0;
+
     return SizedBox(
-      height: 410,
+      height: illustrationHeight,
       child: Stack(
         children: [
           // Layer 1: Back Wave (lighter opacity, shifted slightly)
@@ -225,7 +229,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                 child: ClipPath(
                   clipper: OnboardingBackgroundClipper(),
                   child: Container(
-                    color: const Color(0xFFFFE4E6).withOpacity(0.55),
+                    color: const Color(0xFFFFFDE7).withOpacity(0.55),
                   ),
                 ),
               ),
@@ -239,7 +243,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Color(0xFFFFF0F2), Color(0xFFFFCCD5)],
+                    colors: [Color(0xFFFFFDF0), Color(0xFFFFF9C4)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -249,18 +253,30 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
           ),
 
           // Breathing Pulsing Sparkles / Stars
-          const Positioned(top: 100, right: 40, child: PulsingStar(size: 20)),
-          const Positioned(top: 160, left: 50, child: PulsingStar(size: 16)),
-          const Positioned(bottom: 140, left: 30, child: PulsingStar(size: 14)),
-          const Positioned(
-            bottom: 90,
-            right: 180,
-            child: PulsingStar(size: 12),
+          Positioned(
+            top: 100 * starScale,
+            right: 40 * starScale,
+            child: PulsingStar(size: 20 * starScale),
           ),
-          const Positioned(
-            bottom: 160,
-            right: 30,
-            child: PulsingStar(size: 18),
+          Positioned(
+            top: 160 * starScale,
+            left: 50 * starScale,
+            child: PulsingStar(size: 16 * starScale),
+          ),
+          Positioned(
+            bottom: 140 * starScale,
+            left: 30 * starScale,
+            child: PulsingStar(size: 14 * starScale),
+          ),
+          Positioned(
+            bottom: 90 * starScale,
+            right: 180 * starScale,
+            child: PulsingStar(size: 12 * starScale),
+          ),
+          Positioned(
+            bottom: 160 * starScale,
+            right: 30 * starScale,
+            child: PulsingStar(size: 18 * starScale),
           ),
 
           // The Illustration itself
@@ -274,13 +290,17 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
   Widget _buildPage1(BuildContext context) {
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double illustrationHeight = (screenHeight * 0.45).clamp(240.0, 410.0);
+    final double topPadding = (illustrationHeight * 0.18).clamp(40.0, 80.0);
 
     return Column(
       children: [
         _buildIllustrationBackground(
+          context,
           Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 80),
+              padding: EdgeInsets.only(top: topPadding),
               child: SizedBox(
                 width: 280,
                 height: 200,
@@ -571,7 +591,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
             child: Column(
               children: [
                 const Text(
-                  "Simplified card\nmanagement",
+                  "Open your account in minutes",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: textColor,
@@ -583,7 +603,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Securely store and manage all your cards and keep track of your spends. Enjoy instant access whenever you need it, without the clutter of a physical wallet.",
+                  "Get KYC-verified instantly and start transacting right away — no paperwork, no waiting.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: secondaryText,
@@ -604,13 +624,17 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
   Widget _buildPage2(BuildContext context) {
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double illustrationHeight = (screenHeight * 0.45).clamp(240.0, 410.0);
+    final double topPadding = (illustrationHeight * 0.25).clamp(60.0, 110.0);
 
     return Column(
       children: [
         _buildIllustrationBackground(
+          context,
           Center(
             child: Padding(
-              padding: const EdgeInsets.only(top: 110),
+              padding: EdgeInsets.only(top: topPadding),
               child: SizedBox(
                 width: 280,
                 height: 200,
@@ -732,7 +756,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
             child: Column(
               children: [
                 const Text(
-                  "Payments made easy &\nsecure",
+                  "Spend smart, stay in control ",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: textColor,
@@ -744,7 +768,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Say goodbye to complicated checkouts! With a tap, pay for anything effortlessly—online or in-store. Experience faster, safer, and stress-free transactions.",
+                  "Track every rupee across online, offline, and category-wise spends — all in one place.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: secondaryText,
@@ -765,13 +789,17 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
   Widget _buildPage3(BuildContext context) {
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double illustrationHeight = (screenHeight * 0.45).clamp(240.0, 410.0);
+    final double topPadding = (illustrationHeight * 0.10).clamp(20.0, 40.0);
 
     return Column(
       children: [
         _buildIllustrationBackground(
-          const Center(
+          context,
+          Center(
             child: Padding(
-              padding: EdgeInsets.only(top: 40),
+              padding: EdgeInsets.only(top: topPadding),
               child: ParachuteGiftWidget(),
             ),
           ),
@@ -784,7 +812,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
             child: Column(
               children: [
                 const Text(
-                  "Unlock exclusive\nrewards",
+                  "One app, endless possibilities",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: textColor,
@@ -796,7 +824,7 @@ class OnboardingscreenView extends GetView<OnboardingscreenController> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Earn rewards every time you pay. Enjoy exciting cashback offers, loyalty points, and exclusive deals. Turn everyday spending into extraordinary savings.",
+                  "Pay bills, book tickets, buy vouchers, send money and a lot more — all at your fingertips.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: secondaryText,
@@ -1276,7 +1304,7 @@ class _PulsingStarState extends State<PulsingStar>
   @override
   void initState() {
     super.initState();
-    // Random stagger start delay so stars don't pulse at the exact same millisecond
+
     final double delayFactor = math.Random().nextDouble();
     _controller = AnimationController(
       duration: Duration(milliseconds: 1400 + (delayFactor * 1000).toInt()),

@@ -10,7 +10,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut(() => SendmoneyController());
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
 
@@ -224,7 +224,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
                                 ),
                                 errorText: controller.phoneError.value.isEmpty ? null : controller.phoneError.value,
                                 suffixIcon: IconButton(
-                                  icon: const Icon(Icons.contact_page_rounded, color: primaryRed, size: 22),
+                                  icon: const Icon(Icons.contact_page_rounded, color: Color(0xFF111111), size: 22),
                                   onPressed: () => Get.to(() => ContactPage()),
                                 ),
                                 border: OutlineInputBorder(
@@ -294,7 +294,7 @@ class SendmoneyView extends GetView<SendmoneyController> {
                                                   Icon(Icons.verified_user_rounded, color: Color(0xFF4CAF50), size: 10),
                                                   SizedBox(width: 4),
                                                   Text(
-                                                    "Transcorp User Verified",
+                                                    "Western Union User Verified",
                                                     style: TextStyle(
                                                       color: Color(0xFF4CAF50),
                                                       fontSize: 9,

@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:math';
+import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:transwallet/products/Wallet%20Screen/Add%20Money/addmoney_View.dart';
 import 'package:transwallet/widgets/constsize.dart';
 import 'package:transwallet/widgets/custombutton.dart';
+import 'package:transwallet/widgets/premium_visa_card.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DashboardscreenController extends GetxController {
   RxBool isFlipped = false.obs;
@@ -20,7 +22,6 @@ class DashboardscreenController extends GetxController {
 
   @override
   void onInit() {
-    
     super.onInit();
   }
 
@@ -35,7 +36,7 @@ class DashboardscreenController extends GetxController {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          
+
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.06),
@@ -51,10 +52,9 @@ class DashboardscreenController extends GetxController {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset("$icon", height: 25, color: Colors.black),
-              
+
               const SizedBox(height: 6),
 
-              
               Text(
                 text,
                 style: const TextStyle(
@@ -117,53 +117,34 @@ class DashboardscreenController extends GetxController {
   }
 
   Widget buildFront({Key? key}) {
-    return cardBase(
-      key: key,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          
-          topRow(),
-
-          const SizedBox(height: 20),
-
-          
-          Obx(
-            () => blurWrapper(
-              isVisible.value,
-              const Text(
-                "1234 5678 9012 3456",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  letterSpacing: 2,
-                  fontWeight: FontWeight.w500,
-                ),
+    final box = GetStorage();
+    return Obx(
+      () => PremiumVisaCard(
+        key: key,
+        cardNumber: isVisible.value ? "1234567890123456" : "••••••••••••3456",
+        cardHolder: box.read('name') ?? "Vince Tallent",
+        expiryDate: "12/28",
+        cvv: isVisible.value ? "123" : "•••",
+        onTap: flipCard,
+        topRightAction: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Transform.rotate(
+              angle: math.pi / 2,
+              child: Icon(Icons.wifi, color: Colors.white70, size: 16),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: toggleVisibility,
+              child: Icon(
+                isVisible.value ? Icons.visibility : Icons.visibility_off,
+                color: Colors.white,
+                size: 18,
               ),
             ),
-          ),
-
-          const Spacer(),
-
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
-                "VALID THRU 12/28",
-                style: TextStyle(color: Colors.white70, fontSize: 12),
-              ),
-              Text(
-                "VISA",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -174,7 +155,6 @@ class DashboardscreenController extends GetxController {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          
           Container(
             height: 38,
             width: double.infinity,
@@ -220,7 +200,6 @@ class DashboardscreenController extends GetxController {
                         color: Colors.black,
                       ),
                     ),
-                    
                   ),
                 ),
               ],
@@ -229,7 +208,6 @@ class DashboardscreenController extends GetxController {
 
           const SizedBox(height: 10),
 
-          
           Align(
             alignment: Alignment.centerRight,
             child: SizedBox(
@@ -252,15 +230,12 @@ class DashboardscreenController extends GetxController {
 
           const Spacer(),
 
-          const Align(
+          Align(
             alignment: Alignment.bottomRight,
-            child: Text(
-              "VISA",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
+            child: Image.asset(
+              'assets/VisaFree.png',
+              height: 20,
+              fit: BoxFit.contain,
             ),
           ),
         ],
@@ -274,73 +249,53 @@ class DashboardscreenController extends GetxController {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
-
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFB71C1C), Color(0xFFD32F2F), Color(0xFFFF5252)],
+        image: const DecorationImage(
+          image: AssetImage('assets/unioncardblack.webp'),
+          fit: BoxFit.cover,
         ),
-
-        
         boxShadow: [
           BoxShadow(
-            color: Colors.red.withOpacity(0.35),
+            color: const Color(0xFFFFCC00).withOpacity(0.2),
             blurRadius: 25,
             offset: const Offset(0, 15),
           ),
         ],
       ),
-
-      child: Stack(
-        children: [
-          
-          Positioned(
-            top: -30,
-            right: -30,
-            child: Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.08),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-
-          
-          Positioned(
-            bottom: -40,
-            left: -40,
-            child: Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.08),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-
-          child,
-        ],
-      ),
+      child: Stack(children: [child]),
     );
   }
 
   Widget topRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("Prepaid Card", style: TextStyle(color: Colors.white)),
-
-        Obx(
-          () => GestureDetector(
-            onTap: toggleVisibility,
-            child: Icon(
-              isVisible.value ? Icons.visibility : Icons.visibility_off,
-              color: Colors.white,
+        Image.asset(
+          'assets/WU.png',
+          height: 22,
+          fit: BoxFit.contain,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/WHITE TRANSCORP .png',
+              height: 14,
+              fit: BoxFit.contain,
             ),
-          ),
+            const SizedBox(width: 12),
+            Obx(
+              () => GestureDetector(
+                onTap: toggleVisibility,
+                child: Icon(
+                  isVisible.value ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -386,7 +341,6 @@ class DashboardscreenController extends GetxController {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 const SizedBox(height: 40),
 
                 Container(
@@ -411,8 +365,6 @@ class DashboardscreenController extends GetxController {
                     ),
                   ],
                 ),
-
-                
               ],
             ),
           ),
@@ -502,7 +454,6 @@ class DashboardscreenController extends GetxController {
         color: Colors.transparent,
         child: Stack(
           children: [
-            
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
               child: Container(color: Colors.black.withOpacity(0.4)),
@@ -554,11 +505,9 @@ class DashboardscreenController extends GetxController {
 
                           const SizedBox(height: 10),
 
-                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
@@ -579,7 +528,6 @@ class DashboardscreenController extends GetxController {
                                 ],
                               ),
 
-                              
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -616,7 +564,6 @@ class DashboardscreenController extends GetxController {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Icon(

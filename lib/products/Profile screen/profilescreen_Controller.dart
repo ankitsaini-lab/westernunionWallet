@@ -50,7 +50,7 @@ Widget menuItem(
   );
 }
 void showLuxuryLogoutDialog(BuildContext context) {
-  const Color primaryRed = Color(0xFFE53935);
+  const Color primaryRed = Color(0xFFFFCC00);
   const Color textColor = Color(0xFF111111);
   const Color secondaryText = Color(0xFF4B5563);
   const Color borderColor = Color(0xFFECECEC);
@@ -83,7 +83,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFE53935), Color(0xFFC62828)],
+                  colors: [Color(0xFFFFCC00), Color(0xFFFFB300)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -97,7 +97,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
               ),
               child: const Icon(
                 Icons.logout_rounded,
-                color: Colors.white,
+                color: Color(0xFF111111),
                 size: 32,
               ),
             ),
@@ -117,7 +117,7 @@ void showLuxuryLogoutDialog(BuildContext context) {
 
             
             const Text(
-              "Are you sure you want to sign out of your Transcorp account? You will need your credentials to sign back in.",
+              "Are you sure you want to sign out of your Western Union account? You will need your credentials to sign back in.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: secondaryText,

@@ -203,7 +203,7 @@ class TransactiondetailsView extends StatelessWidget {
                           _buildDetailRow("Transaction Type", isCredit ? "Income Received" : "Money Spent"),
                           _buildDetailRow("Reference ID", "TXN${tx.hashCode.abs().toString().padRight(10).substring(0, 10).toUpperCase()}"),
                           _buildDetailRow("Date & Time", date),
-                          _buildDetailRow("Payment Source", "TransWallet Digital"),
+                          _buildDetailRow("Payment Source", "Western Union Wallet"),
                           _buildDetailRow("Standard Fee", "₹0.00"),
                           const Divider(color: Color(0xFFECECEC), height: 32),
                           Row(

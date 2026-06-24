@@ -4,9 +4,16 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:transwallet/widgets/custombutton.dart';
+import 'package:transwallet/utilities/getStorage.dart';
 
 class AddmoneyController extends GetxController {
-  var balance = 1600.0.obs;
+  var balance = 0.0.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    balance.value = (box.read('balance') ?? 1600).toDouble();
+  }
   var enteredAmount = '50'.obs;
   var sliderValue = 50.0.obs;
   var isCustom = false.obs;
@@ -284,7 +291,7 @@ class _MpinVerifySheetForPaymentState extends State<MpinVerifySheetForPayment> {
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
 
@@ -318,12 +325,12 @@ class _MpinVerifySheetForPaymentState extends State<MpinVerifySheetForPayment> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: primaryRed.withOpacity(0.08),
+                color: primaryRed.withOpacity(0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.shield_outlined,
-                color: primaryRed,
+                color: Color(0xFF111111),
                 size: 28,
               ),
             ),

@@ -24,7 +24,7 @@ class ReviewOrderDetailsController extends GetxController {
 
   
   var cardGradient = <Color>[const Color(0xFF111111), const Color(0xFF2C2C2C)].obs;
-  var cardGlowColor = const Color(0xFFE53935).obs;
+  var cardGlowColor = const Color(0xFFFFCC00).obs;
   var cardLabel = "Obsidian Limited".obs;
   var cardTextColor = Colors.white.obs;
   var cardSubColor = Colors.white70.obs;

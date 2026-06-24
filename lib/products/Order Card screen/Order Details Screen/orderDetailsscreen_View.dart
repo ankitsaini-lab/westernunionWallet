@@ -12,7 +12,7 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
   Widget build(BuildContext context) {
     Get.lazyPut(() => OrderdetailsscreenController());
 
-    const Color primaryRed = Color(0xFFE53935);
+    const Color primaryRed = Color(0xFFFFCC00);
     const Color textColor = Color(0xFF111111);
     const Color secondaryText = Color(0xFF6B7280);
 
@@ -134,7 +134,7 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
                         Icon(
                           Icons.local_shipping_rounded,
                           size: 16,
-                          color: primaryRed,
+                          color: Color(0xFF111111),
                         ),
                         SizedBox(width: 8),
                         Text(
@@ -162,159 +162,112 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
 
   Widget _buildPhysicalCardMockup() {
     return Obx(() {
-      final gradient = controller.cardGradient.value;
       final holderName = controller.receiverName.value;
       final cardStyle = controller.cardStyleName.value;
 
-      return Container(
-        height: 190,
-        width: 310,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: LinearGradient(
-            colors: gradient.length >= 2
-                ? gradient
-                : [const Color(0xFF111111), const Color(0xFF2C2C2C)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: (gradient.isNotEmpty ? gradient.first : Colors.black)
-                  .withOpacity(0.3),
-              blurRadius: 24,
-              offset: const Offset(0, 12),
+      return AspectRatio(
+        aspectRatio: 85.60 / 45,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: AssetImage('assets/unioncardblack.webp'),
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            Positioned(
-              top: -50,
-              left: -50,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.04),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFFFCC00).withValues(alpha: 0.2),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
+              ),
+            ],
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/WU.png',
+                          height: 22,
+                          fit: BoxFit.contain,
+                        ),
+                        Image.asset(
+                          'assets/WHITE TRANSCORP .png',
+                          height: 14,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ),
+
+                    Container(
+                      height: 24,
+                      width: 32,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFE5A93C), Color(0xFFF7D070)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                holderName.toUpperCase(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 0.8,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                "STYLE: ${cardStyle.toUpperCase()}",
+                                style: const TextStyle(
+                                  color: Colors.white60,
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Image.asset(
+                          'assets/VisaFree.png',
+                          height: 18,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-
-            Positioned.fill(child: CustomPaint(painter: _CardMeshPainter())),
-
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "TRANSCORP",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 1.5,
-                            ),
-                          ),
-                          Text(
-                            "SIGNATURE",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 7,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 22,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.credit_card_rounded,
-                          color: Colors.white70,
-                          size: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Container(
-                    height: 24,
-                    width: 32,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFE5A93C), Color(0xFFF7D070)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              holderName.toUpperCase(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 0.8,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              "STYLE: $cardStyle",
-                              style: const TextStyle(
-                                color: Colors.white60,
-                                fontSize: 8,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Text(
-                        "VISA",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w900,
-                          fontStyle: FontStyle.italic,
-                          letterSpacing: -0.2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     });
@@ -574,7 +527,7 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
               time:
                   "Today, ${DateTime.now().hour}:${(DateTime.now().minute + 1).toString().padLeft(2, '0')}",
               subtitle:
-                  "Laser etching finished. Metallic cardholder sign-off approved by Transcorp Lab.",
+                  "Laser etching finished. Metallic cardholder sign-off approved by Western Union Lab.",
               isCompleted: true,
               isLast: false,
             ),
@@ -632,13 +585,13 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
                 color: isCompleted
                     ? const Color(0xFF4CAF50)
                     : (isActive
-                          ? const Color(0xFFE53935)
+                          ? const Color(0xFFFFCC00)
                           : const Color(0xFFE5E7EB)),
                 border: Border.all(color: Colors.white, width: 3),
                 boxShadow: [
                   if (isActive)
                     BoxShadow(
-                      color: const Color(0xFFE53935).withOpacity(0.3),
+                      color: const Color(0xFFFFCC00).withOpacity(0.4),
                       blurRadius: 6,
                       spreadRadius: 2,
                     ),
@@ -682,7 +635,7 @@ class OrderdetailsscreenView extends GetView<OrderdetailsscreenController> {
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       color: isActive
-                          ? const Color(0xFFE53935)
+                          ? const Color(0xFFFFB300)
                           : const Color(0xFF9CA3AF),
                     ),
                   ),
@@ -995,7 +948,7 @@ class _ConfettiShowerState extends State<_ConfettiShower>
     )..forward();
 
     final colors = [
-      const Color(0xFFE53935),
+      const Color(0xFFFFCC00),
       const Color(0xFF4CAF50),
       const Color(0xFF2196F3),
       const Color(0xFFFFEB3B),
