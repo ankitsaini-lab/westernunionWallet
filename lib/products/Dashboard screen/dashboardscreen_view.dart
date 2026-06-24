@@ -1254,12 +1254,12 @@ class _PremiumCardsSectionState extends State<_PremiumCardsSection> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // SizedBox(width: 4),
-              // Icon(
-              //   Icons.arrow_forward_ios_rounded,
-              //   color: Colors.black,
-              //   size: 14,
-              // ),
+              SizedBox(width: 4),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.black,
+                size: 14,
+              ),
             ],
           ),
         ),
